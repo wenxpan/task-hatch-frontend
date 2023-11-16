@@ -1,4 +1,5 @@
 import React from "react"
+import { NavLink } from "react-router-dom"
 
 // props types
 interface NavBarProps {
@@ -63,12 +64,12 @@ const NavBar: React.FC<NavBarProps> = ({
             {menuSVG}
           </button>
           {/* Logo and Title */}
-          <a href="/" className="flex items-center">
+          <NavLink to="/home" className="flex items-center">
             <img src={logo} className="mr-3 rounded-full h-8 w-8"></img>
             <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
               {title}
             </span>
-          </a>
+          </NavLink>
         </div>
 
         {/* Right Section of navbar */}

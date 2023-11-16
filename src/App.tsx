@@ -3,6 +3,11 @@ import MainContainer from "./components/MainContainer"
 import NavBar from "./components/NavBar"
 import SideBar from "./components/SideBar"
 import * as taskService from "./services/taskService"
+import { Routes, Route } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import TasksPage from "./pages/TasksPage"
+import NewTaskPage from "./pages/NewTaskPage"
+import ArchivePage from "./pages/ArchivePage"
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -24,17 +29,29 @@ function App() {
   }, [])
 
   return (
-    <div className="antialiased bg-gray-50 dark:bg-gray-900">
+    <div className="antialiased">
       <NavBar
         title="Task Hatch"
         logo="/task-hatch-logo.png"
         toggleSidebar={toggleSidebar}
       />
       <SideBar isSidebarOpen={isSidebarOpen} />
-      <MainContainer
-        toggleSidebar={toggleSidebar}
-        isSidebarOpen={isSidebarOpen}
-      />
+      <Routes>
+        <Route
+          path=""
+          element={
+            <MainContainer
+              toggleSidebar={toggleSidebar}
+              isSidebarOpen={isSidebarOpen}
+            />
+          }
+        >
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/new" element={<NewTaskPage />} />
+          <Route path="/archive" element={<ArchivePage />} />
+        </Route>
+      </Routes>
     </div>
   )
 }

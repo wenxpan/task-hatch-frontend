@@ -1,4 +1,5 @@
 import React from "react"
+import { NavLink } from "react-router-dom"
 
 interface SideBarProps {
   isSidebarOpen: boolean
@@ -221,14 +222,14 @@ const SideBar: React.FC<SideBarProps> = ({ isSidebarOpen }) => {
           {navItems.map((n) => (
             <li key={n.name}>
               {/* Link or Button for the navigation */}
-              <a
-                href={n.link}
+              <NavLink
+                to={n.link}
                 className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 {/* Icon and Text Here */}
                 {n.svg}
                 <span className="ml-3">{n.name}</span>
-              </a>
+              </NavLink>
             </li>
           ))}
         </ul>
