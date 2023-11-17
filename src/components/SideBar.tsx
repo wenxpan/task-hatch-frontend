@@ -1,6 +1,5 @@
 import React from "react"
 import { NavLink } from "react-router-dom"
-import BookmarkSVG from "./icons/BookmarkSVG"
 import HomeSVG from "./icons/HomeSVG"
 import TasksSVG from "./icons/TasksSVG"
 import NewSVG from "./icons/NewSVG"
@@ -61,8 +60,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
         </ul>
 
         {/* Other sidebar content */}
-
-        <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+        {/* <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
           <li>
             <a
               href="#"
@@ -72,13 +70,12 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
               <span className="ml-3">Tag 1</span>
             </a>
           </li>
-        </ul>
+        </ul> */}
       </div>
 
-      {/* Optional: Fixed bottom content */}
-      <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
-        {/* Fixed bottom elements */}
-      </div>
+      {/* Fixed bottom content */}
+      {/* <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
+      </div> */}
     </aside>
   )
 }

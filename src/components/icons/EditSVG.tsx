@@ -10,13 +10,7 @@ const EditSVG = (props: React.SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <title>edit_line</title>
-    <g
-      id="页面-1"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fillRule="evenodd"
-    >
+    <g id="页面-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g
         id="Editor"
         transform="translate(-240.000000, 0.000000)"

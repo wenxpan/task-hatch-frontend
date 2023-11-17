@@ -3,10 +3,13 @@ import EditSVG from "./icons/EditSVG"
 import ViewSVG from "./icons/ViewSVG"
 import DeleteSVG from "./icons/DeleteSVG"
 import ProgressIndicator from "./ProgressIndicator"
+import { Task } from "../types/task"
 
-interface TableRowProps {}
+interface TableRowProps {
+  task: Task
+}
 
-const TableRow: React.FC<TableRowProps> = () => {
+const TableRow: React.FC<TableRowProps> = ({ task }) => {
   return (
     <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
       {/* checkbox */}
@@ -27,20 +30,19 @@ const TableRow: React.FC<TableRowProps> = () => {
         scope="row"
         className="px-4 py-3 font-medium text-gray-900 whitespace-normal dark:text-white min-w-[15rem]"
       >
-        <div className="mr-3">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis
-          dolorem eius pariatur!
-        </div>
+        <div className="mr-3">{task.title}</div>
       </th>
       {/* tags */}
       <td className="px-4 py-3">
-        <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
-          Tag1
-        </span>
+        {task.tags.map((t) => (
+          <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap">
+            {t}
+          </span>
+        ))}
       </td>
       {/* progress */}
       <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        <ProgressIndicator number={7} />
+        <ProgressIndicator number={task.progress.length} />
       </td>
       {/* options */}
       <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">

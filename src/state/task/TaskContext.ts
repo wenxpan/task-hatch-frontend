@@ -3,12 +3,12 @@ import { Task } from "../../types/task"
 import { TaskAction } from "../../types/task"
 
 interface TaskContextType {
-  task: Task[]
+  tasks: Task[]
   taskDispatch: Dispatch<TaskAction>
 }
 
 const TaskContext = createContext<TaskContextType>({
-  task: [],
+  tasks: [],
   taskDispatch: () => {}
 })
 

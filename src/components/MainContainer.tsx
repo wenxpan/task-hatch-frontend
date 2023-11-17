@@ -5,16 +5,18 @@ import { Outlet } from "react-router-dom"
 interface MainContainerProps {
   toggleOverlay: () => void
   isOverlayOn: boolean
+  isLoaded: boolean
 }
 
 const MainContainer: React.FC<MainContainerProps> = ({
   toggleOverlay,
-  isOverlayOn
+  isOverlayOn,
+  isLoaded
 }) => {
   return (
     <>
       <main className="p-4 md:ml-64 h-auto pt-20">
-        <Outlet />
+        {isLoaded ? <Outlet /> : <div>Loading...</div>}
       </main>
       {isOverlayOn && (
         <div
