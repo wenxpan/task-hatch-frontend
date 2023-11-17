@@ -3,25 +3,25 @@ import { Outlet } from "react-router-dom"
 
 // props types
 interface MainContainerProps {
-  toggleSidebar: () => void
-  isSidebarOpen: boolean
+  toggleOverlay: () => void
+  isOverlayOn: boolean
 }
 
 const MainContainer: React.FC<MainContainerProps> = ({
-  toggleSidebar,
-  isSidebarOpen
+  toggleOverlay,
+  isOverlayOn
 }) => {
   return (
     <>
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 transition-opacity duration-300 ease-in-out"
-          onClick={toggleSidebar}
-        ></div>
-      )}
       <main className="p-4 md:ml-64 h-auto pt-20">
         <Outlet />
       </main>
+      {isOverlayOn && (
+        <div
+          className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30"
+          onClick={toggleOverlay}
+        ></div>
+      )}
     </>
   )
 }

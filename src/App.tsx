@@ -10,10 +10,10 @@ import NewTaskPage from "./pages/NewTaskPage"
 import ArchivePage from "./pages/ArchivePage"
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isOverlayOn, setIsOverlayOn] = useState(false)
 
-  const toggleSidebar = (): void => {
-    setIsSidebarOpen((prev: boolean) => !prev)
+  const toggleOverlay = (): void => {
+    setIsOverlayOn((prev: boolean) => !prev)
   }
 
   useEffect(() => {
@@ -33,16 +33,16 @@ function App() {
       <NavBar
         title="Task Hatch"
         logo="/task-hatch-logo.png"
-        toggleSidebar={toggleSidebar}
+        toggleOverlay={toggleOverlay}
       />
-      <SideBar isSidebarOpen={isSidebarOpen} />
+      <SideBar isOverlayOn={isOverlayOn} />
       <Routes>
         <Route
           path=""
           element={
             <MainContainer
-              toggleSidebar={toggleSidebar}
-              isSidebarOpen={isSidebarOpen}
+              toggleOverlay={toggleOverlay}
+              isOverlayOn={isOverlayOn}
             />
           }
         >

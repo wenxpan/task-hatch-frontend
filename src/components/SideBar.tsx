@@ -7,10 +7,10 @@ import NewSVG from "./icons/NewSVG"
 import ArchiveSVG from "./icons/ArchiveSVG"
 
 interface SideBarProps {
-  isSidebarOpen: boolean
+  isOverlayOn: boolean
 }
 
-const SideBar: React.FC<SideBarProps> = ({ isSidebarOpen }) => {
+const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
   const navItems = [
     {
       name: "Home",
@@ -37,7 +37,7 @@ const SideBar: React.FC<SideBarProps> = ({ isSidebarOpen }) => {
   return (
     <aside
       className={`${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        isOverlayOn ? "translate-x-0" : "-translate-x-full"
       } fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700`}
     >
       <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
