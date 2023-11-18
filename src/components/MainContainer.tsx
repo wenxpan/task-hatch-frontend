@@ -1,5 +1,6 @@
 import React from "react"
 import { Outlet } from "react-router-dom"
+import Overlay from "./Overlay"
 
 // props types
 interface MainContainerProps {
@@ -18,12 +19,7 @@ const MainContainer: React.FC<MainContainerProps> = ({
       <main className="p-4 md:ml-64 h-auto pt-20">
         {isLoaded ? <Outlet /> : <div>Loading...</div>}
       </main>
-      {isOverlayOn && (
-        <div
-          className="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30"
-          onClick={toggleOverlay}
-        ></div>
-      )}
+      <Overlay isOpen={isOverlayOn} toggleOverlay={toggleOverlay} zIndex={30} />
     </>
   )
 }

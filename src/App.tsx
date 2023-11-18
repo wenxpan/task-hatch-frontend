@@ -11,6 +11,7 @@ import ArchivePage from "./pages/ArchivePage"
 import TaskContext from "./state/task/TaskContext"
 import { Task } from "./types/task"
 import taskReducer from "./state/task/TaskReducer"
+import Overlay from "./components/Overlay"
 
 function App() {
   const [isOverlayOn, setIsOverlayOn] = useState(false)
@@ -57,11 +58,15 @@ function App() {
           >
             <Route path="/home" element={<HomePage />} />
             <Route path="/tasks" element={<TasksPage />} />
-            <Route path="/new" element={<NewTaskPage />} />
+            <Route
+              path="/new"
+              element={<NewTaskPage toggleOverlay={toggleOverlay} />}
+            />
             <Route path="/archive" element={<ArchivePage />} />
           </Route>
         </Routes>
       </div>
+      <Overlay isOverlayOn={isOverlayOn} toggleOverlay={toggleOverlay} />
     </TaskContext.Provider>
   )
 }

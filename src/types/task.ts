@@ -11,6 +11,11 @@ export interface Task {
   progress: {}[]
 }
 
+export type NewTask = Pick<
+  Task,
+  "title" | "tags" | "delayReason" | "doReason" | "notes"
+>
+
 export type TaskAction =
   | { type: "set_tasks"; tasks: Task[] }
   | { type: "add_task"; task: Task }
