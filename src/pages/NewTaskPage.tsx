@@ -1,24 +1,9 @@
-import React, { useState } from "react"
-import CreateTask from "../components/CreateTask"
-import ModalOverlay from "../components/ModalOverlay"
+import React from "react"
 
 interface NewTaskPageProps {}
 
 const NewTaskPage: React.FC<NewTaskPageProps> = ({}) => {
-  const [isModalOpen, setIsModalOpen] = useState(true)
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev)
-  }
-
-  const submitModal = () => {}
-
-  return (
-    <>
-      <ModalOverlay isOpen={isModalOpen} toggleModal={toggleModal}>
-        <CreateTask onClose={toggleModal} onSubmit={submitModal} />
-      </ModalOverlay>
-    </>
-  )
+  return <></>
 }
 
 export default NewTaskPage
