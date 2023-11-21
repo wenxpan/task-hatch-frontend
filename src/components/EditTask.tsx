@@ -6,15 +6,11 @@ import TaskContext from "../state/task/TaskContext"
 import { updateTask } from "../services/taskService"
 
 interface Props {
-  task: Task | null
+  task: Task
   closeModal: () => void
 }
 
 const EditTask: React.FC<Props> = ({ task, closeModal }) => {
-  if (!task) {
-    return null
-  }
-
   const [editedTask, setEditedTask] = useState<Task>(task)
   const { tasksDispatch } = useContext(TaskContext)
 

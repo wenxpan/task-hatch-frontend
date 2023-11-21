@@ -83,6 +83,7 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
             </tbody>
           </table>
         </div>
+        {/* create task modal */}
         <Modal
           isOpen={modalState.type === "create"}
           onClose={closeModal}
@@ -90,20 +91,18 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
         >
           <CreateTask closeModal={closeModal} />
         </Modal>
-        <Modal
-          isOpen={modalState.type === "view"}
-          onClose={closeModal}
-          title="View Task"
-        >
-          <ViewTask />
-        </Modal>
-        <Modal
-          isOpen={modalState.type === "edit"}
-          onClose={closeModal}
-          title="Edit Task"
-        >
-          <EditTask task={modalState.task} closeModal={closeModal} />
-        </Modal>
+        {/* view task modal */}
+        {modalState.type === "view" && modalState.task && (
+          <Modal isOpen onClose={closeModal} title={modalState.task.title}>
+            <ViewTask task={modalState.task} />
+          </Modal>
+        )}
+        {/* edit task modal */}
+        {modalState.type === "edit" && modalState.task && (
+          <Modal isOpen onClose={closeModal} title="Edit Task">
+            <EditTask task={modalState.task} closeModal={closeModal} />
+          </Modal>
+        )}
       </div>
     </>
   )
