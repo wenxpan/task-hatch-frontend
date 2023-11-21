@@ -81,13 +81,25 @@ const Table: React.FC<TableProps> = () => {
             </tbody>
           </table>
         </div>
-        <Modal isOpen={modalState.type === "create"} onClose={closeModal}>
+        <Modal
+          isOpen={modalState.type === "create"}
+          onClose={closeModal}
+          title="Add Task"
+        >
           <CreateTask />
         </Modal>
-        <Modal isOpen={modalState.type === "view"} onClose={closeModal}>
+        <Modal
+          isOpen={modalState.type === "view"}
+          onClose={closeModal}
+          title="View Task"
+        >
           <ViewTask />
         </Modal>
-        <Modal isOpen={modalState.type === "edit"} onClose={closeModal}>
+        <Modal
+          isOpen={modalState.type === "edit"}
+          onClose={closeModal}
+          title="Edit Task"
+        >
           <EditTask />
         </Modal>
       </div>

@@ -5,12 +5,13 @@ import ModalHeader from "./ModalHeader"
 // import ViewTask from "./ViewTask"
 
 interface ModalProps {
+  title: string
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
   if (!isOpen) return null
 
   return (
@@ -24,7 +25,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         <div className="relative p-4 w-full max-w-2xl max-h-full">
           {/* <!-- Modal content --> */}
           <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-            <ModalHeader onClose={onClose} />
+            <ModalHeader onClose={onClose} title={title} />
             {/* <!-- Modal body --> */}
             {children}
           </div>
