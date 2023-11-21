@@ -17,7 +17,7 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
 
   async function toggleArchive(task: Task) {
     const toggledTask = { ...task, isArchived: !task.isArchived }
-    const updatedTask = await updateTask(task._id, toggledTask)
+    const updatedTask = await updateTask(toggledTask)
     tasksDispatch({
       type: "update_task",
       task: updatedTask

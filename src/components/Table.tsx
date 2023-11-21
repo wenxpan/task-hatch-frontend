@@ -11,9 +11,10 @@ import EditTask from "./EditTask"
 
 interface TableProps {
   tasks: Task[]
+  hasAddButton: boolean
 }
 
-const Table: React.FC<TableProps> = ({ tasks }) => {
+const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
   // state for modals
   type ModalState = {
     type: "create" | "edit" | "view" | null
@@ -58,17 +59,19 @@ const Table: React.FC<TableProps> = ({ tasks }) => {
               </div>
             </form>
           </div>
-          <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-            <button
-              type="button"
-              id="createModalButton"
-              className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-              onClick={() => openModal("create")}
-            >
-              <AddSVG className="h-3.5 w-3.5 mr-2" />
-              Add task
-            </button>
-          </div>
+          {hasAddButton && (
+            <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+              <button
+                type="button"
+                id="createModalButton"
+                className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                onClick={() => openModal("create")}
+              >
+                <AddSVG className="h-3.5 w-3.5 mr-2" />
+                Add task
+              </button>
+            </div>
+          )}
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -99,7 +102,7 @@ const Table: React.FC<TableProps> = ({ tasks }) => {
           onClose={closeModal}
           title="Edit Task"
         >
-          <EditTask />
+          <EditTask task={modalState.task} closeModal={closeModal} />
         </Modal>
       </div>
     </>

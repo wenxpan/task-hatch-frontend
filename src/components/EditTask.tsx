@@ -1,28 +1,63 @@
-import React from "react"
+import React, { useContext, useState } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
+import { Task } from "../types/task"
+import TaskContext from "../state/task/TaskContext"
+import { updateTask } from "../services/taskService"
 
-interface Props {}
+interface Props {
+  task: Task | null
+  closeModal: () => void
+}
 
-const EditTask: React.FC<Props> = () => {
+const EditTask: React.FC<Props> = ({ task, closeModal }) => {
+  if (!task) {
+    return null
+  }
+
+  const [editedTask, setEditedTask] = useState<Task>(task)
+  const { tasksDispatch } = useContext(TaskContext)
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    value: string | string[]
+  ) => {
+    setEditedTask({ ...editedTask, [e.target.name]: value })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const postedTask = await updateTask(editedTask)
+      console.log(postedTask)
+      tasksDispatch({ type: "update_task", task: postedTask })
+      closeModal()
+    } catch (e) {
+      console.error((e as Error).message)
+    }
+  }
+
   return (
     <>
       <form action="#">
         <div className="grid gap-4 mb-4 sm:grid-cols-2">
           <div>
             <label
-              htmlFor="name"
+              htmlFor="title"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Title
             </label>
             <input
               type="text"
-              name="name"
-              id="name"
+              name="title"
+              id="title"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Type product name"
               required
+              value={editedTask.title}
+              onChange={(e) => handleChange(e, e.target.value)}
             />
           </div>
           <div>
@@ -37,7 +72,8 @@ const EditTask: React.FC<Props> = () => {
               name="tags"
               id="tags"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Tags"
+              value={editedTask.tags.join(", ")}
+              onChange={(e) => handleChange(e, e.target.value.split(", "))}
             />
           </div>
           <div>
@@ -52,7 +88,8 @@ const EditTask: React.FC<Props> = () => {
               name="doReason"
               id="doReason"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Because it will help me..."
+              value={editedTask.doReason}
+              onChange={(e) => handleChange(e, e.target.value)}
             />
           </div>
           <div>
@@ -67,26 +104,29 @@ const EditTask: React.FC<Props> = () => {
               name="delayReason"
               id="delayReason"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Because..."
+              value={editedTask.delayReason}
+              onChange={(e) => handleChange(e, e.target.value)}
             />
           </div>
           <div className="sm:col-span-2">
             <label
-              htmlFor="description"
+              htmlFor="notes"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Notes
             </label>
             <textarea
-              id="description"
+              id="notes"
+              name="notes"
               rows={4}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Write product description here"
+              value={editedTask.notes}
+              onChange={(e) => handleChange(e, e.target.value)}
             ></textarea>
           </div>
           <div className="sm:col-span-2">
             <label
-              htmlFor="description"
+              htmlFor="progress"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Progress
@@ -103,6 +143,7 @@ const EditTask: React.FC<Props> = () => {
           <button
             type="submit"
             className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            onClick={handleSubmit}
           >
             Update task
           </button>

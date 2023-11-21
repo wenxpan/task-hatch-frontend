@@ -23,8 +23,11 @@ export const addTask = async (newTask: Partial<Task>) => {
 }
 
 // PUT: Update a task
-export const updateTask = async (id: string, updatedTask: Partial<Task>) => {
-  const res: AxiosResponse<Task> = await API.put(`/tasks/${id}`, updatedTask)
+export const updateTask = async (updatedTask: Partial<Task>) => {
+  const res: AxiosResponse<Task> = await API.put(
+    `/tasks/${updatedTask._id}`,
+    updatedTask
+  )
   return res.data
 }
 
