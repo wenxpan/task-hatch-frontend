@@ -21,13 +21,13 @@ function App() {
     setIsOverlayOn((prev: boolean) => !prev)
   }
 
-  const [tasks, taskDispatch] = useReducer(taskReducer, [] as Task[])
+  const [tasks, tasksDispatch] = useReducer(taskReducer, [] as Task[])
   useEffect(() => {
     // get all tasks and save in context
     const fetchAllTasks = async () => {
       try {
         const { data } = await taskService.fetchTasks()
-        taskDispatch({ type: "set_tasks", tasks: data })
+        tasksDispatch({ type: "set_tasks", tasks: data })
         setIsLoaded(true)
       } catch (error) {
         console.error("Error fetching tasks: ", error)
@@ -37,7 +37,7 @@ function App() {
   }, [])
 
   return (
-    <TaskContext.Provider value={{ tasks, taskDispatch }}>
+    <TaskContext.Provider value={{ tasks, tasksDispatch }}>
       <div className="antialiased">
         <NavBar
           title="Task Hatch"

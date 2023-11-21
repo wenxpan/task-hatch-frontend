@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import EditSVG from "./icons/EditSVG"
 import ViewSVG from "./icons/ViewSVG"
 import ProgressIndicator from "./ProgressIndicator"
 import { Task } from "../types/task"
 import ArchiveSVG from "./icons/ArchiveSVG"
+import { updateTask } from "../services/taskService"
+import TaskContext from "../state/task/TaskContext"
 
 interface TableRowProps {
   task: Task
@@ -11,6 +13,17 @@ interface TableRowProps {
 }
 
 const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
+  const { tasksDispatch } = useContext(TaskContext)
+
+  async function toggleArchive(task: Task) {
+    const toggledTask = { ...task, isArchived: !task.isArchived }
+    const updatedTask = await updateTask(task._id, toggledTask)
+    tasksDispatch({
+      type: "update_task",
+      task: updatedTask
+    })
+  }
+
   return (
     <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
       {/* checkbox */}
@@ -70,9 +83,10 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
           <button
             type="button"
             className="flex items-center text-amber-700 hover:text-white border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-amber-500 dark:text-amber-500 dark:hover:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-900"
+            onClick={() => toggleArchive(task)}
           >
             <ArchiveSVG className="h-4 w-4 mr-2 -ml-0.5 hover:fill-white" />
-            Archive
+            {task.isArchived ? "Unarchive" : "Archive"}
           </button>
         </div>
       </td>

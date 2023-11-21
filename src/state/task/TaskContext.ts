@@ -4,12 +4,12 @@ import { TaskAction } from "../../types/task"
 
 interface TaskContextType {
   tasks: Task[]
-  taskDispatch: Dispatch<TaskAction>
+  tasksDispatch: Dispatch<TaskAction>
 }
 
 const TaskContext = createContext<TaskContextType>({
   tasks: [],
-  taskDispatch: () => {}
+  tasksDispatch: () => {}
 })
 
 export default TaskContext

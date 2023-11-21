@@ -1,4 +1,5 @@
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
+import { Task } from "../types/task"
 
 const API = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
@@ -16,11 +17,13 @@ export const fetchOneTask = (id: string) => {
 }
 
 // POST: Add a new task
-export const addTask = (newTask: {}) => API.post("/tasks", newTask)
+export const addTask = (newTask: Partial<Task>) => API.post("/tasks", newTask)
 
 // PUT: Update a task
-export const updateTask = (id: string, updatedTask: {}) =>
-  API.put(`/tasks/${id}`, updatedTask)
+export const updateTask = async (id: string, updatedTask: Partial<Task>) => {
+  const res: AxiosResponse<Task> = await API.put(`/tasks/${id}`, updatedTask)
+  return res.data
+}
 
 // DELETE: Delete a task
 export const deleteTask = (id: string) => API.delete(`/tasks/${id}`)

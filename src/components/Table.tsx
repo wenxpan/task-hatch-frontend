@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import TableHeader from "./TableHeader"
 import TableRow from "./TableRow"
-import TaskContext from "../state/task/TaskContext"
 import Modal from "./Modal"
 import SearchSVG from "./icons/SearchSVG"
 import AddSVG from "./icons/AddSVG"
@@ -10,11 +9,11 @@ import { Task } from "../types/task"
 import ViewTask from "./ViewTask"
 import EditTask from "./EditTask"
 
-interface TableProps {}
+interface TableProps {
+  tasks: Task[]
+}
 
-const Table: React.FC<TableProps> = () => {
-  const { tasks } = useContext(TaskContext)
-
+const Table: React.FC<TableProps> = ({ tasks }) => {
   // state for modals
   type ModalState = {
     type: "create" | "edit" | "view" | null
