@@ -1,15 +1,16 @@
 import React from "react"
 import EditSVG from "./icons/EditSVG"
 import ViewSVG from "./icons/ViewSVG"
-import DeleteSVG from "./icons/DeleteSVG"
 import ProgressIndicator from "./ProgressIndicator"
 import { Task } from "../types/task"
+import ArchiveSVG from "./icons/ArchiveSVG"
 
 interface TableRowProps {
   task: Task
+  openModal: (type: "create" | "edit" | "view", task: Task | null) => void
 }
 
-const TableRow: React.FC<TableRowProps> = ({ task }) => {
+const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
   return (
     <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
       {/* checkbox */}
@@ -35,7 +36,10 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
       {/* tags */}
       <td className="px-4 py-3">
         {task.tags.map((t) => (
-          <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap">
+          <span
+            className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
+            key={t}
+          >
             {t}
           </span>
         ))}
@@ -50,6 +54,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
           <button
             type="button"
             className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            onClick={() => openModal("edit", task)}
           >
             <EditSVG className="h-4 w-4 mr-2 -ml-0.5" />
             Edit
@@ -57,16 +62,17 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
           <button
             type="button"
             className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            onClick={() => openModal("view", task)}
           >
             <ViewSVG className="w-4 h-4 mr-2 -ml-0.5" />
             View
           </button>
           <button
             type="button"
-            className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+            className="flex items-center text-amber-700 hover:text-white border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-amber-500 dark:text-amber-500 dark:hover:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-900"
           >
-            <DeleteSVG className="w-4 h-4 mr-2 -ml-0.5" />
-            Delete
+            <ArchiveSVG className="h-4 w-4 mr-2 -ml-0.5 hover:fill-white" />
+            Archive
           </button>
         </div>
       </td>

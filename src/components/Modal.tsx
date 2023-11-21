@@ -1,14 +1,16 @@
 import React from "react"
 import Overlay from "./Overlay"
 import ModalHeader from "./ModalHeader"
-import CreateTask from "./CreateTask"
+// import CreateTask from "./CreateTask"
+// import ViewTask from "./ViewTask"
 
-interface ModalOverlayProps {
+interface ModalProps {
   isOpen: boolean
   onClose: () => void
+  children: React.ReactNode
 }
 
-const ModalOverlay: React.FC<ModalOverlayProps> = ({ isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null
 
   return (
@@ -24,7 +26,7 @@ const ModalOverlay: React.FC<ModalOverlayProps> = ({ isOpen, onClose }) => {
           <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <ModalHeader onClose={onClose} />
             {/* <!-- Modal body --> */}
-            <CreateTask />
+            {children}
           </div>
         </div>
       </div>
@@ -33,4 +35,4 @@ const ModalOverlay: React.FC<ModalOverlayProps> = ({ isOpen, onClose }) => {
   )
 }
 
-export default ModalOverlay
+export default Modal

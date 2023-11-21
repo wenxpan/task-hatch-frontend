@@ -18,7 +18,9 @@ const TableHeader: React.FC = () => {
           </div>
         </th>
         {options.map((o) => (
-          <th className="p-4">{o}</th>
+          <th className="p-4" key={o}>
+            {o}
+          </th>
         ))}
       </tr>
     </thead>

@@ -1,7 +1,7 @@
 import React from "react"
 
 interface OverlayProps {
-  zIndex: number
+  zIndex: 0 | 10 | 20 | 30 | 40 | 50
   isOpen: boolean
   toggleOverlay: () => void
 }

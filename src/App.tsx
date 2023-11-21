@@ -46,27 +46,15 @@ function App() {
         />
         <SideBar isOverlayOn={isOverlayOn} />
         <Routes>
-          <Route
-            path=""
-            element={
-              <MainContainer
-                toggleOverlay={toggleOverlay}
-                isOverlayOn={isOverlayOn}
-                isLoaded={isLoaded}
-              />
-            }
-          >
+          <Route path="" element={<MainContainer isLoaded={isLoaded} />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/tasks" element={<TasksPage />} />
-            <Route
-              path="/new"
-              element={<NewTaskPage toggleOverlay={toggleOverlay} />}
-            />
+            <Route path="/new" element={<NewTaskPage />} />
             <Route path="/archive" element={<ArchivePage />} />
           </Route>
         </Routes>
       </div>
-      <Overlay isOverlayOn={isOverlayOn} toggleOverlay={toggleOverlay} />
+      <Overlay isOpen={isOverlayOn} toggleOverlay={toggleOverlay} zIndex={30} />
     </TaskContext.Provider>
   )
 }

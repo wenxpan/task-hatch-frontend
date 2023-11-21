@@ -2,18 +2,41 @@ import React, { useContext, useState } from "react"
 import TableHeader from "./TableHeader"
 import TableRow from "./TableRow"
 import TaskContext from "../state/task/TaskContext"
-import ModalOverlay from "./ModalOverlay"
+import Modal from "./Modal"
 import SearchSVG from "./icons/SearchSVG"
 import AddSVG from "./icons/AddSVG"
+import CreateTask from "./CreateTask"
+import { Task } from "../types/task"
+import ViewTask from "./ViewTask"
+import EditTask from "./EditTask"
 
 interface TableProps {}
 
 const Table: React.FC<TableProps> = () => {
   const { tasks } = useContext(TaskContext)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev)
+
+  // state for modals
+  type ModalState = {
+    type: "create" | "edit" | "view" | null
+    task: Task | null
   }
+  // const [selectedTask, setSelectedTask] = useState<Task[]>([])
+  const [modalState, setModalState] = useState<ModalState>({
+    type: null,
+    task: null
+  })
+
+  const openModal = (
+    type: "create" | "edit" | "view",
+    task: Task | null = null
+  ) => {
+    setModalState({ type, task })
+  }
+
+  const closeModal = () => {
+    setModalState({ type: null, task: null })
+  }
+
   return (
     <>
       <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -41,7 +64,7 @@ const Table: React.FC<TableProps> = () => {
               type="button"
               id="createModalButton"
               className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-              onClick={toggleModal}
+              onClick={() => openModal("create")}
             >
               <AddSVG />
               Add task
@@ -53,12 +76,20 @@ const Table: React.FC<TableProps> = () => {
             <TableHeader></TableHeader>
             <tbody>
               {tasks.map((t) => (
-                <TableRow key={t._id} task={t} />
+                <TableRow key={t._id} task={t} openModal={openModal} />
               ))}
             </tbody>
           </table>
         </div>
-        <ModalOverlay isOpen={isModalOpen} onClose={toggleModal} />
+        <Modal isOpen={modalState.type === "create"} onClose={closeModal}>
+          <CreateTask />
+        </Modal>
+        <Modal isOpen={modalState.type === "view"} onClose={closeModal}>
+          <ViewTask />
+        </Modal>
+        <Modal isOpen={modalState.type === "edit"} onClose={closeModal}>
+          <EditTask />
+        </Modal>
       </div>
     </>
   )
