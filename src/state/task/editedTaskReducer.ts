@@ -20,7 +20,7 @@ interface UpdateAreaAction {
 
 interface UpdateProgAction {
   type: "update_prog"
-  protype: "edit_line" | "delete_line" | "add_line"
+  progtype: "edit_line" | "delete_line" | "add_line"
   obj?: Task
   value?: string
 }
@@ -73,7 +73,7 @@ export default function editedTaskReducer(
     }
 
     case "update_prog": {
-      switch (action.protype) {
+      switch (action.progtype) {
         case "edit_line": {
           return {
             ...editedTask,

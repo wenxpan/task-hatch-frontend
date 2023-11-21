@@ -2,7 +2,6 @@ import * as React from "react"
 
 const AddSVG = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
-    className="h-3.5 w-3.5 mr-2"
     fill="currentColor"
     viewBox="0 0 20 20"
     xmlns="http://www.w3.org/2000/svg"

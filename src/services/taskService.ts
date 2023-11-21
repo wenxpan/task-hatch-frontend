@@ -17,7 +17,10 @@ export const fetchOneTask = (id: string) => {
 }
 
 // POST: Add a new task
-export const addTask = (newTask: Partial<Task>) => API.post("/tasks", newTask)
+export const addTask = async (newTask: Partial<Task>) => {
+  const res: AxiosResponse<Task> = await API.post("/tasks", newTask)
+  return res.data
+}
 
 // PUT: Update a task
 export const updateTask = async (id: string, updatedTask: Partial<Task>) => {
