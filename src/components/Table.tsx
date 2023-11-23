@@ -8,6 +8,7 @@ import CreateTask from "./CreateTask"
 import { Task } from "../types/task"
 import ViewTask from "./ViewTask"
 import EditTask from "./EditTask"
+import DeleteTask from "./DeleteTask"
 
 interface TableProps {
   tasks: Task[]
@@ -17,7 +18,7 @@ interface TableProps {
 const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
   // state for modals
   type ModalState = {
-    type: "create" | "edit" | "view" | null
+    type: "create" | "edit" | "view" | "delete" | null
     task: Task | null
   }
   // const [selectedTask, setSelectedTask] = useState<Task[]>([])
@@ -26,8 +27,10 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
     task: null
   })
 
+  const [search, setSearch] = useState("")
+
   const openModal = (
-    type: "create" | "edit" | "view",
+    type: "create" | "edit" | "view" | "delete",
     task: Task | null = null
   ) => {
     setModalState({ type, task })
@@ -54,7 +57,9 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
                   type="text"
                   id="simple-search"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Search"
+                  placeholder="Search for title, tags"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </form>
@@ -101,6 +106,12 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
         {modalState.type === "edit" && modalState.task && (
           <Modal isOpen onClose={closeModal} title="Edit Task">
             <EditTask task={modalState.task} closeModal={closeModal} />
+          </Modal>
+        )}
+        {/* delete task modal */}
+        {modalState.type === "delete" && modalState.task && (
+          <Modal isOpen onClose={closeModal} title="">
+            <DeleteTask closeModal={closeModal} task={modalState.task} />
           </Modal>
         )}
       </div>

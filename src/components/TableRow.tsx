@@ -6,10 +6,14 @@ import { Task } from "../types/task"
 import ArchiveSVG from "./icons/ArchiveSVG"
 import { updateTask } from "../services/taskService"
 import TaskContext from "../state/task/TaskContext"
+import DeleteSVG from "./icons/DeleteSVG"
 
 interface TableRowProps {
   task: Task
-  openModal: (type: "create" | "edit" | "view", task: Task | null) => void
+  openModal: (
+    type: "create" | "edit" | "view" | "delete",
+    task: Task | null
+  ) => void
 }
 
 const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
@@ -88,6 +92,16 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
             <ArchiveSVG className="h-4 w-4 mr-2 -ml-0.5 hover:fill-white" />
             {task.isArchived ? "Unarchive" : "Archive"}
           </button>
+          {task.isArchived && (
+            <button
+              type="button"
+              className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+              onClick={() => openModal("delete", task)}
+            >
+              <DeleteSVG className="h-4 w-4 mr-2 -ml-0.5" />
+              Delete
+            </button>
+          )}
         </div>
       </td>
     </tr>
