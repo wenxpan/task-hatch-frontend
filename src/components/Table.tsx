@@ -101,7 +101,7 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
           onClose={closeModal}
           title="Add Task"
         >
-          <CreateTask closeModal={closeModal} />
+          <CreateTask onComplete={closeModal} />
         </Modal>
         {/* view task modal */}
         {modalState.type === "view" && modalState.task && (

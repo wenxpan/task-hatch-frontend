@@ -5,10 +5,10 @@ import { addTask } from "../services/taskService"
 import TaskContext from "../state/task/TaskContext"
 
 type CreateTaskProps = {
-  closeModal: () => void
+  onComplete: () => void
 }
 
-const CreateTask: React.FC<CreateTaskProps> = ({ closeModal }) => {
+const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
   const { tasksDispatch } = useContext(TaskContext)
   const [newTask, setNewTask] = useState<NewTask>({
     title: "",
@@ -33,7 +33,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ closeModal }) => {
       const postedTask = await addTask(newTask)
       console.log(postedTask)
       tasksDispatch({ type: "add_task", task: postedTask })
-      closeModal()
+      onComplete()
     } catch (e) {
       console.error((e as Error).message)
     }

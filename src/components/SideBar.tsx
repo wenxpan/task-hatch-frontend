@@ -19,15 +19,16 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
       svg: <HomeSVG className={svgClass} />
     },
     {
-      name: "Tasks",
-      link: "/tasks",
-      svg: <TasksSVG className={svgClass} />
-    },
-    {
       name: "New",
       link: "/new",
       svg: <NewSVG className={svgClass} />
     },
+    {
+      name: "Tasks",
+      link: "/tasks",
+      svg: <TasksSVG className={svgClass} />
+    },
+
     {
       name: "Archive",
       link: "/archive",
