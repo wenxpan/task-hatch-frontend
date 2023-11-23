@@ -47,7 +47,7 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
         <div className="mr-3">{task.title}</div>
       </th>
       {/* tags */}
-      <td className="px-4 py-3">
+      {/* <td className="px-4 py-3">
         {task.tags.map((t) => (
           <span
             className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
@@ -56,7 +56,7 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
             {t}
           </span>
         ))}
-      </td>
+      </td> */}
       {/* progress */}
       <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
         <ProgressIndicator number={task.progress.length} />

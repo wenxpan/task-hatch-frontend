@@ -1,7 +1,7 @@
 import React from "react"
 
 const TableHeader: React.FC = () => {
-  const options: string[] = ["Task", "Tags", "Progress", "Options"]
+  const options: string[] = ["Task", "Progress", "Options"]
   return (
     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
