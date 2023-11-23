@@ -29,6 +29,13 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
 
   const [search, setSearch] = useState("")
 
+  const filteredTasks: Task[] = tasks.filter(
+    (t) =>
+      t.title.toLowerCase().includes(search.toLowerCase()) ||
+      t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase())) ||
+      t.notes?.toLowerCase().includes(search.toLowerCase())
+  )
+
   const openModal = (
     type: "create" | "edit" | "view" | "delete",
     task: Task | null = null
@@ -82,7 +89,7 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <TableHeader></TableHeader>
             <tbody>
-              {tasks.map((t) => (
+              {filteredTasks.map((t) => (
                 <TableRow key={t._id} task={t} openModal={openModal} />
               ))}
             </tbody>
