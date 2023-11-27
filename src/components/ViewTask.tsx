@@ -6,9 +6,9 @@ interface Props {
 }
 
 const ViewTask: React.FC<Props> = ({ task }) => {
-  if (!task.tags.length && !task.doReason && !task.delayReason && !task.notes) {
-    return <div>No info</div>
-  }
+  // if (!task.tags.length && !task.doReason && !task.delayReason && !task.notes) {
+  //   return <div>No info</div>
+  // }
   return (
     <>
       <dl className="grid grid-cols-2 gap-4 mb-4">
@@ -61,6 +61,9 @@ const ViewTask: React.FC<Props> = ({ task }) => {
             </dd>
           </div>
         )}
+        <p className="col-span-2 text-end">
+          Date Added: {task.dateAdded.toString().slice(0, 10)}
+        </p>
       </dl>
     </>
   )

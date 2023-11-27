@@ -7,6 +7,8 @@ import ArchiveSVG from "./icons/ArchiveSVG"
 import { updateTask } from "../services/taskService"
 import TaskContext from "../state/task/TaskContext"
 import DeleteSVG from "./icons/DeleteSVG"
+import PinLineSVG from "./icons/pinLineSVG"
+import PinFillSVG from "./icons/PinFillSVG"
 
 interface TableRowProps {
   task: Task
@@ -19,7 +21,8 @@ interface TableRowProps {
 const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
   const { tasksDispatch } = useContext(TaskContext)
 
-  async function toggleArchive(task: Task) {
+  // TODO: make two toggle dry
+  const toggleArchive = async (task: Task) => {
     const toggledTask = { ...task, isArchived: !task.isArchived }
     const updatedTask = await updateTask(toggledTask)
     tasksDispatch({
@@ -28,20 +31,30 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
     })
   }
 
+  const togglePinned = async (task: Task) => {
+    try {
+      const toggledTask = { ...task, isPinned: !task.isPinned }
+      const updatedTask = await updateTask(toggledTask)
+      tasksDispatch({
+        type: "update_task",
+        task: updatedTask
+      })
+    } catch (e) {
+      console.error((e as Error).message)
+    }
+  }
+
   return (
     <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-      {/* checkbox */}
+      {/* pin */}
       <td className="p-4 w-4">
-        <div className="flex items-center">
-          <input
-            id="checkbox-id"
-            type="checkbox"
-            className="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-          />
-          <label htmlFor="checkbox-id" className="sr-only">
-            checkbox
-          </label>
-        </div>
+        <button onClick={() => togglePinned(task)}>
+          {task.isPinned ? (
+            <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+          ) : (
+            <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+          )}
+        </button>
       </td>
       {/* title */}
       <th

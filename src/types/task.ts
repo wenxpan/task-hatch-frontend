@@ -2,6 +2,7 @@ export interface Task {
   _id: string
   title: string
   dateAdded: Date
+  isPinned: boolean
   isCompleted: boolean
   isArchived: boolean
   doReason: string

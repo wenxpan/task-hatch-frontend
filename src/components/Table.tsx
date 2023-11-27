@@ -36,6 +36,12 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
       t.notes?.toLowerCase().includes(search.toLowerCase())
   )
 
+  const sortedTasks: Task[] = filteredTasks.sort((a, b) => {
+    if (a.isPinned && !b.isPinned) return -1
+    else if (!a.isPinned && b.isPinned) return 1
+    else return 1
+  })
+
   const openModal = (
     type: "create" | "edit" | "view" | "delete",
     task: Task | null = null
@@ -89,7 +95,7 @@ const Table: React.FC<TableProps> = ({ tasks, hasAddButton = false }) => {
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <TableHeader></TableHeader>
             <tbody>
-              {filteredTasks.map((t) => (
+              {sortedTasks.map((t) => (
                 <TableRow key={t._id} task={t} openModal={openModal} />
               ))}
             </tbody>
