@@ -8,7 +8,7 @@ interface MainContainerProps {
 const MainContainer: React.FC<MainContainerProps> = ({ isLoaded }) => {
   const location = useLocation()
   const pageTitles = [
-    { url: "/home", title: "Home" },
+    { url: "/home", title: "Hi there!" },
     { url: "/tasks", title: "All tasks" },
     { url: "/new", title: "Create task" },
     { url: "/archive", title: "Archive" }
