@@ -23,12 +23,16 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
 
   // TODO: make two toggle dry
   const toggleArchive = async (task: Task) => {
-    const toggledTask = { ...task, isArchived: !task.isArchived }
-    const updatedTask = await updateTask(toggledTask)
-    tasksDispatch({
-      type: "update_task",
-      task: updatedTask
-    })
+    try {
+      const toggledTask = { ...task, isArchived: !task.isArchived }
+      const updatedTask = await updateTask(toggledTask)
+      tasksDispatch({
+        type: "update_task",
+        task: updatedTask
+      })
+    } catch (e) {
+      console.error((e as Error).message)
+    }
   }
 
   const togglePinned = async (task: Task) => {
@@ -49,11 +53,12 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
       {/* pin */}
       <td className="p-4 w-4">
         <button onClick={() => togglePinned(task)}>
-          {task.isPinned ? (
-            <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-          ) : (
-            <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-          )}
+          {!task.isArchived &&
+            (task.isPinned ? (
+              <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            ) : (
+              <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            ))}
         </button>
       </td>
       {/* title */}

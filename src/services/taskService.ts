@@ -24,11 +24,14 @@ export const addTask = async (newTask: Partial<Task>) => {
 
 // PUT: Update a task
 export const updateTask = async (updatedTask: Partial<Task>) => {
-  const res: AxiosResponse<Task> = await API.put(
-    `/tasks/${updatedTask._id}`,
-    updatedTask
-  )
-  return res.data
+  try {
+    const res = await API.put(`/tasks/${updatedTask._id}`, updatedTask)
+    return res.data
+  } catch (error) {
+    // Log the error and return a generic error message
+    console.error("Error updating task:", error)
+    throw new Error("There was a problem updating the task.")
+  }
 }
 
 // DELETE: Delete a task
