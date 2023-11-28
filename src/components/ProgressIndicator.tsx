@@ -1,5 +1,9 @@
 import React from "react"
-import FlowerSVG from "./icons/FlowerSVG"
+import Egg1SVG from "./icons/Egg1SVG"
+import Egg2SVG from "./icons/Egg2SVG"
+import Egg3SVG from "./icons/Egg3SVG"
+import Egg4SVG from "./icons/Egg4SVG"
+import LightBulbSVG from "./icons/LightBulbSVG"
 
 interface ProgressIndicatorProps {
   number: number
@@ -13,7 +17,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ number }) => {
   // Function to determine the colors of the flowers based on the number
   const getColors = (num: number) => {
     // Initialize an array with gray colors
-    let colors = new Array(5).fill("gray")
+    let colors = new Array(5).fill("#EDEFF6")
 
     // Iterate through each number up to the current one
     for (let i = 1; i <= num; i++) {
@@ -36,9 +40,14 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ number }) => {
 
   return (
     <div className="flex items-center">
-      {currentColors.map((color, index) => (
+      {/* {currentColors.map((color, index) => (
         <FlowerSVG key={index} fill={color} />
-      ))}
+      ))} */}
+      <Egg1SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
+      <Egg2SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
+      <Egg3SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
+      <Egg4SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
+      <LightBulbSVG className="h-4 w-4 text-amber-500 fill-amber-400" />
     </div>
   )
 }
