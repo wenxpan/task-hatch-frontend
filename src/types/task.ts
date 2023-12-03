@@ -1,3 +1,8 @@
+export interface ProgressEntry {
+  date: Date
+  description: string
+}
+
 export interface Task {
   _id: string
   title: string
@@ -9,7 +14,7 @@ export interface Task {
   delayReason: string
   notes?: string
   tags: string[]
-  progress: {}[]
+  progress: ProgressEntry[]
 }
 
 export type NewTask = Pick<

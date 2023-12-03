@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
-import { Task } from "../types/task"
+import { ProgressEntry, Task } from "../types/task"
 import TaskContext from "../state/task/TaskContext"
 import { updateTask } from "../services/taskService"
 
@@ -23,11 +23,33 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
     setEditedTask({ ...editedTask, [e.target.name]: value })
   }
 
+  const handleProgressChange = (
+    index: number,
+    change: Partial<ProgressEntry>
+  ) => {
+    const updatedProgress = [...editedTask.progress]
+    updatedProgress[index] = { ...updatedProgress[index], ...change }
+    setEditedTask({ ...editedTask, progress: updatedProgress })
+  }
+
+  const addProgress = (e: React.FormEvent) => {
+    e.preventDefault()
+    setEditedTask({
+      ...editedTask,
+      progress: [...editedTask.progress, { date: new Date(), description: "" }]
+    })
+  }
+
+  const deleteProgress = (e: React.FormEvent, index: number) => {
+    e.preventDefault()
+    const updatedProgress = editedTask.progress.filter((_, i) => i !== index)
+    setEditedTask({ ...editedTask, progress: updatedProgress })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
       const postedTask = await updateTask(editedTask)
-      console.log(postedTask)
       tasksDispatch({ type: "update_task", task: postedTask })
       closeModal()
     } catch (e) {
@@ -127,9 +149,37 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
             >
               Progress
             </label>
+            {editedTask.progress.map((p, index) => (
+              <div key={index} className="flex items-center mb-2 gap-4">
+                <input
+                  type="date"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={new Date(p.date).toISOString().substring(0, 10)}
+                  onChange={(e) =>
+                    handleProgressChange(index, {
+                      date: new Date(e.target.value)
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={p.description}
+                  onChange={(e) =>
+                    handleProgressChange(index, { description: e.target.value })
+                  }
+                />
+                <button
+                  className="text-red-400 hover:text-red-600"
+                  onClick={(e) => deleteProgress(e, index)}
+                >
+                  <DeleteSVG />
+                </button>
+              </div>
+            ))}
             <button
               className="text-white inline-flex items-center bg-primary-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              onClick={(e) => e.preventDefault()}
+              onClick={(e) => addProgress(e)}
             >
               <AddSVG className="h-3.5 w-3.5 mr-0" />
             </button>

@@ -2,7 +2,7 @@ import * as React from "react"
 
 const ShuffleSVG = (props: React.SVGProps<SVGSVGElement>) => (
   <svg width="24" height="24" viewBox="0 0 24 24" {...props}>
-    <g id="Icon" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
+    <g id="Icon" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g
         id="Media"
         transform="translate(-720.000000, -240.000000)"

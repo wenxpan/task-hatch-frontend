@@ -31,7 +31,6 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
     e.preventDefault()
     try {
       const postedTask = await addTask(newTask)
-      console.log(postedTask)
       tasksDispatch({ type: "add_task", task: postedTask })
       onComplete()
     } catch (e) {

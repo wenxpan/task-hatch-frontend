@@ -10,44 +10,31 @@ interface ProgressIndicatorProps {
 }
 
 const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ number }) => {
-  // Colors for each round
-  const roundColors = ["#FDAD15", "green", "blue"]
+  const fillStyle = "fill-amber-400"
+  const lineStyle = "fill-white"
+  const icons = [Egg1SVG, Egg2SVG, Egg3SVG, Egg4SVG, LightBulbSVG]
 
-  // Function to determine the current round and set colors accordingly
-  // Function to determine the colors of the flowers based on the number
-  const getColors = (num: number) => {
-    // Initialize an array with gray colors
-    let colors = new Array(5).fill("#EDEFF6")
+  const getStyle = (index: number) => {
+    const filledIcons = Math.floor(number / 2)
+    const lineIcon = number % 2 !== 0
 
-    // Iterate through each number up to the current one
-    for (let i = 1; i <= num; i++) {
-      // Determine the round and the flower to change color
-      const round = Math.floor((i - 1) / 5)
-      const flowerToChange = (i - 1) % 5
-
-      // Get the current round color
-      const currentColor = roundColors[round % roundColors.length]
-
-      // Update the color of the current flower
-      colors[flowerToChange] = currentColor
+    if (index < filledIcons) {
+      return fillStyle
+    } else if (index === filledIcons && lineIcon) {
+      return lineStyle
+    } else {
+      return "hidden"
     }
-
-    return colors
   }
-
-  // Get the current colors based on the number
-  const currentColors = getColors(number)
 
   return (
     <div className="flex items-center">
-      {/* {currentColors.map((color, index) => (
-        <FlowerSVG key={index} fill={color} />
-      ))} */}
-      <Egg1SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
-      <Egg2SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
-      <Egg3SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
-      <Egg4SVG className="h-4 w-4 text-amber-500 fill-amber-400" />
-      <LightBulbSVG className="h-4 w-4 text-amber-500 fill-amber-400" />
+      {icons.map((Icon, index) => (
+        <Icon
+          key={index}
+          className={`h-8 w-8 text-amber-500 ${getStyle(index)}`}
+        />
+      ))}
     </div>
   )
 }
