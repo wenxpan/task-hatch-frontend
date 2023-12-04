@@ -7,7 +7,7 @@ import ArchiveSVG from "./icons/ArchiveSVG"
 import { updateTask } from "../services/taskService"
 import TaskContext from "../state/task/TaskContext"
 import DeleteSVG from "./icons/DeleteSVG"
-import PinLineSVG from "./icons/pinLineSVG"
+import PinLineSVG from "./icons/PinLineSVG"
 import PinFillSVG from "./icons/PinFillSVG"
 
 interface TableRowProps {
