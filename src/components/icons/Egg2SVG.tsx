@@ -9,7 +9,7 @@ const Egg2SVG = (props: React.SVGProps<SVGSVGElement>) => (
     />
     <path
       stroke="currentColor"
-      strokeWidth="40"
+      strokeWidth="60"
       d="m160.206 387.508 66.919 51 58-51 61.5 39.5 59.581-38.5"
     />
   </svg>
