@@ -2,7 +2,6 @@
   "name": "task-hatch-frontend",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://wenxpan.github.io/task-hatch-frontend",
   "type": "module",
   "scripts": {
     "dev": "vite",
