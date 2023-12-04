@@ -10,7 +10,7 @@ import NewTaskPage from "./pages/NewTaskPage"
 import ArchivePage from "./pages/ArchivePage"
 import TaskContext from "./state/task/TaskContext"
 import { Task } from "./types/task"
-import taskReducer from "./state/task/TaskReducer"
+import taskReducer from "./state/task/taskReducer"
 import Overlay from "./components/Overlay"
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
       <div className="antialiased">
         <NavBar
           title="Task Hatch"
-          logo="/task-hatch-logo.png"
+          logo="./task-hatch-logo.png"
           toggleOverlay={toggleOverlay}
         />
         <SideBar isOverlayOn={isOverlayOn} />
