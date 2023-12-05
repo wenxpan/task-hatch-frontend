@@ -13,6 +13,7 @@ import { Task } from "./types/task"
 import taskReducer from "./state/task/taskReducer"
 import Overlay from "./components/Overlay"
 import NotFoundPage from "./pages/NotFoundPage"
+import ViewTaskPage from "./pages/ViewTaskPage"
 
 function App() {
   const [isOverlayOn, setIsOverlayOn] = useState(false)
@@ -50,7 +51,10 @@ function App() {
           <Route path="" element={<MainContainer isLoaded={isLoaded} />}>
             <Route index element={<Navigate to="/home" />}></Route>
             <Route path="/home" element={<HomePage />} />
-            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/tasks">
+              <Route index element={<TasksPage />} />
+              <Route path=":id" element={<ViewTaskPage />} />
+            </Route>
             <Route path="/new" element={<NewTaskPage />} />
             <Route path="/archive" element={<ArchivePage />} />
             <Route path="*" element={<NotFoundPage />} />

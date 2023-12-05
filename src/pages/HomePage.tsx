@@ -19,7 +19,7 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
         </h4>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           {pinnedTasks.map((t) => (
-            <PinnedTaskCard key={t._id} title={t.title} doReason={t.doReason} />
+            <PinnedTaskCard key={t._id} task={t} />
           ))}
         </div>
       </div>
