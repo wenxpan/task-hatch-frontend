@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import TaskContext from "../state/task/TaskContext"
 import Table from "../components/Table"
+import PageTitle from "../components/PageTitle"
 
 interface ArchivePageProps {}
 
@@ -10,6 +11,7 @@ const ArchivePage: React.FC<ArchivePageProps> = ({}) => {
 
   return (
     <>
+      <PageTitle title="Archive" />
       <div className="mx-auto max-w-screen-2xl px-2 lg:px-12">
         <Table tasks={archivedTasks} unarchivedTable={false} />
       </div>
