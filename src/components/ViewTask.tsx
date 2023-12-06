@@ -11,6 +11,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
   // }
   return (
     <>
+      <h1 className="text-xl font-semibold mb-3">{task.title}</h1>
       <dl className="grid grid-cols-2 gap-4 mb-4">
         {!!task.tags.length && (
           <>
@@ -46,7 +47,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
             <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
               Reasons for not doing it now
             </dt>
-            <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+            <dd className="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">
               {task.delayReason}
             </dd>
           </div>
@@ -56,10 +57,26 @@ const ViewTask: React.FC<Props> = ({ task }) => {
             <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
               Notes
             </dt>
-            <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+            <dd className="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">
               {task.notes}
             </dd>
           </div>
+        )}
+        {!!task.progress.length && (
+          <>
+            <div className="col-span-2 p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700  dark:border-gray-600">
+              <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                Progress
+              </dt>
+              <dd className=" text-gray-500 dark:text-gray-400">
+                {task.progress.map((p) => (
+                  <p>
+                    {p.date.toString().slice(0, 10)}: {p.description}
+                  </p>
+                ))}
+              </dd>
+            </div>
+          </>
         )}
         <p className="col-span-2 text-end">
           Date Added: {task.dateAdded.toString().slice(0, 10)}

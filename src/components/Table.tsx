@@ -94,14 +94,14 @@ const Table: React.FC<TableProps> = ({ tasks, unarchivedTable }) => {
         </Modal>
         {/* view task modal */}
         {modalState.type === "view" && modalState.task && (
-          <Modal isOpen onClose={closeModal} title={modalState.task.title}>
+          <Modal isOpen onClose={closeModal} title="Task Info">
             <ViewTask task={modalState.task} />
           </Modal>
         )}
         {/* edit task modal */}
         {modalState.type === "edit" && modalState.task && (
           <Modal isOpen onClose={closeModal} title="Edit Task">
-            <EditTask task={modalState.task} closeModal={closeModal} />
+            <EditTask task={modalState.task} onSave={closeModal} />
           </Modal>
         )}
         {/* delete task modal */}

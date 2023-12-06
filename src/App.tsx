@@ -14,6 +14,7 @@ import taskReducer from "./state/task/taskReducer"
 import Overlay from "./components/Overlay"
 import NotFoundPage from "./pages/NotFoundPage"
 import ViewTaskPage from "./pages/ViewTaskPage"
+import EditTaskPage from "./pages/EditTaskPage"
 
 function App() {
   const [isOverlayOn, setIsOverlayOn] = useState(false)
@@ -54,6 +55,7 @@ function App() {
             <Route path="/tasks">
               <Route index element={<TasksPage />} />
               <Route path=":id" element={<ViewTaskPage />} />
+              <Route path=":id/edit" element={<EditTaskPage />} />
             </Route>
             <Route path="/new" element={<NewTaskPage />} />
             <Route path="/archive" element={<ArchivePage />} />

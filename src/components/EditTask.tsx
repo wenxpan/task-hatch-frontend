@@ -7,10 +7,10 @@ import { updateTask } from "../services/taskService"
 
 interface Props {
   task: Task
-  closeModal: () => void
+  onSave: () => void
 }
 
-const EditTask: React.FC<Props> = ({ task, closeModal }) => {
+const EditTask: React.FC<Props> = ({ task, onSave }) => {
   const [editedTask, setEditedTask] = useState<Task>(task)
   const { tasksDispatch } = useContext(TaskContext)
 
@@ -51,7 +51,7 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
     try {
       const postedTask = await updateTask(editedTask)
       tasksDispatch({ type: "update_task", task: postedTask })
-      closeModal()
+      onSave()
     } catch (e) {
       console.error((e as Error).message)
     }
