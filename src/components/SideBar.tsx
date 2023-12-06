@@ -2,7 +2,6 @@ import React from "react"
 import { NavLink } from "react-router-dom"
 import HomeSVG from "./icons/HomeSVG"
 import TasksSVG from "./icons/TasksSVG"
-import NewSVG from "./icons/NewSVG"
 import ArchiveSVG from "./icons/ArchiveSVG"
 
 interface SideBarProps {
@@ -28,7 +27,6 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
       link: "/tasks",
       svg: <TasksSVG className={svgClass} />
     },
-
     {
       name: "Archive",
       link: "/archive",
