@@ -1,6 +1,7 @@
 import React from "react"
 import { NavLink } from "react-router-dom"
 import MenuSVG from "./icons/MenuSVG"
+import NewSVG from "./icons/NewSVG"
 
 // props types
 interface NavBarProps {
@@ -36,7 +37,15 @@ const NavBar: React.FC<NavBarProps> = ({
         </div>
 
         {/* Right Section of navbar */}
-        {/* <div className="flex items-center"></div> */}
+        <div className="flex items-center">
+          <NavLink
+            to="/new"
+            className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            <NewSVG />
+            <span className="ml-3 hidden md:inline">New task</span>
+          </NavLink>
+        </div>
       </div>
     </nav>
   )
