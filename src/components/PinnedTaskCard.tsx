@@ -18,6 +18,14 @@ const PinnedTaskCard: React.FC<CardProps> = ({ task }) => {
       <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
         {task.title}
       </h5>
+      {task.tags.map((t) => (
+        <span
+          className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
+          key={t}
+        >
+          {t}
+        </span>
+      ))}
       <p className="font-normal text-gray-700 dark:text-gray-400 mb-3">
         {task.doReason}
       </p>
