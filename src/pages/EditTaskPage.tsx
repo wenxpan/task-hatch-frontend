@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 import EditTask from "../components/EditTask"
 
 interface Props {}

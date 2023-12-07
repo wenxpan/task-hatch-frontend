@@ -5,20 +5,20 @@ import ProgressIndicator from "./ProgressIndicator"
 import { Task } from "../types/task"
 import ArchiveSVG from "./icons/ArchiveSVG"
 import { updateTask } from "../services/taskService"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 import DeleteSVG from "./icons/DeleteSVG"
 import PinLineSVG from "./icons/PinLineSVG"
 import PinFillSVG from "./icons/PinFillSVG"
+import { useModal } from "../state/ModalContext"
+import ViewTask from "./ViewTask"
+import EditTask from "./EditTask"
+import DeleteTask from "./DeleteTask"
 
 interface TableRowProps {
   task: Task
-  openModal: (
-    type: "create" | "edit" | "view" | "delete",
-    task: Task | null
-  ) => void
 }
 
-const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
+const TableRow: React.FC<TableRowProps> = ({ task }) => {
   const { tasksDispatch } = useContext(TaskContext)
 
   // TODO: make two toggle dry
@@ -46,6 +46,20 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
     } catch (e) {
       console.error((e as Error).message)
     }
+  }
+
+  const { showModal, hideModal } = useModal()
+
+  const handleOpenViewModal = () => {
+    showModal(<ViewTask task={task} />, "Task info")
+  }
+
+  const handleOpenEditModal = () => {
+    showModal(<EditTask task={task} onSave={hideModal} />, "Edit Task")
+  }
+
+  const handleOpenDeleteModal = () => {
+    showModal(<DeleteTask task={task} closeModal={hideModal} />, "Edit Task")
   }
 
   return (
@@ -89,7 +103,7 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
           <button
             type="button"
             className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            onClick={() => openModal("edit", task)}
+            onClick={handleOpenEditModal}
           >
             <EditSVG className="h-4 w-4 mr-2 -ml-0.5" />
             Edit
@@ -97,7 +111,7 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
           <button
             type="button"
             className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            onClick={() => openModal("view", task)}
+            onClick={handleOpenViewModal}
           >
             <ViewSVG className="w-4 h-4 mr-2 -ml-0.5" />
             View
@@ -114,7 +128,7 @@ const TableRow: React.FC<TableRowProps> = ({ task, openModal }) => {
             <button
               type="button"
               className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-              onClick={() => openModal("delete", task)}
+              onClick={handleOpenDeleteModal}
             >
               <DeleteSVG className="h-4 w-4 mr-2 -ml-0.5" />
               Delete

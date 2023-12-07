@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import ViewTask from "../components/ViewTask"
 import { useParams } from "react-router-dom"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 
 interface Props {}
 

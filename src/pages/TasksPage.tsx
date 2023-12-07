@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import Table from "../components/Table"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 import PageTitle from "../components/PageTitle"
 
 interface TasksPageProps {}

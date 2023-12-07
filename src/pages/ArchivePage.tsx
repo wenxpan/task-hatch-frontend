@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 import Table from "../components/Table"
 import PageTitle from "../components/PageTitle"
 

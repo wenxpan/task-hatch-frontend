@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"
 import AddSVG from "./icons/AddSVG"
 import { NewTask } from "../types/task"
 import { addTask } from "../services/taskService"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 
 type CreateTaskProps = {
   onComplete: () => void

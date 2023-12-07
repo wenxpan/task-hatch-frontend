@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
 import { ProgressEntry, Task } from "../types/task"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 import { updateTask } from "../services/taskService"
 
 interface Props {

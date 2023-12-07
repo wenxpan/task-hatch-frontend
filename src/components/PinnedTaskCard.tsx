@@ -1,17 +1,19 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import { Task } from "../types/task"
 import ProgressIndicator from "./ProgressIndicator"
+import { useModal } from "../state/ModalContext"
+import ViewTask from "./ViewTask"
 
 interface CardProps {
   task: Task
 }
 
 const PinnedTaskCard: React.FC<CardProps> = ({ task }) => {
+  const { showModal } = useModal()
   return (
-    <Link
-      to={`/tasks/${task._id}`}
-      className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+    <div
+      className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 cursor-pointer"
+      onClick={() => showModal(<ViewTask task={task} />, "Task Info")}
     >
       <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
         {task.title}
@@ -20,7 +22,7 @@ const PinnedTaskCard: React.FC<CardProps> = ({ task }) => {
         {task.doReason}
       </p>
       <ProgressIndicator number={task.progress.length} />
-    </Link>
+    </div>
   )
 }
 

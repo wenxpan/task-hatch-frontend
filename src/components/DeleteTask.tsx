@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import { Task } from "../types/task"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 import { deleteTask } from "../services/taskService"
 
 interface Props {

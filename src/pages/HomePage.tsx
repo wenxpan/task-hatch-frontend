@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
 import PinnedTaskCard from "../components/PinnedTaskCard"
 import PinFillSVG from "../components/icons/PinFillSVG"
 import PageTitle from "../components/PageTitle"

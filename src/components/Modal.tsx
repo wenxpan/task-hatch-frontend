@@ -1,8 +1,6 @@
 import React from "react"
 import Overlay from "./Overlay"
 import ModalHeader from "./ModalHeader"
-// import CreateTask from "./CreateTask"
-// import ViewTask from "./ViewTask"
 
 interface ModalProps {
   title: string

@@ -8,13 +8,14 @@ import HomePage from "./pages/HomePage"
 import TasksPage from "./pages/TasksPage"
 import NewTaskPage from "./pages/NewTaskPage"
 import ArchivePage from "./pages/ArchivePage"
-import TaskContext from "./state/task/TaskContext"
+import TaskContext from "./state/TaskContext"
 import { Task } from "./types/task"
-import taskReducer from "./state/task/taskReducer"
+import taskReducer from "./state/taskReducer"
 import Overlay from "./components/Overlay"
 import NotFoundPage from "./pages/NotFoundPage"
 import ViewTaskPage from "./pages/ViewTaskPage"
 import EditTaskPage from "./pages/EditTaskPage"
+import { ModalProvider } from "./state/ModalContext"
 
 function App() {
   const [isOverlayOn, setIsOverlayOn] = useState(false)
@@ -41,29 +42,35 @@ function App() {
 
   return (
     <TaskContext.Provider value={{ tasks, tasksDispatch }}>
-      <div className="antialiased">
-        <NavBar
-          title="Task Hatch"
-          logo="/task-hatch-logo.png"
-          toggleOverlay={toggleOverlay}
-        />
-        <SideBar isOverlayOn={isOverlayOn} />
-        <Routes>
-          <Route path="" element={<MainContainer isLoaded={isLoaded} />}>
-            <Route index element={<Navigate to="/home" />}></Route>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/tasks">
-              <Route index element={<TasksPage />} />
-              <Route path=":id" element={<ViewTaskPage />} />
-              <Route path=":id/edit" element={<EditTaskPage />} />
+      <ModalProvider>
+        <div className="antialiased">
+          <NavBar
+            title="Task Hatch"
+            logo="/task-hatch-logo.png"
+            toggleOverlay={toggleOverlay}
+          />
+          <SideBar isOverlayOn={isOverlayOn} />
+          <Routes>
+            <Route path="" element={<MainContainer isLoaded={isLoaded} />}>
+              <Route index element={<Navigate to="/home" />}></Route>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/tasks">
+                <Route index element={<TasksPage />} />
+                <Route path=":id" element={<ViewTaskPage />} />
+                <Route path=":id/edit" element={<EditTaskPage />} />
+              </Route>
+              <Route path="/new" element={<NewTaskPage />} />
+              <Route path="/archive" element={<ArchivePage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
-            <Route path="/new" element={<NewTaskPage />} />
-            <Route path="/archive" element={<ArchivePage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-      </div>
-      <Overlay isOpen={isOverlayOn} toggleOverlay={toggleOverlay} zIndex={30} />
+          </Routes>
+        </div>
+        <Overlay
+          isOpen={isOverlayOn}
+          toggleOverlay={toggleOverlay}
+          zIndex={30}
+        />
+      </ModalProvider>
     </TaskContext.Provider>
   )
 }

@@ -1,5 +1,5 @@
-import { Task } from "../../types/task"
-import { TaskAction } from "../../types/task"
+import { Task } from "../types/task"
+import { TaskAction } from "../types/task"
 
 export default function taskReducer(tasks: Task[], action: TaskAction): Task[] {
   switch (action.type) {

@@ -70,7 +70,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
               </dt>
               <dd className=" text-gray-500 dark:text-gray-400">
                 {task.progress.map((p) => (
-                  <p>
+                  <p key={p.description}>
                     {p.date.toString().slice(0, 10)}: {p.description}
                   </p>
                 ))}
