@@ -3,15 +3,10 @@ import Overlay from "./Overlay"
 import ModalHeader from "./ModalHeader"
 
 interface ModalProps {
-  title: string
-  isOpen: boolean
-  onClose: () => void
   children: React.ReactNode
 }
 
-const Modal: React.FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
-  if (!isOpen) return null
-
+const Modal: React.FC<ModalProps> = ({ children }) => {
   return (
     <>
       <div
@@ -23,13 +18,13 @@ const Modal: React.FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
         <div className="relative p-4 w-full max-w-2xl max-h-full">
           {/* <!-- Modal content --> */}
           <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-            <ModalHeader onClose={onClose} title={title} />
+            <ModalHeader />
             {/* <!-- Modal body --> */}
             {children}
           </div>
         </div>
       </div>
-      <Overlay zIndex={40} isOpen={isOpen} toggleOverlay={onClose} />
+      <Overlay zIndex={40} isOpen={true} toggleOverlay={() => {}} />
     </>
   )
 }

@@ -1,9 +1,22 @@
 import React, { createContext, useContext, useState } from "react"
 import Modal from "../components/Modal"
+import { useNavigate } from "react-router-dom"
 
 type ModalContextType = {
-  showModal: (content: React.ReactNode, title: string) => void
+  showModal: (
+    content: React.ReactNode,
+    title: string,
+    isExpandable: boolean,
+    expandLink: string
+  ) => void
   hideModal: () => void
+  expandModal: (link: string) => void
+  modalInfo: {
+    title: string
+    content: React.ReactNode
+    isExpandable: boolean
+    expandLink: string
+  }
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
@@ -14,27 +27,51 @@ interface ModalProviderProps {
 
 export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalContent, setModalContent] = useState<React.ReactNode>(null)
-  const [modalTitle, setModalTitle] = useState("")
 
-  const showModal = (content: React.ReactNode, title: string) => {
-    setModalContent(content)
-    setModalTitle(title)
+  const [modalInfo, setModalInfo] = useState({
+    title: "",
+    content: null as React.ReactNode,
+    isExpandable: false,
+    expandLink: ""
+  })
+  const showModal = (
+    content: React.ReactNode,
+    title: string,
+    isExpandable = false,
+    expandLink: string
+  ) => {
+    setModalInfo({ title, content, isExpandable, expandLink })
     setIsModalOpen(true)
   }
 
   const hideModal = () => {
     setIsModalOpen(false)
-    setModalContent(null)
-    setModalTitle("")
+    setModalInfo({
+      title: "",
+      content: null as React.ReactNode,
+      isExpandable: false,
+      expandLink: ""
+    })
+  }
+
+  const nav = useNavigate()
+
+  const expandModal = () => {
+    nav(modalInfo.expandLink)
+    hideModal()
   }
 
   return (
-    <ModalContext.Provider value={{ showModal, hideModal }}>
+    <ModalContext.Provider
+      value={{
+        showModal,
+        hideModal,
+        expandModal,
+        modalInfo
+      }}
+    >
       {children}
-      <Modal isOpen={isModalOpen} onClose={hideModal} title={modalTitle}>
-        {modalContent}
-      </Modal>
+      {isModalOpen && <Modal>{modalInfo.content}</Modal>}
     </ModalContext.Provider>
   )
 }

@@ -9,7 +9,7 @@ const ViewTaskPage: React.FC<Props> = () => {
   const { id } = useParams()
   const { tasks } = useContext(TaskContext)
   const task = tasks.find((t) => t._id === id)
-  return <>{task && <ViewTask task={task} />}</>
+  return <div className="max-w-2xl">{task && <ViewTask task={task} />}</div>
 }
 
 export default ViewTaskPage

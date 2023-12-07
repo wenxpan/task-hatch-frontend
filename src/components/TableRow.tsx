@@ -51,15 +51,25 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
   const { showModal, hideModal } = useModal()
 
   const handleOpenViewModal = () => {
-    showModal(<ViewTask task={task} />, "Task info")
+    showModal(<ViewTask task={task} />, "Task info", true, `/tasks/${task._id}`)
   }
 
   const handleOpenEditModal = () => {
-    showModal(<EditTask task={task} onSave={hideModal} />, "Edit Task")
+    showModal(
+      <EditTask task={task} onSave={hideModal} />,
+      "Edit Task",
+      true,
+      `/tasks/${task._id}/edit`
+    )
   }
 
   const handleOpenDeleteModal = () => {
-    showModal(<DeleteTask task={task} closeModal={hideModal} />, "Edit Task")
+    showModal(
+      <DeleteTask task={task} closeModal={hideModal} />,
+      "Delete Task",
+      false,
+      ""
+    )
   }
 
   return (

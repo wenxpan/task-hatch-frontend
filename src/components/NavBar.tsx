@@ -42,15 +42,20 @@ const NavBar: React.FC<NavBarProps> = ({
 
         {/* Right Section of navbar */}
         <div className="flex items-center">
-          <div
+          <button
             className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             onClick={() =>
-              showModal(<CreateTask onComplete={hideModal} />, "New task")
+              showModal(
+                <CreateTask onComplete={hideModal} />,
+                "New task",
+                true,
+                "/new"
+              )
             }
           >
             <NewSVG />
             <span className="ml-3 hidden md:inline">New task</span>
-          </div>
+          </button>
         </div>
       </div>
     </nav>

@@ -24,7 +24,7 @@ const DeleteTask: React.FC<Props> = ({ closeModal, task }) => {
 
   return (
     <>
-      <DeleteSVG className="mx-auto mb-4 w-14 h-14 " />
+      <DeleteSVG className="mx-auto mb-4 w-8 h-8 text-red-600" />
       <p className="mb-4 text-center">
         Are you sure you want to delete task:{" "}
         <span className="italic font-semibold">{task.title}</span>?
