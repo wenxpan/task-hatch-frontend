@@ -8,7 +8,7 @@ interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = ({}) => {
   const { tasks } = useContext(TaskContext)
-  const pinnedTasks = tasks.filter((t) => t.isPinned)
+  const pinnedTasks = tasks.filter((t) => t.status === "prioritised")
   return (
     <>
       <PageTitle title="Hi there!" />

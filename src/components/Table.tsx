@@ -23,8 +23,8 @@ const Table: React.FC<TableProps> = ({ tasks, unarchivedTable }) => {
   )
 
   const sortedTasks: Task[] = filteredTasks.sort((a, b) => {
-    if (a.isPinned && !b.isPinned) return -1
-    else if (!a.isPinned && b.isPinned) return 1
+    if (a.status === "prioritised" && b.status !== "prioritised") return -1
+    else if (a.status !== "prioritised" && b.status === "prioritised") return 1
     else return 1
   })
 

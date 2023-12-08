@@ -12,6 +12,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">{task.title}</h1>
+
       <dl className="grid grid-cols-2 gap-4 mb-4">
         {!!task.tags.length && (
           <>
@@ -78,9 +79,10 @@ const ViewTask: React.FC<Props> = ({ task }) => {
             </div>
           </>
         )}
-        <p className="col-span-2 text-end">
-          Date Added: {task.dateAdded.toString().slice(0, 10)}
-        </p>
+        <div className="flex justify-between col-span-2">
+          <p className="capitalize">{task.status}</p>
+          <p>Date Added: {task.dateAdded.toString().slice(0, 10)}</p>
+        </div>
       </dl>
     </>
   )

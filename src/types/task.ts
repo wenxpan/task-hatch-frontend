@@ -7,9 +7,7 @@ export interface Task {
   _id: string
   title: string
   dateAdded: Date
-  isPinned: boolean
-  isCompleted: boolean
-  isArchived: boolean
+  status: "in progress" | "prioritised" | "completed" | "snoozed" | "archived"
   doReason: string
   delayReason: string
   notes?: string

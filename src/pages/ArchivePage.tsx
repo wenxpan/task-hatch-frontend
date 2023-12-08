@@ -7,7 +7,7 @@ interface ArchivePageProps {}
 
 const ArchivePage: React.FC<ArchivePageProps> = ({}) => {
   const { tasks } = useContext(TaskContext)
-  const archivedTasks = tasks.filter((t) => t.isArchived)
+  const archivedTasks = tasks.filter((t) => t.status === "archived")
 
   return (
     <>

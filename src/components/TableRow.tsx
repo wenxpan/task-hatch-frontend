@@ -21,11 +21,9 @@ interface TableRowProps {
 const TableRow: React.FC<TableRowProps> = ({ task }) => {
   const { tasksDispatch } = useContext(TaskContext)
 
-  // TODO: make two toggle dry
-  const toggleArchive = async (task: Task) => {
+  const updateStatus = async (task: Task, status: {}) => {
     try {
-      const toggledTask = { ...task, isArchived: !task.isArchived }
-      const updatedTask = await updateTask(toggledTask)
+      const updatedTask = await updateTask({ ...task, ...status })
       tasksDispatch({
         type: "update_task",
         task: updatedTask
@@ -35,17 +33,16 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
     }
   }
 
-  const togglePinned = async (task: Task) => {
-    try {
-      const toggledTask = { ...task, isPinned: !task.isPinned }
-      const updatedTask = await updateTask(toggledTask)
-      tasksDispatch({
-        type: "update_task",
-        task: updatedTask
-      })
-    } catch (e) {
-      console.error((e as Error).message)
-    }
+  // make two toggle DRY
+  const toggleArchive = async (task: Task) => {
+    const newStatus = task.status === "archived" ? "in progress" : "archived"
+    await updateStatus(task, { status: newStatus })
+  }
+
+  const togglePrioritised = async (task: Task) => {
+    const newStatus =
+      task.status === "prioritised" ? "in progress" : "prioritised"
+    await updateStatus(task, { status: newStatus })
   }
 
   const { showModal, hideModal } = useModal()
@@ -76,13 +73,12 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
     <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
       {/* pin */}
       <td className="p-4 w-4">
-        <button onClick={() => togglePinned(task)}>
-          {!task.isArchived &&
-            (task.isPinned ? (
-              <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-            ) : (
-              <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-            ))}
+        <button onClick={() => togglePrioritised(task)}>
+          {task.status === "prioritised" ? (
+            <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+          ) : (
+            <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+          )}
         </button>
       </td>
       {/* title */}
@@ -132,9 +128,9 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             onClick={() => toggleArchive(task)}
           >
             <ArchiveSVG className="h-4 w-4 mr-2 -ml-0.5 hover:fill-white" />
-            {task.isArchived ? "Unarchive" : "Archive"}
+            {task.status === "archived" ? "Unarchive" : "Archive"}
           </button>
-          {task.isArchived && (
+          {task.status === "archived" && (
             <button
               type="button"
               className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"

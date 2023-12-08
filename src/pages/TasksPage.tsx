@@ -7,7 +7,7 @@ interface TasksPageProps {}
 
 const TasksPage: React.FC<TasksPageProps> = ({}) => {
   const { tasks } = useContext(TaskContext)
-  const unarchivedTasks = tasks.filter((t) => !t.isArchived)
+  const unarchivedTasks = tasks.filter((t) => t.status !== "archived")
 
   return (
     <>
