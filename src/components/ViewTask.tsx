@@ -1,14 +1,12 @@
 import React from "react"
 import { Task } from "../types/task"
+import StatusGroup from "./StatusGroup"
 
 interface Props {
   task: Task
 }
 
 const ViewTask: React.FC<Props> = ({ task }) => {
-  // if (!task.tags.length && !task.doReason && !task.delayReason && !task.notes) {
-  //   return <div>No info</div>
-  // }
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">{task.title}</h1>
@@ -80,9 +78,10 @@ const ViewTask: React.FC<Props> = ({ task }) => {
           </>
         )}
         <div className="flex justify-between col-span-2">
-          <p className="capitalize">Status: {task.status}</p>
+          <p className="capitalize">Update Status:</p>
           <p>Date Added: {task.dateAdded.toString().slice(0, 10)}</p>
         </div>
+        <StatusGroup task={task} />
       </dl>
     </>
   )

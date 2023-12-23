@@ -3,11 +3,18 @@ export interface ProgressEntry {
   description: string
 }
 
+export type TaskStatus =
+  | "in progress"
+  | "prioritised"
+  | "completed"
+  | "snoozed"
+  | "archived"
+
 export interface Task {
   _id: string
   title: string
   dateAdded: Date
-  status: "in progress" | "prioritised" | "completed" | "snoozed" | "archived"
+  status: TaskStatus
   doReason: string
   delayReason: string
   notes?: string
