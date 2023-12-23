@@ -74,11 +74,12 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
       {/* pin */}
       <td className="p-4 w-4">
         <button onClick={() => togglePrioritised(task)}>
-          {task.status === "prioritised" ? (
-            <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-          ) : (
-            <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-          )}
+          {task.status !== "archived" &&
+            (task.status === "prioritised" ? (
+              <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            ) : (
+              <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            ))}
         </button>
       </td>
       {/* title */}

@@ -80,7 +80,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
           </>
         )}
         <div className="flex justify-between col-span-2">
-          <p className="capitalize">{task.status}</p>
+          <p className="capitalize">Status: {task.status}</p>
           <p>Date Added: {task.dateAdded.toString().slice(0, 10)}</p>
         </div>
       </dl>
