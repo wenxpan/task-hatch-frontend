@@ -1,6 +1,5 @@
 import React, { useContext } from "react"
 import EditSVG from "./icons/EditSVG"
-import ViewSVG from "./icons/ViewSVG"
 import ProgressIndicator from "./ProgressIndicator"
 import { Task } from "../types/task"
 import ArchiveSVG from "./icons/ArchiveSVG"
@@ -82,10 +81,11 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             ))}
         </button>
       </td>
-      {/* title */}
+      {/* task title */}
       <th
         scope="row"
-        className="px-4 py-3 font-medium text-gray-900 whitespace-normal dark:text-white min-w-[15rem]"
+        className="px-4 py-3 font-medium text-gray-900 whitespace-normal dark:text-white min-w-[15rem] cursor-pointer"
+        onClick={handleOpenViewModal}
       >
         <div
           className={`mr-3 ${task.status === "completed" && "line-through"}`}
@@ -105,7 +105,10 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
         ))}
       </td> */}
       {/* progress */}
-      <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+      <td
+        className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
+        onClick={handleOpenViewModal}
+      >
         <ProgressIndicator number={task.progress.length} />
       </td>
       {/* options */}
@@ -119,14 +122,14 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             <EditSVG className="h-4 w-4 mr-2 -ml-0.5" />
             Edit
           </button>
-          <button
+          {/* <button
             type="button"
             className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             onClick={handleOpenViewModal}
           >
             <ViewSVG className="w-4 h-4 mr-2 -ml-0.5" />
             View
-          </button>
+          </button> */}
           <button
             type="button"
             className="flex items-center text-amber-700 hover:text-white border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-amber-500 dark:text-amber-500 dark:hover:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-900"
