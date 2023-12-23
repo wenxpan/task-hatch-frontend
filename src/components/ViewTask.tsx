@@ -1,17 +1,35 @@
-import React from "react"
-import { Task } from "../types/task"
+import React, { useContext, useState } from "react"
+import { Task, TaskStatus } from "../types/task"
 import StatusGroup from "./StatusGroup"
+import TaskContext from "../state/TaskContext"
+import { updateTask } from "../services/taskService"
 
 interface Props {
   task: Task
 }
 
 const ViewTask: React.FC<Props> = ({ task }) => {
+  const { tasksDispatch } = useContext(TaskContext)
+
+  const [status, setStatus] = useState(task.status)
+
+  const handleChangeStatus = async (newStatus: TaskStatus) => {
+    setStatus(newStatus)
+    const updatedTask = { ...task, status: newStatus }
+    const newTask = await updateTask(updatedTask)
+    tasksDispatch({ type: "update_task", task: newTask })
+  }
+
   return (
     <>
-      <h1 className="text-xl font-semibold mb-3">{task.title}</h1>
-
-      <dl className="grid grid-cols-2 gap-4 mb-4">
+      <h1 className="text-2xl font-semibold mb-4">{task.title}</h1>
+      <dl className="grid grid-cols-2 gap-4 my-4">
+        <div className="col-span-2 place-self-start">
+          <h2 className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+            Status
+          </h2>
+          <StatusGroup status={status} onChangeStatus={handleChangeStatus} />
+        </div>
         {!!task.tags.length && (
           <>
             <div className="col-span-2 p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700  dark:border-gray-600">
@@ -77,11 +95,9 @@ const ViewTask: React.FC<Props> = ({ task }) => {
             </div>
           </>
         )}
-        <div className="flex justify-between col-span-2">
-          <p className="capitalize">Update Status:</p>
+        <div className="flex justify-between items-center col-span-2">
           <p>Date Added: {task.dateAdded.toString().slice(0, 10)}</p>
         </div>
-        <StatusGroup task={task} />
       </dl>
     </>
   )

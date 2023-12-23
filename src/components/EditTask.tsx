@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
-import { ProgressEntry, Task } from "../types/task"
+import { ProgressEntry, Task, TaskStatus } from "../types/task"
 import TaskContext from "../state/TaskContext"
 import { updateTask } from "../services/taskService"
+import StatusGroup from "./StatusGroup"
 
 interface Props {
   task: Task
@@ -57,10 +58,26 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
     }
   }
 
+  const handleChangeStatus = (newStatus: TaskStatus) => {
+    setEditedTask({ ...editedTask, status: newStatus })
+  }
+
   return (
     <>
       <form action="#">
         <div className="grid gap-4 mb-4 sm:grid-cols-2">
+          <div className="col-span-2 place-self-start">
+            <label
+              htmlFor="status"
+              className="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+            >
+              Status
+            </label>
+            <StatusGroup
+              status={editedTask.status}
+              onChangeStatus={handleChangeStatus}
+            />
+          </div>
           <div>
             <label
               htmlFor="title"

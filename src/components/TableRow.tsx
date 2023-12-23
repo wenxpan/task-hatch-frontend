@@ -87,7 +87,11 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
         scope="row"
         className="px-4 py-3 font-medium text-gray-900 whitespace-normal dark:text-white min-w-[15rem]"
       >
-        <div className="mr-3">{task.title}</div>
+        <div
+          className={`mr-3 ${task.status === "completed" && "line-through"}`}
+        >
+          {task.title}
+        </div>
       </th>
       {/* tags */}
       {/* <td className="px-4 py-3">

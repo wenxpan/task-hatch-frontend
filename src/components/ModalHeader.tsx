@@ -1,6 +1,6 @@
 import React from "react"
 import CloseSVG from "./icons/CloseSVG"
-import FullscreenSVG from "./icons/FullScreenSVG"
+import FullscreenSVG from "./icons/FullscreenSVG"
 import { useModal } from "../state/ModalContext"
 
 interface Props {}

@@ -1,15 +1,14 @@
-import React, { useContext, useState } from "react"
+import React from "react"
 import ArchiveSVG from "./icons/ArchiveSVG"
 import TickSVG from "./icons/TickSVG"
 import PinLineSVG from "./icons/PinLineSVG"
 import PinFillSVG from "./icons/PinFillSVG"
 import SnoozeSVG from "./icons/SnoozeSVG"
-import TaskContext from "../state/TaskContext"
-import { Task, TaskStatus } from "../types/task"
-import { updateTask } from "../services/taskService"
+import { TaskStatus } from "../types/task"
 
 interface StatusGroupProps {
-  task: Task
+  status: TaskStatus
+  onChangeStatus: (newStatus: TaskStatus) => void
 }
 
 interface StatusButtonProps {
@@ -18,18 +17,10 @@ interface StatusButtonProps {
   Icon: React.FC<React.SVGProps<SVGSVGElement>>
 }
 
-const StatusGroup: React.FC<StatusGroupProps> = ({ task }) => {
-  const { tasksDispatch } = useContext(TaskContext)
-
-  const [status, setStatus] = useState(task.status)
-
-  const onChangeStatus = async (newStatus: TaskStatus) => {
-    setStatus(newStatus)
-    const updatedTask = { ...task, status: newStatus }
-    const newTask = await updateTask(updatedTask)
-    tasksDispatch({ type: "update_task", task: newTask })
-  }
-
+const StatusGroup: React.FC<StatusGroupProps> = ({
+  status,
+  onChangeStatus
+}) => {
   const statusOptions = [
     {
       name: "archived",
@@ -84,7 +75,8 @@ const StatusGroup: React.FC<StatusGroupProps> = ({ task }) => {
   return (
     <>
       <div
-        className="flex rounded-lg border flex-wrap col-span-2 justify-between"
+        className="flex rounded-lg border flex-wrap justify-start"
+        id="status"
         role="group"
       >
         {statusOptions.map((option) => (
