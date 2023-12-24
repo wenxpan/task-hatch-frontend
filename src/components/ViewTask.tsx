@@ -3,6 +3,9 @@ import { Task, TaskStatus } from "../types/task"
 import StatusGroup from "./StatusGroup"
 import TaskContext from "../state/TaskContext"
 import { updateTask } from "../services/taskService"
+import { useNavigate } from "react-router-dom"
+import { useModal } from "../state/ModalContext"
+import EditSVG from "./icons/EditSVG"
 
 interface Props {
   task: Task
@@ -13,11 +16,19 @@ const ViewTask: React.FC<Props> = ({ task }) => {
 
   const [status, setStatus] = useState(task.status)
 
+  const nav = useNavigate()
+  const { hideModal } = useModal()
+
   const handleChangeStatus = async (newStatus: TaskStatus) => {
     setStatus(newStatus)
     const updatedTask = { ...task, status: newStatus }
     const newTask = await updateTask(updatedTask)
     tasksDispatch({ type: "update_task", task: newTask })
+  }
+
+  const handleEditTask = () => {
+    hideModal()
+    nav(`/tasks/${task._id}/edit`)
   }
 
   return (
@@ -96,6 +107,14 @@ const ViewTask: React.FC<Props> = ({ task }) => {
           </>
         )}
         <div className="flex justify-between items-center col-span-2">
+          <button
+            type="button"
+            className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            onClick={handleEditTask}
+          >
+            <EditSVG className="h-4 w-4 mr-2 -ml-0.5" />
+            Edit
+          </button>
           <p>Date Added: {task.dateAdded.toString().slice(0, 10)}</p>
         </div>
       </dl>
