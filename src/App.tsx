@@ -29,6 +29,7 @@ function App() {
   const [tasks, tasksDispatch] = useReducer(taskReducer, [] as Task[])
 
   const [tags, setTags] = useState<string[]>([])
+
   useEffect(() => {
     // get all tasks and save in context
     const fetchAllTasks = async () => {

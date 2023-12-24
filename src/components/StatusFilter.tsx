@@ -40,7 +40,7 @@ const StatusFilter: React.FC<Props> = ({ selectedStatus, onSelectStatus }) => {
         id="status"
         role="group"
       >
-        <p className="mr-3">Filter: </p>
+        <p className="mr-3">Filter by status: </p>
         {statusOptions.map((option) => (
           <button
             key={option.name}
