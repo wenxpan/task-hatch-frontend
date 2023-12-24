@@ -3,6 +3,7 @@ import AddSVG from "./icons/AddSVG"
 import { NewTask } from "../types/task"
 import { addTask } from "../services/taskService"
 import TaskContext from "../state/TaskContext"
+import { toast } from "react-toastify"
 
 type CreateTaskProps = {
   onComplete: () => void
@@ -35,6 +36,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
       onComplete()
     } catch (e) {
       console.error((e as Error).message)
+      toast.error("Task creation failed. Have you entered task title?")
     }
   }
 

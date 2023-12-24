@@ -5,6 +5,7 @@ import { ProgressEntry, Task, TaskStatus } from "../types/task"
 import TaskContext from "../state/TaskContext"
 import { updateTask } from "../services/taskService"
 import StatusGroup from "./StatusGroup"
+import { toast } from "react-toastify"
 
 interface Props {
   task: Task
@@ -55,6 +56,7 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
       onSave()
     } catch (e) {
       console.error((e as Error).message)
+      toast.error((e as Error).message)
     }
   }
 

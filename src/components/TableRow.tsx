@@ -13,6 +13,8 @@ import ViewTask from "./ViewTask"
 import EditTask from "./EditTask"
 import DeleteTask from "./DeleteTask"
 import { toast } from "react-toastify"
+import SnoozeSVG from "./icons/SnoozeSVG"
+import TickSVG from "./icons/TickSVG"
 
 interface TableRowProps {
   task: Task
@@ -30,7 +32,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
       })
     } catch (e) {
       console.error((e as Error).message)
-      toast.warn((e as Error).message)
+      toast.error((e as Error).message)
     }
   }
 
@@ -50,6 +52,14 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
 
   const togglePrioritised = async (task: Task) => {
     await toggleStatus(task, "prioritised", "in progress")
+  }
+
+  const toggleSnoozed = async (task: Task) => {
+    await toggleStatus(task, "snoozed", "in progress")
+  }
+
+  const toggleCompleted = async (task: Task) => {
+    await toggleStatus(task, "completed", "in progress")
   }
 
   const { showModal, hideModal } = useModal()
@@ -79,15 +89,25 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
   return (
     <>
       <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-        {/* pin */}
+        {/* icon appearing before task */}
         <td className="p-4 w-4">
           <button onClick={() => togglePrioritised(task)}>
-            {task.status !== "archived" &&
-              (task.status === "prioritised" ? (
-                <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-              ) : (
-                <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-              ))}
+            {task.status === "prioritised" && (
+              <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            )}
+            {task.status === "in progress" && (
+              <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            )}
+          </button>
+          <button onClick={() => toggleSnoozed(task)}>
+            {task.status === "snoozed" && (
+              <SnoozeSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            )}
+          </button>
+          <button onClick={() => toggleCompleted(task)}>
+            {task.status === "completed" && (
+              <TickSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+            )}
           </button>
         </td>
         {/* task title */}

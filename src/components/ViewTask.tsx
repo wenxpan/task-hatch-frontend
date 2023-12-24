@@ -6,6 +6,7 @@ import { updateTask } from "../services/taskService"
 import { useNavigate } from "react-router-dom"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
+import { toast } from "react-toastify"
 
 interface Props {
   task: Task
@@ -20,10 +21,14 @@ const ViewTask: React.FC<Props> = ({ task }) => {
   const { hideModal } = useModal()
 
   const handleChangeStatus = async (newStatus: TaskStatus) => {
-    setStatus(newStatus)
-    const updatedTask = { ...task, status: newStatus }
-    const newTask = await updateTask(updatedTask)
-    tasksDispatch({ type: "update_task", task: newTask })
+    try {
+      const updatedTask = { ...task, status: newStatus }
+      const newTask = await updateTask(updatedTask)
+      tasksDispatch({ type: "update_task", task: newTask })
+      setStatus(newStatus)
+    } catch (e) {
+      toast.error((e as Error).message)
+    }
   }
 
   const handleEditTask = () => {
@@ -41,71 +46,62 @@ const ViewTask: React.FC<Props> = ({ task }) => {
           </h2>
           <StatusGroup status={status} onChangeStatus={handleChangeStatus} />
         </div>
-        {!!task.tags.length && (
-          <>
-            <div className="col-span-2 p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700  dark:border-gray-600">
-              <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                Tags
-              </dt>
-              <dd className="flex items-center text-gray-500 dark:text-gray-400">
-                {task.tags.map((t) => (
-                  <span
-                    className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
-                    key={t}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </dd>
-            </div>
-          </>
-        )}
-        {task.doReason && (
-          <div className="p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 col-span-2 sm:col-span-1">
+        {/* tags */}
+        <div className="col-span-2 p-3 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700  dark:border-gray-600">
+          <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+            Tags
+          </dt>
+          <dd className="flex items-center text-gray-500 dark:text-gray-400">
+            {task.tags.map((t) => (
+              <span
+                className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
+                key={t}
+              >
+                {t}
+              </span>
+            ))}
+          </dd>
+        </div>
+        <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 col-span-2 sm:col-span-1">
+          <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+            Reasons for doing it
+          </dt>
+          <dd className="text-gray-500 dark:text-gray-400">{task.doReason}</dd>
+        </div>
+
+        <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 col-span-2 sm:col-span-1">
+          <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+            Reasons for not doing it now
+          </dt>
+          <dd className="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">
+            {task.delayReason}
+          </dd>
+        </div>
+
+        <div className="col-span-2 p-3 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+          <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+            Notes
+          </dt>
+          <dd className="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">
+            {task.notes}
+          </dd>
+        </div>
+
+        <>
+          <div className="col-span-2 p-3 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700  dark:border-gray-600">
             <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-              Reasons for doing it
+              Progress
             </dt>
-            <dd className="text-gray-500 dark:text-gray-400">
-              {task.doReason}
+            <dd className=" text-gray-500 dark:text-gray-400">
+              {task.progress.map((p, index) => (
+                <p key={index}>
+                  {p.date.toString().slice(0, 10)}: {p.description}
+                </p>
+              ))}
             </dd>
           </div>
-        )}
-        {task.delayReason && (
-          <div className="p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 col-span-2 sm:col-span-1">
-            <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-              Reasons for not doing it now
-            </dt>
-            <dd className="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">
-              {task.delayReason}
-            </dd>
-          </div>
-        )}
-        {task.notes && (
-          <div className="col-span-2 p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-            <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-              Notes
-            </dt>
-            <dd className="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">
-              {task.notes}
-            </dd>
-          </div>
-        )}
-        {!!task.progress.length && (
-          <>
-            <div className="col-span-2 p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700  dark:border-gray-600">
-              <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                Progress
-              </dt>
-              <dd className=" text-gray-500 dark:text-gray-400">
-                {task.progress.map((p, index) => (
-                  <p key={index}>
-                    {p.date.toString().slice(0, 10)}: {p.description}
-                  </p>
-                ))}
-              </dd>
-            </div>
-          </>
-        )}
+        </>
+
         <div className="flex justify-between items-center col-span-2">
           <button
             type="button"
