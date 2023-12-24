@@ -11,7 +11,7 @@ const TasksPage: React.FC<TasksPageProps> = ({}) => {
 
   return (
     <>
-      <PageTitle title="All tasks" />
+      <PageTitle title="Tasks" />
       <div className="mx-auto max-w-screen-2xl px-2 lg:px-12">
         <Table tasks={unarchivedTasks} unarchivedTable={true} />
       </div>

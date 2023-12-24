@@ -28,7 +28,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
       svg: <TasksSVG className={svgClass} />
     },
     {
-      name: "Archive",
+      name: "Archived",
       link: "/archive",
       svg: <ArchiveSVG className={svgClass} />
     }

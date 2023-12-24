@@ -2,17 +2,11 @@ import * as React from "react"
 
 const FullscreenSVG = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" {...props}>
-    <g
-      id="页面-1"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
+    <g id="页面-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g
         id="Arrow"
         transform="translate(-624.000000, 0.000000)"
-        fill-rule="nonzero"
+        fillRule="nonzero"
       >
         <g id="fullscreen_2_line" transform="translate(624.000000, 0.000000)">
           <path

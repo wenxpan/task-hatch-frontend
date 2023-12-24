@@ -28,9 +28,17 @@ export const updateTask = async (updatedTask: Partial<Task>) => {
     const res = await API.put(`/tasks/${updatedTask._id}`, updatedTask)
     return res.data
   } catch (error) {
-    // Log the error and return a generic error message
-    console.error("Error updating task:", error)
-    throw new Error("There was a problem updating the task.")
+    if (axios.isAxiosError(error) && error.response) {
+      // Log the error and throw the specific error message from the API
+      console.error("Error updating task:", error.response.data)
+      throw new Error(
+        error.response.data.error || "There was a problem updating the task."
+      )
+    } else {
+      // Handle non-Axios errors
+      console.error("Error updating task:", error)
+      throw new Error("There was a problem updating the task.")
+    }
   }
 }
 

@@ -16,6 +16,7 @@ import NotFoundPage from "./pages/NotFoundPage"
 import ViewTaskPage from "./pages/ViewTaskPage"
 import EditTaskPage from "./pages/EditTaskPage"
 import { ModalProvider } from "./state/ModalContext"
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
   const [isOverlayOn, setIsOverlayOn] = useState(false)
