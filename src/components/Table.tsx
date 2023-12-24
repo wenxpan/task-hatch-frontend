@@ -6,6 +6,7 @@ import { Task } from "../types/task"
 import SearchLine from "./SearchLine"
 import { useModal } from "../state/ModalContext"
 import CreateTask from "./CreateTask"
+import StatusFilter from "./StatusFilter"
 
 interface TableProps {
   tasks: Task[]
@@ -14,15 +15,21 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ tasks, unarchivedTable }) => {
   const [search, setSearch] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState("all")
 
-  const filteredTasks: Task[] = tasks.filter(
+  const filteredTasksBySearch: Task[] = tasks.filter(
     (t) =>
       t.title.toLowerCase().includes(search.toLowerCase()) ||
       t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase())) ||
       t.notes?.toLowerCase().includes(search.toLowerCase())
   )
 
-  const sortedTasks: Task[] = filteredTasks.sort((a, b) => {
+  const filteredTasksByStatus: Task[] =
+    selectedStatus === "all"
+      ? filteredTasksBySearch
+      : filteredTasksBySearch.filter((t) => t.status === selectedStatus)
+
+  const sortedTasks: Task[] = filteredTasksByStatus.sort((a, b) => {
     if (a.status === "prioritised" && b.status !== "prioritised") return -1
     else if (a.status !== "prioritised" && b.status === "prioritised") return 1
     else return 1
@@ -54,6 +61,12 @@ const Table: React.FC<TableProps> = ({ tasks, unarchivedTable }) => {
   return (
     <>
       <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        {unarchivedTable && (
+          <StatusFilter
+            selectedStatus={selectedStatus}
+            onSelectStatus={setSelectedStatus}
+          />
+        )}
         <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
           <SearchLine search={search} setSearch={setSearch} />
           {unarchivedTable && addButtonEl}
