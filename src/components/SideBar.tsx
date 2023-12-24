@@ -3,12 +3,14 @@ import { NavLink } from "react-router-dom"
 import HomeSVG from "./icons/HomeSVG"
 import TasksSVG from "./icons/TasksSVG"
 import ArchiveSVG from "./icons/ArchiveSVG"
+import BookmarkLineSVG from "./icons/BookmarkLineSVG"
 
 interface SideBarProps {
   isOverlayOn: boolean
+  tags: string[]
 }
 
-const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
+const SideBar: React.FC<SideBarProps> = ({ isOverlayOn, tags }) => {
   const svgClass =
     "flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
   const navItems = [
@@ -17,11 +19,6 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
       link: "/home",
       svg: <HomeSVG className={svgClass} />
     },
-    // {
-    //   name: "New",
-    //   link: "/new",
-    //   svg: <NewSVG className={svgClass} />
-    // },
     {
       name: "Tasks",
       link: "/tasks",
@@ -60,22 +57,25 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
           ))}
         </ul>
 
-        {/* Other sidebar content */}
-        {/* <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
-          <li>
-            <a
-              href="#"
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            >
-              <BookmarkSVG />
-              <span className="ml-3">Tag 1</span>
-            </a>
-          </li>
-        </ul> */}
+        {/* Lower sidebar content */}
+        <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+          {tags.map((t) => (
+            <li key={t}>
+              <NavLink
+                to={`/tasks?tag=${t}`}
+                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <BookmarkLineSVG className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
+                <span className="ml-3">{t}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Fixed bottom content */}
       {/* <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
+        settings
       </div> */}
     </aside>
   )

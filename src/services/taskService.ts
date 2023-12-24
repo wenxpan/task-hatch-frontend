@@ -9,11 +9,21 @@ API.interceptors.request.use((req) => {
 })
 
 // GET: Fetch tasks
-export const fetchTasks = () => API.get("/tasks")
+export const fetchTasks = async () => {
+  const res = await API.get("/tasks")
+  return res.data
+}
+
+// GET: Fetch unique tags
+export const fetchTags = async () => {
+  const res: AxiosResponse<string[]> = await API.get("/tags")
+  return res.data
+}
 
 // GET: Fetch one task
-export const fetchOneTask = (id: string) => {
-  API.get(`/tasks/${id}`)
+export const fetchOneTask = async (id: string) => {
+  const res: AxiosResponse<Task> = await API.get(`/tasks/${id}`)
+  return res.data
 }
 
 // POST: Add a new task

@@ -27,12 +27,16 @@ function App() {
   }
 
   const [tasks, tasksDispatch] = useReducer(taskReducer, [] as Task[])
+
+  const [tags, setTags] = useState<string[]>([])
   useEffect(() => {
     // get all tasks and save in context
     const fetchAllTasks = async () => {
       try {
-        const { data } = await taskService.fetchTasks()
-        tasksDispatch({ type: "set_tasks", tasks: data })
+        const taskData: Task[] = await taskService.fetchTasks()
+        tasksDispatch({ type: "set_tasks", tasks: taskData })
+        const tagData = await taskService.fetchTags()
+        setTags(tagData)
         setIsLoaded(true)
       } catch (error) {
         console.error("Error fetching tasks: ", error)
@@ -50,7 +54,7 @@ function App() {
             logo="/task-hatch-logo.png"
             toggleOverlay={toggleOverlay}
           />
-          <SideBar isOverlayOn={isOverlayOn} />
+          <SideBar isOverlayOn={isOverlayOn} tags={tags} />
           <Routes>
             <Route path="" element={<MainContainer isLoaded={isLoaded} />}>
               <Route index element={<Navigate to="/home" />}></Route>
