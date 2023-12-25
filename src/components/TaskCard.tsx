@@ -8,7 +8,7 @@ interface CardProps {
   task: Task
 }
 
-const PinnedTaskCard: React.FC<CardProps> = ({ task }) => {
+const TaskCard: React.FC<CardProps> = ({ task }) => {
   const { showModal } = useModal()
   return (
     <div
@@ -41,4 +41,4 @@ const PinnedTaskCard: React.FC<CardProps> = ({ task }) => {
   )
 }
 
-export default PinnedTaskCard
+export default TaskCard

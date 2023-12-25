@@ -22,7 +22,16 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
     >,
     value: string | string[]
   ) => {
-    setEditedTask({ ...editedTask, [e.target.name]: value })
+    // Split tags
+    if (e.target.name === "tags") {
+      if (typeof value === "string") {
+        const tags = value.split(", ").filter((tag) => tag.trim() !== "")
+        setEditedTask({ ...editedTask, [e.target.name]: tags })
+      }
+    } else {
+      // Handle other fields normally
+      setEditedTask({ ...editedTask, [e.target.name]: value })
+    }
   }
 
   const handleProgressChange = (
@@ -57,7 +66,6 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
       if (postedTask.tags !== task.tags) {
         const tagData = await fetchTags()
         setTags(tagData)
-        console.log(tagData)
       }
       onSave()
     } catch (e) {
@@ -116,7 +124,7 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
               id="tags"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               value={editedTask.tags.join(", ")}
-              onChange={(e) => handleChange(e, e.target.value.split(", "))}
+              onChange={(e) => handleChange(e, e.target.value)}
             />
           </div>
           <div>
