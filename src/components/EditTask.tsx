@@ -3,7 +3,7 @@ import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
 import { ProgressEntry, Task, TaskStatus } from "../types/task"
 import TaskContext from "../state/TaskContext"
-import { updateTask } from "../services/taskService"
+import { fetchTags, updateTask } from "../services/taskService"
 import StatusGroup from "./StatusGroup"
 import { toast } from "react-toastify"
 
@@ -14,7 +14,7 @@ interface Props {
 
 const EditTask: React.FC<Props> = ({ task, onSave }) => {
   const [editedTask, setEditedTask] = useState<Task>(task)
-  const { tasksDispatch } = useContext(TaskContext)
+  const { tasksDispatch, setTags } = useContext(TaskContext)
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -53,6 +53,12 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
     try {
       const postedTask = await updateTask(editedTask)
       tasksDispatch({ type: "update_task", task: postedTask })
+      // if tags are updated, refresh sidebar tags
+      if (postedTask.tags !== task.tags) {
+        const tagData = await fetchTags()
+        setTags(tagData)
+        console.log(tagData)
+      }
       onSave()
     } catch (e) {
       console.error((e as Error).message)

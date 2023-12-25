@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 import HomeSVG from "./icons/HomeSVG"
 import TasksSVG from "./icons/TasksSVG"
@@ -33,6 +33,12 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn, tags }) => {
   ]
 
   const [sidebarTags, setSidebarTags] = useState(tags)
+
+  // update sidebar tags when tags refreshed
+  useEffect(() => {
+    setSidebarTags((prev) => (prev.length ? tags : []))
+  }, [tags])
+
   const toggleTagList = () => {
     setSidebarTags((prev) => (prev === tags ? [] : tags))
   }
@@ -45,19 +51,16 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn, tags }) => {
     >
       <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
         {/* sidebar content */}
-        {/* Navigation Links */}
         <ul className="space-y-2">
-          {/* Each list item represents a navigation link or a group */}
+          {/* Navigation Links: Home and tasks */}
           {navItems.map((n) => (
             <li key={n.name}>
-              {/* Link or Button for the navigation */}
               <NavLink
                 to={n.link}
                 className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
-                {/* Icon and Text Here */}
+                {/* Icon and Text */}
                 {n.svg}
-
                 <span className="ml-3">{n.name}</span>
               </NavLink>
             </li>
@@ -72,7 +75,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn, tags }) => {
               onClick={toggleTagList}
             >
               <AccordianSVG
-                className={`${svgClass} ${
+                className={`${svgClass} h-2 ${
                   sidebarTags.length ? "rotate-180" : "rotate-90"
                 }`}
               />

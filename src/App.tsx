@@ -47,7 +47,7 @@ function App() {
   }, [])
 
   return (
-    <TaskContext.Provider value={{ tasks, tasksDispatch }}>
+    <TaskContext.Provider value={{ tasks, tasksDispatch, tags, setTags }}>
       <ModalProvider>
         <div className="antialiased">
           <NavBar
