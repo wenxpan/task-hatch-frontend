@@ -19,6 +19,9 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
 
   const handleAddProgress = async () => {
     try {
+      if (!progressEntry.description) {
+        throw new Error("Progress cannot be empty")
+      }
       const editedTask = {
         ...task,
         progress: [...task.progress, progressEntry]

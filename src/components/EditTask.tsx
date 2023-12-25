@@ -14,24 +14,16 @@ interface Props {
 
 const EditTask: React.FC<Props> = ({ task, onSave }) => {
   const [editedTask, setEditedTask] = useState<Task>(task)
+  const [tagLine, setTagLine] = useState<string>(task.tags.join(", "))
   const { tasksDispatch, setTags } = useContext(TaskContext)
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
-    value: string | string[]
+    value: string
   ) => {
-    // Split tags
-    if (e.target.name === "tags") {
-      if (typeof value === "string") {
-        const tags = value.split(", ").filter((tag) => tag.trim() !== "")
-        setEditedTask({ ...editedTask, [e.target.name]: tags })
-      }
-    } else {
-      // Handle other fields normally
-      setEditedTask({ ...editedTask, [e.target.name]: value })
-    }
+    setEditedTask({ ...editedTask, [e.target.name]: value })
   }
 
   const handleProgressChange = (
@@ -60,10 +52,24 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const postedTask = await updateTask(editedTask)
+      // split tags
+      const processedTags: string[] = tagLine
+        .split(",")
+        .map((tag: string) => tag.trim()) // Trim whitespace
+        .filter((tag: string) => tag !== "") // Remove empty strings
+
+      const postedTask: Task = await updateTask({
+        ...editedTask,
+        tags: processedTags
+      })
       tasksDispatch({ type: "update_task", task: postedTask })
+
+      const tagsUpdated =
+        !postedTask.tags.every((t) => task.tags.includes(t)) ||
+        !task.tags.every((t) => postedTask.tags.includes(t))
       // if tags are updated, refresh sidebar tags
-      if (postedTask.tags !== task.tags) {
+      if (tagsUpdated) {
+        console.log(tagsUpdated)
         const tagData = await fetchTags()
         setTags(tagData)
       }
@@ -82,6 +88,7 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
     <>
       <form action="#">
         <div className="grid gap-4 mb-4 sm:grid-cols-2">
+          {/* status field */}
           <div className="col-span-2 place-self-start">
             <label
               htmlFor="status"
@@ -94,6 +101,7 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
               onChangeStatus={handleChangeStatus}
             />
           </div>
+          {/* title field */}
           <div>
             <label
               htmlFor="title"
@@ -111,6 +119,7 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
               onChange={(e) => handleChange(e, e.target.value)}
             />
           </div>
+          {/* tags field */}
           <div>
             <label
               htmlFor="tags"
@@ -123,8 +132,8 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
               name="tags"
               id="tags"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              value={editedTask.tags.join(", ")}
-              onChange={(e) => handleChange(e, e.target.value)}
+              value={tagLine}
+              onChange={(e) => setTagLine(e.target.value)}
             />
           </div>
           <div>
