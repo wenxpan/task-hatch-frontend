@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from "react"
 import TaskContext from "../state/TaskContext"
 import TaskCard from "../components/TaskCard"
 import PinFillSVG from "../components/icons/PinFillSVG"
@@ -10,11 +16,20 @@ interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = ({}) => {
   const { tasks } = useContext(TaskContext)
-  const pinnedTasks = tasks.filter((t) => t.status === "prioritised")
-  const inProgressTasks = tasks.filter((t) => t.status === "in progress")
+
+  const taskCount = useMemo(() => tasks.length, [tasks])
+  const pinnedTasks = useMemo(
+    () => tasks.filter((t) => t.status === "prioritised"),
+    [tasks]
+  )
+  const inProgressTasks = useMemo(
+    () => tasks.filter((t) => t.status === "in progress"),
+    [tasks]
+  )
 
   const [randomTask, setRandomTask] = useState<Task | null>(null)
 
+  console.log("rendered")
   // Function to select a random task
   const selectRandomTask = (): Task | null => {
     if (!inProgressTasks.length) {
@@ -28,12 +43,15 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
   // Initialize the random task
   useEffect(() => {
     setRandomTask(selectRandomTask())
-  }, [inProgressTasks])
+  }, [taskCount])
 
   // Function to draw a new random task
-  const drawRandomTask = () => {
-    setRandomTask(selectRandomTask())
-  }
+  const drawRandomTask = useCallback(() => {
+    if (inProgressTasks.length > 0) {
+      const randomIndex = Math.floor(Math.random() * inProgressTasks.length)
+      setRandomTask(inProgressTasks[randomIndex])
+    }
+  }, [inProgressTasks])
 
   return (
     <>
