@@ -1,31 +1,24 @@
 import React from "react"
 import { Task } from "../types/task"
 import AddProgressLine from "./AddProgressLine"
-// import { useModal } from "../state/ModalContext"
-// import ViewTask from "./ViewTask"
+import { useModal } from "../state/ModalContext"
+import ViewTask from "./ViewTask"
 
 interface CardProps {
   task: Task
 }
 
 const TaskCard: React.FC<CardProps> = ({ task }) => {
-  // const { showModal } = useModal()
+  const { showModal } = useModal()
 
   const recentProgress = [...task.progress].slice(-3)
 
+  const handleOpenView = () => {
+    showModal(<ViewTask task={task} />, "Task Info", true, `tasks/${task._id}`)
+  }
+
   return (
-    <div
-      className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-      onClick={
-        () => {}
-        // showModal(
-        //   <ViewTask task={task} />,
-        //   "Task Info",
-        //   true,
-        //   `tasks/${task._id}`
-        // )
-      }
-    >
+    <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
         {task.title}
       </h5>

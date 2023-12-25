@@ -18,38 +18,33 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
   const { tasks } = useContext(TaskContext)
 
   const taskCount = useMemo(() => tasks.length, [tasks])
-  const pinnedTasks = useMemo(
-    () => tasks.filter((t) => t.status === "prioritised"),
-    [tasks]
-  )
-  const inProgressTasks = useMemo(
-    () => tasks.filter((t) => t.status === "in progress"),
-    [tasks]
-  )
+  const pinnedTasks = tasks.filter((t) => t.status === "prioritised")
+  const inProgressTasks = tasks.filter((t) => t.status === "in progress")
 
-  const [randomTask, setRandomTask] = useState<Task | null>(null)
+  const [randomTaskID, setRandomTaskID] = useState<string | null>(null)
 
-  console.log("rendered")
+  const randomTask: Task | undefined = tasks.find((t) => t._id === randomTaskID)
+
   // Function to select a random task
-  const selectRandomTask = (): Task | null => {
+  const selectRandomTaskID = (): string | null => {
     if (!inProgressTasks.length) {
       return null
     } else {
       const randomIndex = Math.floor(Math.random() * inProgressTasks.length)
-      return inProgressTasks[randomIndex]
+      return inProgressTasks[randomIndex]._id
     }
   }
 
   // Initialize the random task
   useEffect(() => {
-    setRandomTask(selectRandomTask())
+    setRandomTaskID(selectRandomTaskID())
   }, [taskCount])
 
   // Function to draw a new random task
   const drawRandomTask = useCallback(() => {
     if (inProgressTasks.length > 0) {
       const randomIndex = Math.floor(Math.random() * inProgressTasks.length)
-      setRandomTask(inProgressTasks[randomIndex])
+      setRandomTaskID(inProgressTasks[randomIndex]._id)
     }
   }, [inProgressTasks])
 
@@ -62,9 +57,11 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
           <PinFillSVG className="inline" /> Pinned Tasks
         </h4>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-          {pinnedTasks.map((t) => (
-            <TaskCard key={t._id} task={t} />
-          ))}
+          {pinnedTasks.length ? (
+            pinnedTasks.map((t) => <TaskCard key={t._id} task={t} />)
+          ) : (
+            <p>No pinned tasks yet</p>
+          )}
         </div>
       </div>
       {/* random tasks */}
