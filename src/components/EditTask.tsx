@@ -6,16 +6,21 @@ import TaskContext from "../state/TaskContext"
 import { fetchTags, updateTask } from "../services/taskService"
 import StatusGroup from "./StatusGroup"
 import { toast } from "react-toastify"
+import { useModal } from "../state/ModalContext"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   task: Task
   onSave: () => void
+  editContext: "modal" | "page"
 }
 
-const EditTask: React.FC<Props> = ({ task, onSave }) => {
+const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
   const [editedTask, setEditedTask] = useState<Task>(task)
   const [tagLine, setTagLine] = useState<string>(task.tags.join(", "))
   const { tasksDispatch, setTags } = useContext(TaskContext)
+  const { hideModal } = useModal()
+  const nav = useNavigate()
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -82,6 +87,15 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
 
   const handleChangeStatus = (newStatus: TaskStatus) => {
     setEditedTask({ ...editedTask, status: newStatus })
+  }
+
+  const handleCancel = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (editContext === "modal") {
+      hideModal()
+    } else if (editContext === "page") {
+      nav(`/tasks/${task._id}`)
+    }
   }
 
   return (
@@ -234,6 +248,12 @@ const EditTask: React.FC<Props> = ({ task, onSave }) => {
             onClick={handleSubmit}
           >
             Update task
+          </button>
+          <button
+            className="text-primary-800 border border-primary-700 hover:bg-primary-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            onClick={(e) => handleCancel(e)}
+          >
+            Cancel
           </button>
           <button className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
             <DeleteSVG className="mr-1 -ml-1 w-5 h-5" />

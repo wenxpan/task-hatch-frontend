@@ -70,7 +70,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
 
   const handleOpenEditModal = () => {
     showModal(
-      <EditTask task={task} onSave={hideModal} />,
+      <EditTask task={task} onSave={hideModal} editContext="modal" />,
       "Edit Task",
       true,
       `/tasks/${task._id}/edit`

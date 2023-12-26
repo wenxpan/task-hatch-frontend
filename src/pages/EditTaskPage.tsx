@@ -19,7 +19,7 @@ const EditTaskPage: React.FC<Props> = () => {
 
   return (
     <>
-      <EditTask task={task} onSave={backToTask} />
+      <EditTask task={task} onSave={backToTask} editContext="page" />
     </>
   )
 }

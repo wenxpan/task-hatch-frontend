@@ -3,7 +3,6 @@ import { Task, TaskStatus } from "../types/task"
 import StatusGroup from "./StatusGroup"
 import TaskContext from "../state/TaskContext"
 import { updateTask } from "../services/taskService"
-// import { useNavigate } from "react-router-dom"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
 import { toast } from "react-toastify"
@@ -18,7 +17,6 @@ const ViewTask: React.FC<Props> = ({ task }) => {
 
   const [status, setStatus] = useState(task.status)
 
-  // const nav = useNavigate()
   const { hideModal, showModal } = useModal()
 
   const handleChangeStatus = async (newStatus: TaskStatus) => {
@@ -34,7 +32,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
 
   const handleEditTask = () => {
     showModal(
-      <EditTask task={task} onSave={hideModal} />,
+      <EditTask task={task} onSave={hideModal} editContext="modal" />,
       "Edit Task",
       true,
       `/tasks/${task._id}/edit`
