@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios"
-import { Task } from "../types/task"
+import { Stats, Task } from "../types/task"
 
 const API = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
@@ -17,6 +17,12 @@ export const fetchTasks = async () => {
 // GET: Fetch unique tags
 export const fetchTags = async () => {
   const res: AxiosResponse<string[]> = await API.get("/tags")
+  return res.data
+}
+
+// GET: Fetch stats
+export const fetchStats = async () => {
+  const res: AxiosResponse<Stats> = await API.get("/users/stats")
   return res.data
 }
 

@@ -9,7 +9,7 @@ import TasksPage from "./pages/TasksPage"
 import NewTaskPage from "./pages/NewTaskPage"
 import ArchivePage from "./pages/ArchivePage"
 import TaskContext from "./state/TaskContext"
-import { Task } from "./types/task"
+import { Stats, Task } from "./types/task"
 import taskReducer from "./state/taskReducer"
 import Overlay from "./components/Overlay"
 import NotFoundPage from "./pages/NotFoundPage"
@@ -30,14 +30,26 @@ function App() {
 
   const [tags, setTags] = useState<string[]>([])
 
+  const [stats, setStats] = useState<Stats>({
+    totalTasks: 0,
+    tasksCompleted: 0,
+    tasksToDo: 0,
+    topTags: []
+  })
+
   useEffect(() => {
     // get all tasks and save in context
     const fetchAllTasks = async () => {
       try {
+        // fetch task data
         const taskData: Task[] = await taskService.fetchTasks()
         tasksDispatch({ type: "set_tasks", tasks: taskData })
+        // fetch tag data
         const tagData = await taskService.fetchTags()
         setTags(tagData)
+        // fetch stats data
+        const statsData = await taskService.fetchStats()
+        setStats(statsData)
         setIsLoaded(true)
       } catch (error) {
         console.error("Error fetching tasks: ", error)
@@ -47,7 +59,9 @@ function App() {
   }, [])
 
   return (
-    <TaskContext.Provider value={{ tasks, tasksDispatch, tags, setTags }}>
+    <TaskContext.Provider
+      value={{ tasks, tasksDispatch, tags, setTags, stats }}
+    >
       <ModalProvider>
         <div className="antialiased">
           <NavBar

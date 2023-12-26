@@ -34,3 +34,13 @@ export type TaskAction =
   | { type: "delete_task"; task: Task }
 // | { type: "toggle_completed"; task: Task }
 // | { type: "toggle_archived"; task: Task };
+
+export interface Stats {
+  totalTasks: number
+  tasksCompleted: number
+  tasksToDo: number
+  topTags: {
+    taskCount: number
+    tag: string
+  }[]
+}
