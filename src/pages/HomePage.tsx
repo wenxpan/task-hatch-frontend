@@ -11,6 +11,7 @@ import PinFillSVG from "../components/icons/PinFillSVG"
 import PageTitle from "../components/PageTitle"
 import { Task } from "../types/task"
 import ShuffleSVG from "../components/icons/ShuffleSVG"
+import { Link } from "react-router-dom"
 
 interface HomePageProps {}
 
@@ -72,9 +73,12 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
             <h4>Top Tags</h4>
             <div className="flex items-center flex-wrap">
               {stats.topTags.map((t) => (
-                <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 my-1 rounded dark:bg-primary-900 dark:text-primary-300">
+                <Link
+                  className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 my-1 rounded dark:bg-primary-900 dark:text-primary-300"
+                  to={`/tasks?tag=${t.tag}`}
+                >
                   {t.tag} ({t.taskCount})
-                </span>
+                </Link>
               ))}
             </div>
           </div>

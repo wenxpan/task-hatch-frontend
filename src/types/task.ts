@@ -15,6 +15,7 @@ export interface Task {
   title: string
   dateAdded: Date
   status: TaskStatus
+  snoozeUntil: Date
   doReason: string
   delayReason: string
   notes?: string

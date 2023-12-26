@@ -21,7 +21,10 @@ const ViewTask: React.FC<Props> = ({ task }) => {
 
   const handleChangeStatus = async (newStatus: TaskStatus) => {
     try {
-      const updatedTask = { ...task, status: newStatus }
+      const updatedTask = {
+        ...task,
+        status: newStatus
+      }
       const newTask = await updateTask(updatedTask)
       tasksDispatch({ type: "update_task", task: newTask })
       setStatus(newStatus)

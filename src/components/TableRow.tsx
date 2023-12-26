@@ -86,6 +86,20 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
     )
   }
 
+  const calculateSnoozeDaysLeft = (snoozeUntil: Date) => {
+    const snoozeDate = new Date(snoozeUntil)
+    const currentDate = new Date()
+    const differenceInTime = snoozeDate.getTime() - currentDate.getTime()
+
+    // Calculate the difference in days
+    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24))
+
+    // Return the number of days left, or 0 if the date has passed
+    return differenceInDays > 0 ? differenceInDays : 0
+  }
+
+  const snoozeDaysLeft = calculateSnoozeDaysLeft(task.snoozeUntil)
+
   return (
     <>
       <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -119,6 +133,8 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
           <div
             className={`mr-3 ${task.status === "completed" && "line-through"}`}
           >
+            {task.status === "snoozed" &&
+              `(Snoozed for ${snoozeDaysLeft} days) `}
             {task.title}
           </div>
         </th>

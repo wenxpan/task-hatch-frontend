@@ -86,7 +86,10 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
   }
 
   const handleChangeStatus = (newStatus: TaskStatus) => {
-    setEditedTask({ ...editedTask, status: newStatus })
+    setEditedTask((prev) => ({
+      ...prev,
+      status: newStatus
+    }))
   }
 
   const handleCancel = (e: React.FormEvent) => {

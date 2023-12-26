@@ -3,6 +3,7 @@ import { Task } from "../types/task"
 import AddProgressLine from "./AddProgressLine"
 import { useModal } from "../state/ModalContext"
 import ViewTask from "./ViewTask"
+import FullscreenSVG from "./icons/FullscreenSVG"
 
 interface CardProps {
   task: Task
@@ -19,12 +20,17 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
 
   return (
     <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 max-w-md h-full">
-      <h5
-        className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white cursor-pointer"
+      <button
+        className="flex items-center gap-2 cursor-pointer group"
         onClick={handleOpenView}
       >
-        {task.title}
-      </h5>
+        <h5 className="text-2xl font-semibold text-start text-gray-900 dark:text-white justify-start">
+          {task.title}
+          <span>
+            <FullscreenSVG className="h-4 w-4 ml-2 inline invisible group-hover:visible group-focus:visible" />
+          </span>
+        </h5>
+      </button>
       {task.tags.map((t) => (
         <span
           className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
