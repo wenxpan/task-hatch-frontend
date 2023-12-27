@@ -36,7 +36,7 @@ const StatusFilter: React.FC<Props> = ({ selectedStatus, onSelectStatus }) => {
   return (
     <>
       <div
-        className="flex flex-wrap justify-start items-center p-4 border-b"
+        className="flex flex-wrap justify-start items-center p-4 lg:border-b"
         id="status"
         role="group"
       >
@@ -44,7 +44,7 @@ const StatusFilter: React.FC<Props> = ({ selectedStatus, onSelectStatus }) => {
         {statusOptions.map((option) => (
           <button
             key={option.name}
-            className={`inline-flex items-center rounded-lg capitalize whitespace-nowrap px-4 py-2 mx-1 text-sm text-gray-900 font-medium hover:text-white hover:bg-gray-600 focus:z-10 focus:ring-2 focus:ring-gray-500 ${
+            className={`inline-flex items-center rounded-lg capitalize whitespace-nowrap px-4 py-2 m-1 text-sm text-gray-900 font-medium hover:text-white hover:bg-gray-600 focus:z-10 focus:ring-2 focus:ring-gray-500 ${
               selectedStatus === option.name ? "text-white bg-gray-600" : ""
             }`}
             onClick={() => onSelectStatus(option.name)}

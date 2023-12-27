@@ -1,81 +1,33 @@
-import React, { useState } from "react"
+import React from "react"
 import TableHeader from "./TableHeader"
 import TableRow from "./TableRow"
-import AddSVG from "./icons/AddSVG"
 import { Task } from "../types/task"
-import SearchLine from "./SearchLine"
-import { useModal } from "../state/ModalContext"
-import CreateTask from "./CreateTask"
-import StatusFilter from "./StatusFilter"
+import TaskCard from "../components/TaskCard"
 
 interface TableProps {
   tasks: Task[]
-  unarchivedTable: boolean
+  children: React.ReactNode
 }
 
-const Table: React.FC<TableProps> = ({ tasks, unarchivedTable }) => {
-  const [search, setSearch] = useState("")
-  const [selectedStatus, setSelectedStatus] = useState("all")
-
-  const filteredTasksBySearch: Task[] = tasks.filter(
-    (t) =>
-      t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase())) ||
-      t.notes?.toLowerCase().includes(search.toLowerCase())
-  )
-
-  const filteredTasksByStatus: Task[] =
-    selectedStatus === "all"
-      ? filteredTasksBySearch
-      : filteredTasksBySearch.filter((t) => t.status === selectedStatus)
-
-  const sortedTasks: Task[] = filteredTasksByStatus.sort((a, b) => {
-    if (a.status === "prioritised" && b.status !== "prioritised") return -1
-    else if (a.status !== "prioritised" && b.status === "prioritised") return 1
-    else return 1
-  })
-
-  const { showModal, hideModal } = useModal()
-
-  const addButtonEl = (
-    <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-      <button
-        type="button"
-        id="createModalButton"
-        className="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-        onClick={() =>
-          showModal(
-            <CreateTask onComplete={hideModal} />,
-            "New Task",
-            true,
-            "/new"
-          )
-        }
-      >
-        <AddSVG className="h-3.5 w-3.5 mr-2" />
-        Add task
-      </button>
-    </div>
-  )
-
+const Table: React.FC<TableProps> = ({ tasks, children }) => {
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-        {unarchivedTable && (
-          <StatusFilter
-            selectedStatus={selectedStatus}
-            onSelectStatus={setSelectedStatus}
-          />
-        )}
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-          <SearchLine search={search} setSearch={setSearch} />
-          {unarchivedTable && addButtonEl}
+      <div className="bg-white dark:bg-gray-800 relative lg:shadow-md sm:rounded-lg overflow-hidden">
+        <div className="mb-2 bg-gray-50 lg:bg-transparent rounded-lg shadow lg:shadow-none">
+          {children}
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          {/* sm to lg screen - card layout */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:hidden">
+            {tasks.map((t) => (
+              <TaskCard key={t._id} task={t} />
+            ))}
+          </section>
+          {/* lg screen - table layout */}
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden lg:block">
             <TableHeader></TableHeader>
             <tbody>
-              {sortedTasks.map((t) => (
+              {tasks.map((t) => (
                 <TableRow key={t._id} task={t} />
               ))}
             </tbody>

@@ -9,8 +9,8 @@ interface Props {
 const SearchLine: React.FC<Props> = ({ search, setSearch }) => {
   return (
     <>
-      <div className="w-full md:w-1/2">
-        <form className="flex items-center">
+      <div className="p-4">
+        <form className="flex items-center w-1/2">
           <label htmlFor="simple-search" className="sr-only">
             Search
           </label>
