@@ -1,24 +1,32 @@
 import React, { useContext, useState } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
-import { ProgressEntry, Task } from "../types/task"
-import TaskContext from "../state/task/TaskContext"
-import { updateTask } from "../services/taskService"
+import { ProgressEntry, Task, TaskStatus } from "../types/task"
+import TaskContext from "../state/TaskContext"
+import { fetchTags, updateTask } from "../services/taskService"
+import StatusGroup from "./StatusGroup"
+import { toast } from "react-toastify"
+import { useModal } from "../state/ModalContext"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   task: Task
-  closeModal: () => void
+  onSave: () => void
+  editContext: "modal" | "page"
 }
 
-const EditTask: React.FC<Props> = ({ task, closeModal }) => {
+const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
   const [editedTask, setEditedTask] = useState<Task>(task)
-  const { tasksDispatch } = useContext(TaskContext)
+  const [tagLine, setTagLine] = useState<string>(task.tags.join(", "))
+  const { tasksDispatch, setTags } = useContext(TaskContext)
+  const { hideModal } = useModal()
+  const nav = useNavigate()
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
-    value: string | string[]
+    value: string
   ) => {
     setEditedTask({ ...editedTask, [e.target.name]: value })
   }
@@ -49,11 +57,47 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const postedTask = await updateTask(editedTask)
+      // split tags
+      const processedTags: string[] = tagLine
+        .split(",")
+        .map((tag: string) => tag.trim()) // Trim whitespace
+        .filter((tag: string) => tag !== "") // Remove empty strings
+
+      const postedTask: Task = await updateTask({
+        ...editedTask,
+        tags: processedTags
+      })
       tasksDispatch({ type: "update_task", task: postedTask })
-      closeModal()
+
+      const tagsUpdated =
+        !postedTask.tags.every((t) => task.tags.includes(t)) ||
+        !task.tags.every((t) => postedTask.tags.includes(t))
+      // if tags are updated, refresh sidebar tags
+      if (tagsUpdated) {
+        console.log(tagsUpdated)
+        const tagData = await fetchTags()
+        setTags(tagData)
+      }
+      onSave()
     } catch (e) {
       console.error((e as Error).message)
+      toast.error((e as Error).message)
+    }
+  }
+
+  const handleChangeStatus = (newStatus: TaskStatus) => {
+    setEditedTask((prev) => ({
+      ...prev,
+      status: newStatus
+    }))
+  }
+
+  const handleCancel = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (editContext === "modal") {
+      hideModal()
+    } else if (editContext === "page") {
+      nav(`/tasks/${task._id}`)
     }
   }
 
@@ -61,6 +105,20 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
     <>
       <form action="#">
         <div className="grid gap-4 mb-4 sm:grid-cols-2">
+          {/* status field */}
+          <div className="col-span-2 place-self-start">
+            <label
+              htmlFor="status"
+              className="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+            >
+              Status
+            </label>
+            <StatusGroup
+              status={editedTask.status}
+              onChangeStatus={handleChangeStatus}
+            />
+          </div>
+          {/* title field */}
           <div>
             <label
               htmlFor="title"
@@ -78,6 +136,7 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
               onChange={(e) => handleChange(e, e.target.value)}
             />
           </div>
+          {/* tags field */}
           <div>
             <label
               htmlFor="tags"
@@ -90,8 +149,8 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
               name="tags"
               id="tags"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              value={editedTask.tags.join(", ")}
-              onChange={(e) => handleChange(e, e.target.value.split(", "))}
+              value={tagLine}
+              onChange={(e) => setTagLine(e.target.value)}
             />
           </div>
           <div>
@@ -192,6 +251,12 @@ const EditTask: React.FC<Props> = ({ task, closeModal }) => {
             onClick={handleSubmit}
           >
             Update task
+          </button>
+          <button
+            className="text-primary-800 border border-primary-700 hover:bg-primary-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            onClick={(e) => handleCancel(e)}
+          >
+            Cancel
           </button>
           <button className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
             <DeleteSVG className="mr-1 -ml-1 w-5 h-5" />

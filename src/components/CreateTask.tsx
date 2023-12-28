@@ -2,14 +2,15 @@ import React, { useContext, useState } from "react"
 import AddSVG from "./icons/AddSVG"
 import { NewTask } from "../types/task"
 import { addTask } from "../services/taskService"
-import TaskContext from "../state/task/TaskContext"
+import TaskContext from "../state/TaskContext"
+import { toast } from "react-toastify"
 
 type CreateTaskProps = {
   onComplete: () => void
 }
 
 const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
-  const { tasksDispatch } = useContext(TaskContext)
+  const { tasksDispatch, tags, setTags } = useContext(TaskContext)
   const [newTask, setNewTask] = useState<NewTask>({
     title: "",
     tags: [],
@@ -32,9 +33,17 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
     try {
       const postedTask = await addTask(newTask)
       tasksDispatch({ type: "add_task", task: postedTask })
+      // check if tags state needs to be updated
+      const newTags = postedTask.tags.filter(
+        (tag: string) => !tags.includes(tag)
+      )
+      if (newTags.length > 0) {
+        setTags([...tags, ...newTags])
+      }
       onComplete()
     } catch (e) {
       console.error((e as Error).message)
+      toast.error("Task creation failed. Have you entered task title?")
     }
   }
 

@@ -3,13 +3,19 @@ export interface ProgressEntry {
   description: string
 }
 
+export type TaskStatus =
+  | "in progress"
+  | "prioritised"
+  | "completed"
+  | "snoozed"
+  | "archived"
+
 export interface Task {
   _id: string
   title: string
   dateAdded: Date
-  isPinned: boolean
-  isCompleted: boolean
-  isArchived: boolean
+  status: TaskStatus
+  snoozeUntil: Date
   doReason: string
   delayReason: string
   notes?: string
@@ -29,3 +35,13 @@ export type TaskAction =
   | { type: "delete_task"; task: Task }
 // | { type: "toggle_completed"; task: Task }
 // | { type: "toggle_archived"; task: Task };
+
+export interface Stats {
+  totalTasks: number
+  tasksCompleted: number
+  tasksToDo: number
+  topTags: {
+    taskCount: number
+    tag: string
+  }[]
+}
