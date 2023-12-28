@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
 
-export const handleError = (e: Error) => {
-  console.error(e.message)
-  toast.error(e.message)
+export const handleError = (e: Error, msg = e.message) => {
+  console.error(msg)
+  toast.error(msg)
 }
