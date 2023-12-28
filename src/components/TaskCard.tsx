@@ -18,6 +18,20 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
     showModal(<ViewTask task={task} />, "Task Info", true, `tasks/${task._id}`)
   }
 
+  const calculateSnoozeDaysLeft = (snoozeUntil: Date) => {
+    const snoozeDate = new Date(snoozeUntil)
+    const currentDate = new Date()
+    const differenceInTime = snoozeDate.getTime() - currentDate.getTime()
+
+    // Calculate the difference in days
+    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24))
+
+    // Return the number of days left, or 0 if the date has passed
+    return differenceInDays > 0 ? differenceInDays : 0
+  }
+
+  const snoozeDaysLeft = calculateSnoozeDaysLeft(task.snoozeUntil)
+
   return (
     <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 max-w-md h-full">
       <button
@@ -25,6 +39,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
         onClick={handleOpenView}
       >
         <h5 className="text-2xl font-semibold text-start text-gray-900 dark:text-white justify-start">
+          {task.status === "snoozed" && `(Snoozed for ${snoozeDaysLeft} days) `}
           {task.title}
           <span>
             <FullscreenSVG className="h-4 w-4 ml-2 inline invisible group-hover:visible group-focus:visible" />

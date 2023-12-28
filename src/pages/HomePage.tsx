@@ -99,7 +99,18 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
       </div>
       {/* random tasks & newly added */}
       <div className="px-2 lg:px-12 max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-2 place-items-stretch">
-        {/* row 1 col 1 - random title */}
+        {/* row 1 col 1 - newly title */}
+        <div className="flex items-end">
+          <h4 className="font-semibold text-md mb-2 shrink-0 mr-4">
+            Newly Added
+          </h4>
+        </div>
+        {/* row 2 col 1 newly content */}
+        <div className="row-start-2">
+          <TaskCard task={newlyAddedTask} />
+        </div>
+
+        {/* row 1 col 2 - random title */}
         <div className="flex items-end">
           <h4 className="font-semibold text-md mb-2 shrink-0 mr-4">
             Random Task
@@ -112,23 +123,13 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
             <span>Shuffle</span>
           </button>
         </div>
-        {/* row 2 col 1 - random content */}
-        <div className="row-start-2">
+        {/* row 2 col 2 - random content */}
+        <div>
           {randomTask ? (
             <TaskCard task={randomTask} />
           ) : (
             <p>No tasks yet. Add more now!</p>
           )}
-        </div>
-        {/* row 2 col 1 - newly title */}
-        <div className="flex items-end">
-          <h4 className="font-semibold text-md mb-2 shrink-0 mr-4">
-            Newly Added
-          </h4>
-        </div>
-        {/* row 2 col 2 newly content */}
-        <div>
-          <TaskCard task={newlyAddedTask} />
         </div>
       </div>
     </>

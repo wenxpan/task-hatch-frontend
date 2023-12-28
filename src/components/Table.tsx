@@ -19,17 +19,24 @@ const Table: React.FC<TableProps> = ({ tasks, children }) => {
         <div className="overflow-x-auto">
           {/* sm to lg screen - card layout */}
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:hidden">
-            {tasks.map((t) => (
-              <TaskCard key={t._id} task={t} />
-            ))}
+            {tasks.length ? (
+              tasks.map((t) => <TaskCard key={t._id} task={t} />)
+            ) : (
+              <div>No tasks yet</div>
+            )}
           </section>
           {/* lg screen - table layout */}
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden lg:block">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden lg:table">
             <TableHeader></TableHeader>
             <tbody>
-              {tasks.map((t) => (
-                <TableRow key={t._id} task={t} />
-              ))}
+              {tasks.length ? (
+                tasks.map((t) => <TableRow key={t._id} task={t} />)
+              ) : (
+                <tr>
+                  <td></td>
+                  <th>No tasks yet</th>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
