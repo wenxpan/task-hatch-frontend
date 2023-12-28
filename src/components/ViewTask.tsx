@@ -1,37 +1,38 @@
-import React, { useContext, useState } from "react"
-import { Task, TaskStatus } from "../types/task"
-import StatusGroup from "./StatusGroup"
-import TaskContext from "../state/TaskContext"
-import { updateTaskAPI } from "../services/taskService"
+import React from "react"
+// import React, { useContext, useState } from "react"
+import { Task } from "../types/task"
+// import StatusRadioInput from "./StatusRadioInput"
+// import TaskContext from "../state/TaskContext"
+// import { updateTaskAPI } from "../services/taskService"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
 import EditTask from "./EditTask"
-import { handleError } from "../utils/handleError"
+// import { handleError } from "../utils/handleError"
 
 interface Props {
   task: Task
 }
 
 const ViewTask: React.FC<Props> = ({ task }) => {
-  const { tasksDispatch } = useContext(TaskContext)
+  // const { tasksDispatch } = useContext(TaskContext)
 
-  const [status, setStatus] = useState(task.status)
+  // const [status, setStatus] = useState(task.status)
 
   const { hideModal, showModal } = useModal()
 
-  const handleChangeStatus = async (newStatus: TaskStatus) => {
-    try {
-      const updatedTask = {
-        ...task,
-        status: newStatus
-      }
-      const newTask = await updateTaskAPI(updatedTask)
-      tasksDispatch({ type: "update_task", task: newTask })
-      setStatus(newStatus)
-    } catch (e) {
-      handleError(e as Error)
-    }
-  }
+  // const handleChangeStatus = async (newStatus: TaskStatus) => {
+  //   try {
+  //     const updatedTask = {
+  //       ...task,
+  //       status: newStatus
+  //     }
+  //     const newTask = await updateTaskAPI(updatedTask)
+  //     tasksDispatch({ type: "update_task", task: newTask })
+  //     setStatus(newStatus)
+  //   } catch (e) {
+  //     handleError(e as Error)
+  //   }
+  // }
 
   const handleEditTask = () => {
     showModal(
@@ -50,7 +51,10 @@ const ViewTask: React.FC<Props> = ({ task }) => {
           <h2 className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
             Status
           </h2>
-          <StatusGroup status={status} onChangeStatus={handleChangeStatus} />
+          {/* <StatusRadioInput
+            status={status}
+            onChangeStatus={handleChangeStatus}
+          /> */}
         </div>
         {/* tags */}
         <div className="col-span-2 p-3 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700  dark:border-gray-600">

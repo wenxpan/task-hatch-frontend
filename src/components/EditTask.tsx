@@ -1,8 +1,8 @@
-import React, { useState } from "react"
+import React from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
-import { Task, TaskStatus } from "../types/task"
-import StatusGroup from "./StatusGroup"
+import { Task } from "../types/task"
+import StatusRadioInput from "./StatusRadioInput"
 import { useModal } from "../state/ModalContext"
 import { useNavigate } from "react-router-dom"
 import { handleError } from "../utils/handleError"
@@ -22,7 +22,6 @@ interface Props {
 }
 
 const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
-  const [editedTask, setEditedTask] = useState<Task>(task)
   const { refreshTags, updateTask } = useTaskActions()
   const { hideModal } = useModal()
   const nav = useNavigate()
@@ -59,13 +58,6 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
     }
   }
 
-  const handleChangeStatus = (newStatus: TaskStatus) => {
-    setEditedTask((prev) => ({
-      ...prev,
-      status: newStatus
-    }))
-  }
-
   const handleCancel = (e: React.FormEvent) => {
     e.preventDefault()
     if (editContext === "modal") {
@@ -77,7 +69,6 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
 
   return (
     <>
-      {/* @ts-ignore */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4 mb-4 sm:grid-cols-2">
           {/* status field */}
@@ -88,10 +79,7 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
             >
               Status
             </label>
-            <StatusGroup
-              status={editedTask.status}
-              onChangeStatus={handleChangeStatus}
-            />
+            <StatusRadioInput {...register("status")} />
           </div>
           {/* title field */}
           <div>

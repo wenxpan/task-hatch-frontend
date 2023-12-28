@@ -1,5 +1,5 @@
 export interface ProgressEntry {
-  date: Date
+  date: Date | string
   description: string
 }
 
