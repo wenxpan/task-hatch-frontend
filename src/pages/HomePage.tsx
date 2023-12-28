@@ -75,6 +75,7 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
               {stats.topTags.map((t) => (
                 <Link
                   className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 my-1 rounded dark:bg-primary-900 dark:text-primary-300"
+                  key={t.tag}
                   to={`/tasks?tag=${t.tag}`}
                 >
                   {t.tag} ({t.taskCount})

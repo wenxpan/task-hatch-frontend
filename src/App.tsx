@@ -1,67 +1,29 @@
-import { useEffect, useReducer, useState } from "react"
-import MainContainer from "./components/MainContainer"
-import NavBar from "./components/NavBar"
-import SideBar from "./components/SideBar"
-import * as taskService from "./services/taskService"
+import "react-toastify/dist/ReactToastify.css"
+import { useState } from "react"
 import { Routes, Route, Navigate } from "react-router-dom"
+import { ModalProvider } from "./state/ModalContext"
+import { TaskProvider } from "./state/TaskContext"
 import HomePage from "./pages/HomePage"
 import TasksPage from "./pages/TasksPage"
 import NewTaskPage from "./pages/NewTaskPage"
 import ArchivePage from "./pages/ArchivePage"
-import TaskContext from "./state/TaskContext"
-import { Stats, Task } from "./types/task"
-import taskReducer from "./state/taskReducer"
-import Overlay from "./components/Overlay"
 import NotFoundPage from "./pages/NotFoundPage"
 import ViewTaskPage from "./pages/ViewTaskPage"
 import EditTaskPage from "./pages/EditTaskPage"
-import { ModalProvider } from "./state/ModalContext"
-import "react-toastify/dist/ReactToastify.css"
+import MainContainer from "./components/MainContainer"
+import NavBar from "./components/NavBar"
+import SideBar from "./components/SideBar"
+import Overlay from "./components/Overlay"
 
 function App() {
   const [isOverlayOn, setIsOverlayOn] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false)
 
   const toggleOverlay = (): void => {
     setIsOverlayOn((prev: boolean) => !prev)
   }
 
-  const [tasks, tasksDispatch] = useReducer(taskReducer, [] as Task[])
-
-  const [tags, setTags] = useState<string[]>([])
-
-  const [stats, setStats] = useState<Stats>({
-    totalTasks: 0,
-    tasksCompleted: 0,
-    tasksToDo: 0,
-    topTags: []
-  })
-
-  useEffect(() => {
-    // get all tasks and save in context
-    const fetchAllTasks = async () => {
-      try {
-        // fetch task data
-        const taskData: Task[] = await taskService.fetchTasks()
-        tasksDispatch({ type: "set_tasks", tasks: taskData })
-        // fetch tag data
-        const tagData = await taskService.fetchTags()
-        setTags(tagData)
-        // fetch stats data
-        const statsData = await taskService.fetchStats()
-        setStats(statsData)
-        setIsLoaded(true)
-      } catch (error) {
-        console.error("Error fetching tasks: ", error)
-      }
-    }
-    fetchAllTasks()
-  }, [])
-
   return (
-    <TaskContext.Provider
-      value={{ tasks, tasksDispatch, tags, setTags, stats }}
-    >
+    <TaskProvider>
       <ModalProvider>
         <div className="antialiased">
           <NavBar
@@ -69,9 +31,9 @@ function App() {
             logo="/task-hatch-logo.png"
             toggleOverlay={toggleOverlay}
           />
-          <SideBar isOverlayOn={isOverlayOn} tags={tags} />
+          <SideBar isOverlayOn={isOverlayOn} />
           <Routes>
-            <Route path="" element={<MainContainer isLoaded={isLoaded} />}>
+            <Route path="" element={<MainContainer />}>
               <Route index element={<Navigate to="/home" />}></Route>
               <Route path="/home" element={<HomePage />} />
               <Route path="/tasks">
@@ -91,7 +53,7 @@ function App() {
           zIndex={30}
         />
       </ModalProvider>
-    </TaskContext.Provider>
+    </TaskProvider>
   )
 }
 
