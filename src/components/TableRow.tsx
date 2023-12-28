@@ -15,6 +15,7 @@ import DeleteTask from "./DeleteTask"
 import { toast } from "react-toastify"
 import SnoozeSVG from "./icons/SnoozeSVG"
 import TickSVG from "./icons/TickSVG"
+import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
 
 interface TableRowProps {
   task: Task
@@ -36,30 +37,9 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
     }
   }
 
-  const toggleStatus = async (
-    task: Task,
-    currentStatus: string,
-    alternateStatus: string
-  ) => {
-    const newStatus =
-      task.status === currentStatus ? alternateStatus : currentStatus
+  const toggleStatus = async (task: Task, status: string) => {
+    const newStatus = task.status === status ? "in progress" : status
     await updateStatus(task, { status: newStatus })
-  }
-
-  const toggleArchive = async (task: Task) => {
-    await toggleStatus(task, "archived", "in progress")
-  }
-
-  const togglePrioritised = async (task: Task) => {
-    await toggleStatus(task, "prioritised", "in progress")
-  }
-
-  const toggleSnoozed = async (task: Task) => {
-    await toggleStatus(task, "snoozed", "in progress")
-  }
-
-  const toggleCompleted = async (task: Task) => {
-    await toggleStatus(task, "completed", "in progress")
   }
 
   const { showModal, hideModal } = useModal()
@@ -86,18 +66,6 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
     )
   }
 
-  const calculateSnoozeDaysLeft = (snoozeUntil: Date) => {
-    const snoozeDate = new Date(snoozeUntil)
-    const currentDate = new Date()
-    const differenceInTime = snoozeDate.getTime() - currentDate.getTime()
-
-    // Calculate the difference in days
-    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24))
-
-    // Return the number of days left, or 0 if the date has passed
-    return differenceInDays > 0 ? differenceInDays : 0
-  }
-
   const snoozeDaysLeft = calculateSnoozeDaysLeft(task.snoozeUntil)
 
   return (
@@ -105,7 +73,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
       <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
         {/* icon appearing before task */}
         <td className="p-4 w-4">
-          <button onClick={() => togglePrioritised(task)}>
+          <button onClick={() => toggleStatus(task, "prioritised")}>
             {task.status === "prioritised" && (
               <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
             )}
@@ -113,12 +81,12 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
               <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
             )}
           </button>
-          <button onClick={() => toggleSnoozed(task)}>
+          <button onClick={() => toggleStatus(task, "snoozed")}>
             {task.status === "snoozed" && (
               <SnoozeSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
             )}
           </button>
-          <button onClick={() => toggleCompleted(task)}>
+          <button onClick={() => toggleStatus(task, "completed")}>
             {task.status === "completed" && (
               <TickSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
             )}
@@ -167,7 +135,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             <button
               type="button"
               className="flex items-center text-amber-700 hover:text-white border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-amber-500 dark:text-amber-500 dark:hover:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-900"
-              onClick={() => toggleArchive(task)}
+              onClick={() => toggleStatus(task, "archived")}
             >
               <ArchiveSVG className="h-4 w-4 mr-2 -ml-0.5 hover:fill-white" />
               {task.status === "archived" ? "Unarchive" : "Archive"}
