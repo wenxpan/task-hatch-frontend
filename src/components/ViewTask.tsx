@@ -5,8 +5,8 @@ import TaskContext from "../state/TaskContext"
 import { updateTask } from "../services/taskService"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
-import { toast } from "react-toastify"
 import EditTask from "./EditTask"
+import { handleError } from "../utils/handleError"
 
 interface Props {
   task: Task
@@ -29,7 +29,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
       tasksDispatch({ type: "update_task", task: newTask })
       setStatus(newStatus)
     } catch (e) {
-      toast.error((e as Error).message)
+      handleError(e as Error)
     }
   }
 

@@ -1,47 +1,23 @@
-import React, { useContext } from "react"
+import React from "react"
 import EditSVG from "./icons/EditSVG"
 import ProgressIndicator from "./ProgressIndicator"
 import { Task } from "../types/task"
 import ArchiveSVG from "./icons/ArchiveSVG"
-import { updateTask } from "../services/taskService"
-import TaskContext from "../state/TaskContext"
 import DeleteSVG from "./icons/DeleteSVG"
-import PinLineSVG from "./icons/PinLineSVG"
-import PinFillSVG from "./icons/PinFillSVG"
 import { useModal } from "../state/ModalContext"
 import ViewTask from "./ViewTask"
 import EditTask from "./EditTask"
 import DeleteTask from "./DeleteTask"
-import { toast } from "react-toastify"
-import SnoozeSVG from "./icons/SnoozeSVG"
-import TickSVG from "./icons/TickSVG"
 import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
+import StatusRowIcon from "./StatusRowIcon"
+import useTaskActions from "../hooks/useTaskActions"
 
 interface TableRowProps {
   task: Task
 }
 
 const TableRow: React.FC<TableRowProps> = ({ task }) => {
-  const { tasksDispatch } = useContext(TaskContext)
-
-  const updateStatus = async (task: Task, status: {}) => {
-    try {
-      const updatedTask = await updateTask({ ...task, ...status })
-      tasksDispatch({
-        type: "update_task",
-        task: updatedTask
-      })
-    } catch (e) {
-      console.error((e as Error).message)
-      toast.error((e as Error).message)
-    }
-  }
-
-  const toggleStatus = async (task: Task, status: string) => {
-    const newStatus = task.status === status ? "in progress" : status
-    await updateStatus(task, { status: newStatus })
-  }
-
+  const { toggleStatus } = useTaskActions()
   const { showModal, hideModal } = useModal()
 
   const handleOpenViewModal = () => {
@@ -73,24 +49,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
       <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
         {/* icon appearing before task */}
         <td className="p-4 w-4">
-          <button onClick={() => toggleStatus(task, "prioritised")}>
-            {task.status === "prioritised" && (
-              <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-            )}
-            {task.status === "in progress" && (
-              <PinLineSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-            )}
-          </button>
-          <button onClick={() => toggleStatus(task, "snoozed")}>
-            {task.status === "snoozed" && (
-              <SnoozeSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-            )}
-          </button>
-          <button onClick={() => toggleStatus(task, "completed")}>
-            {task.status === "completed" && (
-              <TickSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
-            )}
-          </button>
+          <StatusRowIcon task={task} />
         </td>
         {/* task title */}
         <th
@@ -124,14 +83,6 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
               <EditSVG className="h-4 w-4 mr-2 -ml-0.5" />
               Edit
             </button>
-            {/* <button
-            type="button"
-            className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            onClick={handleOpenViewModal}
-          >
-            <ViewSVG className="w-4 h-4 mr-2 -ml-0.5" />
-            View
-          </button> */}
             <button
               type="button"
               className="flex items-center text-amber-700 hover:text-white border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-amber-500 dark:text-amber-500 dark:hover:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-900"

@@ -2,8 +2,8 @@ import React, { useContext, useState } from "react"
 import { ProgressEntry, Task } from "../types/task"
 import AddSVG from "./icons/AddSVG"
 import TaskContext from "../state/TaskContext"
-import { toast } from "react-toastify"
 import { updateTask } from "../services/taskService"
+import { handleError } from "../utils/handleError"
 
 interface Props {
   task: Task
@@ -30,8 +30,7 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
       tasksDispatch({ type: "update_task", task: taskData })
       setProgressEntry((prev) => ({ ...prev, description: "" }))
     } catch (e) {
-      console.error((e as Error).message)
-      toast.error((e as Error).message)
+      handleError(e as Error)
     }
   }
 

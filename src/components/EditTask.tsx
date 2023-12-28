@@ -5,9 +5,9 @@ import { ProgressEntry, Task, TaskStatus } from "../types/task"
 import TaskContext from "../state/TaskContext"
 import { fetchTags, updateTask } from "../services/taskService"
 import StatusGroup from "./StatusGroup"
-import { toast } from "react-toastify"
 import { useModal } from "../state/ModalContext"
 import { useNavigate } from "react-router-dom"
+import { handleError } from "../utils/handleError"
 
 interface Props {
   task: Task
@@ -80,8 +80,7 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
       }
       onSave()
     } catch (e) {
-      console.error((e as Error).message)
-      toast.error((e as Error).message)
+      handleError(e as Error)
     }
   }
 

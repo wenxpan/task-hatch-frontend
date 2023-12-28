@@ -43,7 +43,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
       onComplete()
     } catch (e) {
       console.error((e as Error).message)
-      toast.error("Task creation failed. Have you entered task title?")
+      toast.error("Task creation failed.")
     }
   }
 
