@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"
 import { Task, TaskStatus } from "../types/task"
 import StatusGroup from "./StatusGroup"
 import TaskContext from "../state/TaskContext"
-import { updateTask } from "../services/taskService"
+import { updateTaskAPI } from "../services/taskService"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
 import EditTask from "./EditTask"
@@ -25,7 +25,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
         ...task,
         status: newStatus
       }
-      const newTask = await updateTask(updatedTask)
+      const newTask = await updateTaskAPI(updatedTask)
       tasksDispatch({ type: "update_task", task: newTask })
       setStatus(newStatus)
     } catch (e) {

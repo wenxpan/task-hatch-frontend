@@ -46,15 +46,15 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     const fetchAllTasks = async () => {
       try {
         // fetch tasks
-        const taskData: Task[] = await taskService.fetchTasks()
+        const taskData: Task[] = await taskService.fetchTasksAPI()
         tasksDispatch({ type: "set_tasks", tasks: taskData })
 
         // fetch tags
-        const tagData = await taskService.fetchTags()
+        const tagData = await taskService.fetchTagsAPI()
         setTags(tagData)
 
         // fetch stats
-        const statsData = await taskService.fetchStats()
+        const statsData = await taskService.fetchStatsAPI()
         setStats(statsData)
 
         // set loading state to true

@@ -1,17 +1,35 @@
 import { useContext } from "react"
 import TaskContext from "../state/TaskContext"
 import { NewTask, Task } from "../types/task"
-import { addTask, updateTask } from "../services/taskService"
+import {
+  addTaskAPI,
+  fetchTagsAPI,
+  updateTaskAPI
+} from "../services/taskService"
 import { handleError } from "../utils/handleError"
 
 const useTaskActions = () => {
-  const { tasksDispatch } = useContext(TaskContext)
+  const { tasksDispatch, setTags } = useContext(TaskContext)
 
+  // create task and send POST task request
   const createTask = async (task: NewTask) => {
     try {
-      const newTask = await addTask(task)
+      const newTask = await addTaskAPI(task)
       tasksDispatch({ type: "add_task", task: newTask })
       return newTask
+    } catch (e) {
+      handleError(e as Error, "Error creating task")
+    }
+  }
+
+  // update task and send PUT task request
+  const updateTask = async (task: NewTask) => {
+    try {
+      const postedTask: Task = await updateTaskAPI({
+        ...task
+      })
+      tasksDispatch({ type: "update_task", task: postedTask })
+      return postedTask
     } catch (e) {
       handleError(e as Error, "Error creating task")
     }
@@ -20,11 +38,26 @@ const useTaskActions = () => {
   // update task status
   const updateStatus = async (task: Task, status: {}) => {
     try {
-      const updatedTask = await updateTask({ ...task, ...status })
+      const updatedTask = await updateTaskAPI({ ...task, ...status })
       tasksDispatch({
         type: "update_task",
         task: updatedTask
       })
+    } catch (e) {
+      handleError(e as Error)
+    }
+  }
+
+  // update tags in sidebar
+  const refreshTags = async (oldTask: Task, newTask: Task) => {
+    try {
+      const tagsUpdated =
+        !newTask.tags.every((t) => oldTask.tags.includes(t)) ||
+        !oldTask.tags.every((t) => newTask.tags.includes(t))
+      if (tagsUpdated) {
+        const tagData = await fetchTagsAPI()
+        setTags(tagData)
+      }
     } catch (e) {
       handleError(e as Error)
     }
@@ -38,7 +71,7 @@ const useTaskActions = () => {
 
   // Additional functionalities
 
-  return { createTask, updateStatus, toggleStatus }
+  return { createTask, updateTask, updateStatus, toggleStatus, refreshTags }
 }
 
 export default useTaskActions

@@ -1,13 +1,19 @@
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
-import { ProgressEntry, Task, TaskStatus } from "../types/task"
-import TaskContext from "../state/TaskContext"
-import { fetchTags, updateTask } from "../services/taskService"
+import { Task, TaskStatus } from "../types/task"
 import StatusGroup from "./StatusGroup"
 import { useModal } from "../state/ModalContext"
 import { useNavigate } from "react-router-dom"
 import { handleError } from "../utils/handleError"
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm
+} from "react-hook-form"
+import useTaskActions from "../hooks/useTaskActions"
+import dayjs from "dayjs"
 
 interface Props {
   task: Task
@@ -17,66 +23,35 @@ interface Props {
 
 const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
   const [editedTask, setEditedTask] = useState<Task>(task)
-  const [tagLine, setTagLine] = useState<string>(task.tags.join(", "))
-  const { tasksDispatch, setTags } = useContext(TaskContext)
+  const { refreshTags, updateTask } = useTaskActions()
   const { hideModal } = useModal()
   const nav = useNavigate()
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-    value: string
-  ) => {
-    setEditedTask({ ...editedTask, [e.target.name]: value })
-  }
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      ...task,
+      progress: task.progress.map((item) => ({
+        ...item,
+        date: dayjs(item.date).format("YYYY-MM-DD")
+      }))
+    }
+  })
 
-  const handleProgressChange = (
-    index: number,
-    change: Partial<ProgressEntry>
-  ) => {
-    const updatedProgress = [...editedTask.progress]
-    updatedProgress[index] = { ...updatedProgress[index], ...change }
-    setEditedTask({ ...editedTask, progress: updatedProgress })
-  }
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "progress"
+  })
 
-  const addProgress = (e: React.FormEvent) => {
-    e.preventDefault()
-    setEditedTask({
-      ...editedTask,
-      progress: [...editedTask.progress, { date: new Date(), description: "" }]
-    })
-  }
-
-  const deleteProgress = (e: React.FormEvent, index: number) => {
-    e.preventDefault()
-    const updatedProgress = editedTask.progress.filter((_, i) => i !== index)
-    setEditedTask({ ...editedTask, progress: updatedProgress })
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const onSubmit: SubmitHandler<Task> = async (data) => {
     try {
-      // split tags
-      const processedTags: string[] = tagLine
-        .split(",")
-        .map((tag: string) => tag.trim()) // Trim whitespace
-        .filter((tag: string) => tag !== "") // Remove empty strings
-
-      const postedTask: Task = await updateTask({
-        ...editedTask,
-        tags: processedTags
-      })
-      tasksDispatch({ type: "update_task", task: postedTask })
-
-      const tagsUpdated =
-        !postedTask.tags.every((t) => task.tags.includes(t)) ||
-        !task.tags.every((t) => postedTask.tags.includes(t))
-      // if tags are updated, refresh sidebar tags
-      if (tagsUpdated) {
-        console.log(tagsUpdated)
-        const tagData = await fetchTags()
-        setTags(tagData)
+      const postedTask = await updateTask(data)
+      if (postedTask) {
+        refreshTags(task, postedTask)
       }
       onSave()
     } catch (e) {
@@ -102,13 +77,14 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
 
   return (
     <>
-      <form action="#">
+      {/* @ts-ignore */}
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4 mb-4 sm:grid-cols-2">
           {/* status field */}
           <div className="col-span-2 place-self-start">
             <label
               htmlFor="status"
-              className="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+              className="mb-2 font-semibold leading-none text-gray-900"
             >
               Status
             </label>
@@ -121,51 +97,52 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
           <div>
             <label
               htmlFor="title"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Title
             </label>
             <input
               type="text"
-              name="title"
               id="title"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              required
-              value={editedTask.title}
-              onChange={(e) => handleChange(e, e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+              {...register("title", { required: true })}
             />
+            {errors.title && <p>Title is required</p>}
           </div>
           {/* tags field */}
           <div>
             <label
               htmlFor="tags"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Tags
             </label>
-            <input
-              type="text"
+            <Controller
               name="tags"
-              id="tags"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              value={tagLine}
-              onChange={(e) => setTagLine(e.target.value)}
+              control={control}
+              render={({ field }) => (
+                <input
+                  type="text"
+                  id="tags"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  value={field.value.join(", ")}
+                  onChange={(e) => field.onChange(e.target.value.split(", "))}
+                />
+              )}
             />
           </div>
           <div>
             <label
               htmlFor="doReason"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Reasons for doing it
             </label>
             <input
+              {...register("doReason", { maxLength: 50 })}
               type="text"
-              name="doReason"
               id="doReason"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              value={editedTask.doReason}
-              onChange={(e) => handleChange(e, e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
           <div>
@@ -176,68 +153,64 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
               Reasons for not doing it
             </label>
             <input
+              {...register("delayReason", { maxLength: 50 })}
               type="text"
-              name="delayReason"
               id="delayReason"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              value={editedTask.delayReason}
-              onChange={(e) => handleChange(e, e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             />
           </div>
           <div className="sm:col-span-2">
             <label
               htmlFor="notes"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Notes
             </label>
             <textarea
+              {...register("notes")}
               id="notes"
-              name="notes"
               rows={4}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              value={editedTask.notes}
-              onChange={(e) => handleChange(e, e.target.value)}
             ></textarea>
           </div>
           <div className="sm:col-span-2">
             <label
               htmlFor="progress"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Progress
             </label>
-            {editedTask.progress.map((p, index) => (
-              <div key={index} className="flex items-center mb-2 gap-4">
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex items-center mb-2 gap-4">
                 <input
                   type="date"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={new Date(p.date).toISOString().substring(0, 10)}
-                  onChange={(e) =>
-                    handleProgressChange(index, {
-                      date: new Date(e.target.value)
-                    })
-                  }
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  {...register(`progress.${index}.date` as const, {
+                    valueAsDate: true
+                  })}
                 />
                 <input
-                  type="text"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={p.description}
-                  onChange={(e) =>
-                    handleProgressChange(index, { description: e.target.value })
-                  }
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  {...register(`progress.${index}.description` as const)}
                 />
                 <button
+                  type="button"
                   className="text-red-400 hover:text-red-600"
-                  onClick={(e) => deleteProgress(e, index)}
+                  onClick={() => remove(index)}
                 >
                   <DeleteSVG />
                 </button>
               </div>
             ))}
             <button
-              className="text-white inline-flex items-center bg-primary-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              onClick={(e) => addProgress(e)}
+              type="button"
+              className="text-white inline-flex items-center bg-primary-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5"
+              onClick={() =>
+                append({
+                  date: dayjs(new Date()).format("YYYY-MM-DD"),
+                  description: ""
+                })
+              }
             >
               <AddSVG className="h-3.5 w-3.5 mr-0" />
             </button>
@@ -247,7 +220,6 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
           <button
             type="submit"
             className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            onClick={handleSubmit}
           >
             Update task
           </button>

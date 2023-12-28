@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import { Task } from "../types/task"
 import TaskContext from "../state/TaskContext"
-import { deleteTask } from "../services/taskService"
+import { deleteTaskAPI } from "../services/taskService"
 
 interface Props {
   closeModal: () => void
@@ -14,7 +14,7 @@ const DeleteTask: React.FC<Props> = ({ closeModal, task }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await deleteTask(task._id)
+      await deleteTaskAPI(task._id)
       tasksDispatch({ type: "delete_task", task: task })
       closeModal()
     } catch (e) {
