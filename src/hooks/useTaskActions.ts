@@ -7,6 +7,7 @@ import {
   updateTaskAPI
 } from "../services/taskService"
 import { handleError } from "../utils/handleError"
+import cleanTags from "../utils/cleanTags"
 
 const useTaskActions = () => {
   const { tasksDispatch, setTags } = useContext(TaskContext)
@@ -14,8 +15,9 @@ const useTaskActions = () => {
   // create task and send POST task request
   const createTask = async (task: NewTask) => {
     try {
-      const newTask = await addTaskAPI(task)
-      tasksDispatch({ type: "add_task", task: newTask })
+      const newTask = { ...task, tags: cleanTags(task.tags) }
+      const postedTask = await addTaskAPI(newTask)
+      tasksDispatch({ type: "add_task", task: postedTask })
       return newTask
     } catch (e) {
       handleError(e as Error, "Error creating task")
@@ -25,9 +27,8 @@ const useTaskActions = () => {
   // update task and send PUT task request
   const updateTask = async (task: NewTask) => {
     try {
-      const postedTask: Task = await updateTaskAPI({
-        ...task
-      })
+      const newTask = { ...task, tags: cleanTags(task.tags) }
+      const postedTask: Task = await updateTaskAPI(newTask)
       tasksDispatch({ type: "update_task", task: postedTask })
       return postedTask
     } catch (e) {
@@ -68,8 +69,6 @@ const useTaskActions = () => {
     const newStatus = task.status === status ? "in progress" : status
     await updateStatus(task, { status: newStatus })
   }
-
-  // Additional functionalities
 
   return { createTask, updateTask, updateStatus, toggleStatus, refreshTags }
 }
