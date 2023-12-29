@@ -6,14 +6,11 @@ import StatusRadioInput from "./StatusRadioInput"
 import { useModal } from "../state/ModalContext"
 import { useNavigate } from "react-router-dom"
 import { handleError } from "../utils/handleError"
-import {
-  Controller,
-  SubmitHandler,
-  useFieldArray,
-  useForm
-} from "react-hook-form"
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
 import useTaskActions from "../hooks/useTaskActions"
 import dayjs from "dayjs"
+import Input from "./Input"
+import TagsInput from "./TagsInput"
 
 interface Props {
   task: Task
@@ -38,7 +35,7 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
         ...item,
         date: dayjs(item.date).format("YYYY-MM-DD")
       }))
-    }
+    } as Task
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -72,81 +69,38 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4 mb-4 sm:grid-cols-2">
           {/* status field */}
-          <div className="col-span-2 place-self-start">
-            <label
-              htmlFor="status"
-              className="mb-2 font-semibold leading-none text-gray-900"
-            >
-              Status
-            </label>
-            <StatusRadioInput {...register("status")} />
-          </div>
+          <StatusRadioInput {...register("status")} />
           {/* title field */}
-          <div>
-            <label
-              htmlFor="title"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-              {...register("title", { required: true })}
-            />
-            {errors.title && <p>Title is required</p>}
-          </div>
+          <Input
+            type="text"
+            labelText="title"
+            {...register("title", {
+              required: { value: true, message: "Please enter title" },
+              maxLength: { value: 50, message: "Title too long" }
+            })}
+            error={errors.title?.message}
+          />
           {/* tags field */}
-          <div>
-            <label
-              htmlFor="tags"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Tags
-            </label>
-            <Controller
-              name="tags"
-              control={control}
-              render={({ field }) => (
-                <input
-                  type="text"
-                  id="tags"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                  value={field.value.join(", ")}
-                  onChange={(e) => field.onChange(e.target.value.split(", "))}
-                />
-              )}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="doReason"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Reasons for doing it
-            </label>
-            <input
-              {...register("doReason", { maxLength: 50 })}
-              type="text"
-              id="doReason"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="delayReason"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Reasons for not doing it
-            </label>
-            <input
-              {...register("delayReason", { maxLength: 50 })}
-              type="text"
-              id="delayReason"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-            />
-          </div>
+          <TagsInput control={control} name="tags" />
+          {/* do reason */}
+          <Input
+            type="text"
+            labelText="Reasons for doing it"
+            {...register("doReason", {
+              maxLength: { value: 50, message: "Reason too long" }
+            })}
+            error={errors.doReason?.message}
+          />
+          {/* delay reason */}
+          <Input
+            type="text"
+            labelText="Reasons for not doing it now"
+            {...register("delayReason", {
+              maxLength: { value: 50, message: "Reason too long" }
+            })}
+            error={errors.delayReason?.message}
+          />
+          {/* notes */}
           <div className="sm:col-span-2">
             <label
               htmlFor="notes"

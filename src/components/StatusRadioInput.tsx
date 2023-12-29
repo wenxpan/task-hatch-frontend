@@ -45,30 +45,39 @@ const StatusRadioInput = React.forwardRef<
 
   return (
     <>
-      <div
-        className="flex rounded-lg border flex-wrap justify-start"
-        role="group"
-      >
-        {statusOptions.map((option) => (
-          <div className="flex items-center">
-            <input
-              {...rest}
-              ref={ref}
-              type="radio"
-              id={option.name}
-              value={option.name}
-              className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 checked:bg-blue-200 peer hidden"
-            />
-            <label
-              key={option.name}
-              htmlFor={option.name}
-              className={`inline-flex items-center rounded-lg capitalize whitespace-nowrap px-4 py-2 text-sm font-medium hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 ${option.color} peer-checked:text-white`}
-            >
-              <option.icon className="h-4 w-4" />
-              {option.name}
-            </label>
-          </div>
-        ))}
+      <div className="col-span-2 place-self-start">
+        <label
+          htmlFor="status"
+          className="mb-2 font-semibold leading-none text-gray-900"
+        >
+          Status
+        </label>
+        <div
+          className="flex rounded-lg border flex-wrap justify-start"
+          role="group"
+        >
+          {statusOptions.map((option) => (
+            <>
+              <div className="flex items-center" key={option.name}>
+                <input
+                  {...rest}
+                  ref={ref}
+                  type="radio"
+                  id={option.name}
+                  value={option.name}
+                  className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 checked:bg-blue-200 peer hidden"
+                />
+                <label
+                  htmlFor={option.name}
+                  className={`inline-flex items-center rounded-lg capitalize whitespace-nowrap px-4 py-2 text-sm font-medium hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 ${option.color} peer-checked:text-white`}
+                >
+                  <option.icon className="h-4 w-4" />
+                  {option.name}
+                </label>
+              </div>
+            </>
+          ))}
+        </div>
       </div>
     </>
   )
