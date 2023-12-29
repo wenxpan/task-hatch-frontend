@@ -1,8 +1,7 @@
 import React from "react"
 import { UseControllerProps, useController } from "react-hook-form"
-import { Task } from "../types/task"
 
-const TagsInput: React.FC<UseControllerProps<Task>> = ({ control, name }) => {
+const TagsInput: React.FC<UseControllerProps<any>> = ({ control, name }) => {
   const { field } = useController({ control, name })
 
   const value = Array.isArray(field.value) ? field.value.join(", ") : ""

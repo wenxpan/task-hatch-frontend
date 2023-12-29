@@ -1,9 +1,11 @@
 import React, { useContext } from "react"
 import AddSVG from "./icons/AddSVG"
-import { NewTask } from "../types/task"
+import { BaseTask } from "../types/task"
 import TaskContext from "../state/TaskContext"
 import useTaskActions from "../hooks/useTaskActions"
-import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
+import TagsInput from "./TagsInput"
+import Input from "./Input"
 
 type CreateTaskProps = {
   onComplete: () => void
@@ -17,15 +19,10 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<NewTask>({
-    defaultValues: {
-      tags: []
-    }
-  })
+  } = useForm<BaseTask>({ defaultValues: { tags: [] } })
 
-  const onSubmit: SubmitHandler<NewTask> = async (data) => {
+  const onSubmit: SubmitHandler<BaseTask> = async (data) => {
     const postedTask = await createTask(data)
-
     if (postedTask) {
       const newTags = postedTask.tags.filter(
         (tag: string) => !tags.includes(tag)
@@ -40,78 +37,41 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4 mb-4 sm:grid-cols-2">
-        <div>
-          {/* Title field */}
-          <label
-            htmlFor="name"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Title
-          </label>
-          <input
-            {...register("title", { required: true })}
-            type="text"
-            id="title"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-          />
-          {errors.title && <p>Title is required</p>}
-        </div>
+        {/* Title field */}
+        <Input
+          type="text"
+          labelText="title"
+          {...register("title", {
+            required: { value: true, message: "Please enter title" },
+            maxLength: { value: 50, message: "Title too long" }
+          })}
+          error={errors.title?.message}
+        />
         {/* Tags field */}
-        <div>
-          <label
-            htmlFor="tags"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Tags (separate by commas)
-          </label>
-          <Controller
-            name="tags"
-            control={control}
-            render={({ field }) => (
-              <input
-                type="text"
-                id="tags"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                value={field.value.join(", ")}
-                onChange={(e) => field.onChange(e.target.value.split(", "))}
-              />
-            )}
-          />
-        </div>
-        {/* do reason field */}
-        <div>
-          <label
-            htmlFor="doReason"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Reasons for doing it
-          </label>
-          <input
-            {...register("doReason", { maxLength: 50 })}
-            type="text"
-            id="doReason"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-          />
-        </div>
-        {/* delay reasons field */}
-        <div>
-          <label
-            htmlFor="delayReason"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Reasons for not doing it
-          </label>
-          <input
-            {...register("delayReason", { maxLength: 50 })}
-            type="text"
-            id="delayReason"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-          />
-        </div>
+        <TagsInput control={control} name="tags" />
+        {/* do reason */}
+        <Input
+          type="text"
+          labelText="Reasons for doing it"
+          {...register("doReason", {
+            maxLength: { value: 50, message: "Reason too long" }
+          })}
+          error={errors.doReason?.message}
+        />
+        {/* delay reason */}
+        <Input
+          type="text"
+          labelText="Reasons for not doing it now"
+          {...register("delayReason", {
+            maxLength: { value: 50, message: "Reason too long" }
+          })}
+          error={errors.delayReason?.message}
+        />
+        {/* notes */}
         <div className="sm:col-span-2">
           <label
             htmlFor="notes"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Notes
           </label>

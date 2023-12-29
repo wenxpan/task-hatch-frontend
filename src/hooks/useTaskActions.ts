@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import TaskContext from "../state/TaskContext"
-import { NewTask, Task } from "../types/task"
+import { BaseTask, Task } from "../types/task"
 import {
   addTaskAPI,
   fetchTagsAPI,
@@ -13,7 +13,7 @@ const useTaskActions = () => {
   const { tasksDispatch, setTags } = useContext(TaskContext)
 
   // create task and send POST task request
-  const createTask = async (task: NewTask) => {
+  const createTask = async (task: BaseTask) => {
     try {
       const newTask = { ...task, tags: cleanTags(task.tags) }
       const postedTask = await addTaskAPI(newTask)
@@ -25,7 +25,7 @@ const useTaskActions = () => {
   }
 
   // update task and send PUT task request
-  const updateTask = async (task: NewTask) => {
+  const updateTask = async (task: BaseTask) => {
     try {
       const newTask = { ...task, tags: cleanTags(task.tags) }
       const postedTask: Task = await updateTaskAPI(newTask)
