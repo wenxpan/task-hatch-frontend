@@ -11,6 +11,7 @@ import useTaskActions from "../hooks/useTaskActions"
 import dayjs from "dayjs"
 import Input from "./Input"
 import TagsInput from "./TagsInput"
+import Button from "./Button"
 
 interface Props {
   task: Task
@@ -124,7 +125,10 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
               Progress
             </label>
             {fields.map((field, index) => (
-              <div key={field.id} className="flex items-center mb-2 gap-4">
+              <div
+                key={field.id}
+                className="grid items-center grid-cols-1 md:grid-cols-[auto,minmax(0,1fr),auto] mb-2 gap-4"
+              >
                 <input
                   type="date"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
@@ -134,15 +138,20 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
                 />
                 <input
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                  {...register(`progress.${index}.description` as const)}
+                  {...register(`progress.${index}.description` as const, {
+                    required: { value: true, message: "Please enter progress" }
+                  })}
                 />
-                <button
-                  type="button"
-                  className="text-red-400 hover:text-red-600"
+                <Button
+                  variant="danger"
+                  icon={DeleteSVG}
                   onClick={() => remove(index)}
-                >
-                  <DeleteSVG />
-                </button>
+                />
+                {errors.progress && (
+                  <p className="row-start-2 md:col-start-2 text-red-600">
+                    {errors.progress[index]?.description?.message}
+                  </p>
+                )}
               </div>
             ))}
             <button
