@@ -10,7 +10,7 @@ interface ProgressIndicatorProps {
 }
 
 const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ number }) => {
-  const fillStyle = "fill-amber-400"
+  const fillStyle = "fill-yellow-400"
   const lineStyle = "fill-none"
   const icons = [Egg1SVG, Egg2SVG, Egg3SVG, Egg4SVG, LightBulbSVG]
 
@@ -32,12 +32,11 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ number }) => {
       {icons.map((Icon, index) => (
         <Icon
           key={index}
-          className={`h-8 w-8 text-amber-500 ${getStyle(index)}`}
+          className={`h-8 w-8 text-yellow-500 ${getStyle(index)}`}
         />
       ))}
     </div>
   )
 }
-
 
 export default ProgressIndicator

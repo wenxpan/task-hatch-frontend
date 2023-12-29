@@ -14,7 +14,7 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
   const { tags } = useContext(TaskContext)
   const svgClass =
-    "flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+    "flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
   const navItems = [
     {
       name: "Home",
@@ -48,9 +48,9 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
     <aside
       className={`${
         isOverlayOn ? "translate-x-0" : "-translate-x-full"
-      } fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700`}
+      } fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform bg-white border-r border-gray-200 md:translate-x-0`}
     >
-      <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+      <div className="overflow-y-auto py-5 px-3 h-full bg-white ">
         {/* sidebar content */}
         <ul className="space-y-2">
           {/* Navigation Links: Home and tasks */}
@@ -58,7 +58,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
             <li key={n.name}>
               <NavLink
                 to={n.link}
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100 group"
               >
                 {/* Icon and Text */}
                 {n.svg}
@@ -69,10 +69,10 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
         </ul>
 
         {/* Second sidebar content */}
-        <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+        <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 ">
           <li>
             <button
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 w-full"
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100   w-full"
               onClick={toggleTagList}
             >
               <AccordianSVG
@@ -87,7 +87,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
             <li key={t}>
               <NavLink
                 to={`/tasks?tag=${t}`}
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100   group"
               >
                 <BookmarkLineSVG className={svgClass} />
                 <span className="ml-3">{t}</span>
@@ -95,11 +95,11 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
             </li>
           ))}
         </ul>
-        <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+        <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 ">
           <li key={"archive"}>
             <NavLink
               to={"/archive"}
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100   group"
             >
               <ArchiveSVG className={svgClass} />
               <span className="ml-3">Archive</span>
@@ -109,7 +109,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
       </div>
 
       {/* Fixed bottom content */}
-      {/* <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
+      {/* <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white  z-20">
         settings
       </div> */}
     </aside>

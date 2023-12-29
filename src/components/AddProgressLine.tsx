@@ -38,21 +38,10 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
   return (
     <>
       <div className="flex flex-col gap-2 mt-3">
-        {/* <input
-          type="date"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2 dark:bg-gray-700 dark:border-gray-600  dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-          value={progressEntry.date.toISOString().substring(0, 10)}
-          onChange={(e) =>
-            setProgressEntry({
-              ...progressEntry,
-              date: new Date(e.target.value)
-            })
-          }
-        /> */}
         <div className="flex items-center gap-2">
           <input
             type="text"
-            className="flex-grow bg-gray-50 border placeholder-gray-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            className="flex-grow bg-gray-50 border placeholder-gray-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2"
             value={progressEntry.description}
             onChange={(e) =>
               setProgressEntry({

@@ -48,7 +48,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
 
   return (
     <>
-      <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+      <tr className="border-b hover:bg-gray-100  ">
         {/* icon appearing before task */}
         <td className="p-4 w-4">
           <StatusRowIcon task={task} />
@@ -56,7 +56,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
         {/* task title */}
         <th
           scope="row"
-          className="px-4 py-3 font-medium text-gray-900 whitespace-normal dark:text-white min-w-[15rem] cursor-pointer"
+          className="px-4 py-3 font-medium text-gray-900 whitespace-normal  min-w-[15rem] cursor-pointer"
           onClick={handleOpenViewModal}
         >
           <div
@@ -67,15 +67,12 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             {task.title}
           </div>
         </th>
-        {/* progress */}
-        <td
-          className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
-          onClick={handleOpenViewModal}
-        >
-          <ProgressIndicator number={task.progress.length} />
+        {/* tags */}
+        <td className="px-4 py-3">
+          <TagGroup tags={task.tags} />
         </td>
         {/* options */}
-        <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
           <div className="flex items-center space-x-4">
             {/* edit button */}
             <Button
@@ -98,7 +95,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             {/* delete button - only in archived table */}
             {task.status === "archived" && (
               <Button
-                variant="outlined"
+                variant="danger"
                 icon={DeleteSVG}
                 onClick={handleOpenDeleteModal}
               >
@@ -107,9 +104,12 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             )}
           </div>
         </td>
-        {/* tags */}
-        <td className="px-4 py-3">
-          <TagGroup tags={task.tags} />
+        {/* progress */}
+        <td
+          className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap  cursor-pointer"
+          onClick={handleOpenViewModal}
+        >
+          <ProgressIndicator number={task.progress.length} />
         </td>
       </tr>
     </>

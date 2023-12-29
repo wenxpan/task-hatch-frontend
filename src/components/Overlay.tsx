@@ -15,7 +15,7 @@ const Overlay: React.FC<OverlayProps> = ({
     isOpen && (
       <>
         <div
-          className={`bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-${zIndex}`}
+          className={`bg-gray-900/50 fixed inset-0 z-${zIndex}`}
           onClick={toggleOverlay}
         ></div>
       </>
