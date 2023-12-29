@@ -74,7 +74,7 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
             <div className="flex items-center flex-wrap">
               {stats.topTags.map((t) => (
                 <Link
-                  className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 my-1 rounded dark:bg-primary-900 dark:text-primary-300"
+                  className="bg-yellow-200 text-yellow-800 text-xs font-medium px-2 py-0.5 mx-1 rounded whitespace-nowrap mr-2 my-1"
                   key={t.tag}
                   to={`/tasks?tag=${t.tag}`}
                 >

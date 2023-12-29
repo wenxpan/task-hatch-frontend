@@ -7,6 +7,7 @@ import { Task } from "../types/task"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
 import EditTask from "./EditTask"
+import TagGroup from "./TagGroup"
 // import { handleError } from "../utils/handleError"
 
 interface Props {
@@ -62,14 +63,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
             Tags
           </dt>
           <dd className="flex items-center text-gray-500 dark:text-gray-400">
-            {task.tags.map((t) => (
-              <span
-                className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
-                key={t}
-              >
-                {t}
-              </span>
-            ))}
+            <TagGroup tags={task.tags} />
           </dd>
         </div>
         <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 col-span-2 sm:col-span-1">

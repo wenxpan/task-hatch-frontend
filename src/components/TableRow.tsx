@@ -12,6 +12,7 @@ import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
 import StatusRowIcon from "./StatusRowIcon"
 import useTaskActions from "../hooks/useTaskActions"
 import Button from "./Button"
+import TagGroup from "./TagGroup"
 
 interface TableRowProps {
   task: Task
@@ -108,14 +109,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
         </td>
         {/* tags */}
         <td className="px-4 py-3">
-          {task.tags.map((t) => (
-            <span
-              className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mx-1 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
-              key={t}
-            >
-              {t}
-            </span>
-          ))}
+          <TagGroup tags={task.tags} />
         </td>
       </tr>
     </>

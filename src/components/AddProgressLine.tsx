@@ -4,6 +4,7 @@ import AddSVG from "./icons/AddSVG"
 import TaskContext from "../state/TaskContext"
 import { updateTaskAPI } from "../services/taskService"
 import { handleError } from "../utils/handleError"
+import Button from "./Button"
 
 interface Props {
   task: Task
@@ -61,12 +62,7 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
             }
             placeholder="add progress here"
           />
-          <button
-            className="text-primary-700 rounded-lg hover:bg-gray-100 p-2"
-            onClick={handleAddProgress}
-          >
-            <AddSVG className="h-6 w-6" />
-          </button>
+          <Button variant="text" icon={AddSVG} onClick={handleAddProgress} />
         </div>
       </div>
     </>

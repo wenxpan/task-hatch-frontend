@@ -4,7 +4,7 @@ import React from "react"
 interface Props {
   variant: "text" | "solid" | "outlined"
   icon?: React.ElementType
-  children: React.ReactNode
+  children?: React.ReactNode
   onClick?(): void
 }
 
@@ -20,7 +20,7 @@ const Button: React.FC<Props> = ({
       "text-yellow-900 bg-yellow-300 hover:bg-yellow-400 hover:text-yellow-950 active:bg-yellow-500 active:text-black focus:ring-yellow-500",
     outlined:
       "text-yellow-700 border border-yellow-700 hover:bg-yellow-50 active:bg-yellow-100 focus:ring-yellow-50",
-    text: "text-yellow-700 hover:bg-yellow-50 active:bg-yellow-100 focus:ring-yellow-50"
+    text: "text-yellow-700 hover:bg-yellow-200 active:bg-yellow-300 focus:ring-yellow-50"
   }
 
   return (
@@ -30,7 +30,7 @@ const Button: React.FC<Props> = ({
       onClick={onClick}
       {...rest}
     >
-      {Icon && <Icon className="w-6 h-5 me-2 -ms-1" />}
+      {Icon && <Icon className="w-6 h-5" />}
       {children}
     </button>
   )

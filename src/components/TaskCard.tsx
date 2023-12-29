@@ -5,6 +5,7 @@ import { useModal } from "../state/ModalContext"
 import ViewTask from "./ViewTask"
 import FullscreenSVG from "./icons/FullscreenSVG"
 import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
+import TagGroup from "./TagGroup"
 
 interface CardProps {
   task: Task
@@ -35,14 +36,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
           </span>
         </h5>
       </button>
-      {task.tags.map((t) => (
-        <span
-          className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap"
-          key={t}
-        >
-          {t}
-        </span>
-      ))}
+      <TagGroup tags={task.tags} />
       <p className="font-normal text-gray-700 dark:text-gray-400 mb-3">
         {task.doReason}
       </p>
@@ -54,7 +48,6 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
         </div>
       ))}
       <AddProgressLine task={task} />
-      {/* <ProgressIndicator number={task.progress.length} /> */}
     </div>
   )
 }
