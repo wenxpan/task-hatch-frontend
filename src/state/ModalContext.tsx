@@ -47,7 +47,6 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   }
 
   const showViewModal = (task: Task) => {
-    console.log("view modal clicked")
     showModal({
       title: "Task info",
       content: <ViewTask task={task} />,

@@ -9,12 +9,16 @@ interface StatusRadioInputProps {
   action?: React.ReactNode
   disabled?: boolean
   error?: string | boolean | null
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const StatusRadioInput = React.forwardRef<
   HTMLInputElement,
   StatusRadioInputProps
->(function StatusRadioInput({ action, disabled, error, ...rest }, ref) {
+>(function StatusRadioInput(
+  { action, disabled, error, onChange, ...rest },
+  ref
+) {
   const statusOptions = [
     {
       name: "archived",
@@ -53,25 +57,24 @@ const StatusRadioInput = React.forwardRef<
             role="group"
           >
             {statusOptions.map((option) => (
-              <>
-                <div className="flex items-center" key={option.name}>
-                  <input
-                    {...rest}
-                    ref={ref}
-                    type="radio"
-                    id={option.name}
-                    value={option.name}
-                    className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 checked:bg-blue-200 peer hidden"
-                  />
-                  <label
-                    htmlFor={option.name}
-                    className={`cursor-pointer inline-flex items-center rounded-lg capitalize whitespace-nowrap px-4 py-2 text-sm font-medium hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 ${option.color} peer-checked:text-white`}
-                  >
-                    <option.icon className="h-4 w-4" />
-                    {option.name}
-                  </label>
-                </div>
-              </>
+              <div className="flex items-center" key={option.name}>
+                <input
+                  {...rest}
+                  ref={ref}
+                  type="radio"
+                  id={option.name}
+                  value={option.name}
+                  onChange={onChange}
+                  className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 checked:bg-blue-200 peer hidden"
+                />
+                <label
+                  htmlFor={option.name}
+                  className={`cursor-pointer inline-flex items-center rounded-lg capitalize whitespace-nowrap px-4 py-2 text-sm font-medium hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 ${option.color} peer-checked:text-white`}
+                >
+                  <option.icon className="h-4 w-4" />
+                  {option.name}
+                </label>
+              </div>
             ))}
           </div>
         </label>

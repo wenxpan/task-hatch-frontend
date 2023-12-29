@@ -1,52 +1,50 @@
 import React from "react"
-// import React, { useContext, useState } from "react"
 import { Task } from "../types/task"
-// import StatusRadioInput from "./StatusRadioInput"
-// import TaskContext from "../state/TaskContext"
-// import { updateTaskAPI } from "../services/taskService"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
 import TagGroup from "./TagGroup"
 import Button from "./Button"
-// import { handleError } from "../utils/handleError"
+import { useForm } from "react-hook-form"
+import useTaskActions from "../hooks/useTaskActions"
+import StatusRadioInput from "./StatusRadioInput"
+import { handleError } from "../utils/handleError"
 
 interface Props {
   task: Task
 }
 
 const ViewTask: React.FC<Props> = ({ task }) => {
-  // const { tasksDispatch } = useContext(TaskContext)
-
-  // const [status, setStatus] = useState(task.status)
-
   const { showEditModal } = useModal()
 
-  // const handleChangeStatus = async (newStatus: TaskStatus) => {
-  //   try {
-  //     const updatedTask = {
-  //       ...task,
-  //       status: newStatus
-  //     }
-  //     const newTask = await updateTaskAPI(updatedTask)
-  //     tasksDispatch({ type: "update_task", task: newTask })
-  //     setStatus(newStatus)
-  //   } catch (e) {
-  //     handleError(e as Error)
-  //   }
-  // }
+  const { updateStatus } = useTaskActions()
+
+  const { register } = useForm({
+    defaultValues: {
+      ...task,
+      status: task.status
+    } as Task
+  })
+
+  const onStatusChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      await updateStatus(task, { status: e.target.value })
+    } catch (e) {
+      handleError(e as Error)
+    }
+  }
 
   return (
-    <>
+    <form>
       <h1 className="text-2xl font-semibold mb-4">{task.title}</h1>
       <dl className="grid grid-cols-2 gap-4 my-4">
         <div className="col-span-2 place-self-start">
           <h2 className="mb-2 font-semibold leading-none text-gray-900 ">
             Status
           </h2>
-          {/* <StatusRadioInput
-            status={status}
-            onChangeStatus={handleChangeStatus}
-          /> */}
+          <StatusRadioInput
+            {...register("status")}
+            onChange={(e) => onStatusChange(e)}
+          />
         </div>
         {/* tags */}
         <div className="col-span-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
@@ -105,7 +103,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
           <p>Date Added: {task.dateAdded.toString().slice(0, 10)}</p>
         </div>
       </dl>
-    </>
+    </form>
   )
 }
 

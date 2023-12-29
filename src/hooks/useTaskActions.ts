@@ -44,6 +44,7 @@ const useTaskActions = () => {
         type: "update_task",
         task: updatedTask
       })
+      return updatedTask
     } catch (e) {
       handleError(e as Error)
     }
