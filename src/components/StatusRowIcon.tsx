@@ -16,7 +16,7 @@ const StatusRowIcon: React.FC<StatusButtonsProps> = ({ task }) => {
     <>
       <button onClick={() => toggleStatus(task, "prioritised")}>
         {task.status === "prioritised" && (
-          <PinFillSVG className="h-5 w-5 cursor-pointer hover:text-amber-400" />
+          <PinFillSVG className="h-5 w-5 cursor-pointer text-amber-400 hover:text-gray-600" />
         )}
       </button>
       <button onClick={() => toggleStatus(task, "prioritised")}>

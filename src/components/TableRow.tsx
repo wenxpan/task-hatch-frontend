@@ -11,6 +11,7 @@ import DeleteTask from "./DeleteTask"
 import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
 import StatusRowIcon from "./StatusRowIcon"
 import useTaskActions from "../hooks/useTaskActions"
+import Button from "./Button"
 
 interface TableRowProps {
   task: Task
@@ -75,31 +76,33 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
         {/* options */}
         <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
           <div className="flex items-center space-x-4">
-            <button
-              type="button"
-              className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            {/* edit button */}
+            <Button
+              variant="solid"
+              icon={EditSVG}
               onClick={handleOpenEditModal}
             >
-              <EditSVG className="h-4 w-4 mr-2 -ml-0.5" />
               Edit
-            </button>
-            <button
-              type="button"
-              className="flex items-center text-amber-700 hover:text-white border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-amber-500 dark:text-amber-500 dark:hover:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-900"
+            </Button>
+
+            {/* archive/unarchive button */}
+            <Button
+              variant="outlined"
+              icon={ArchiveSVG}
               onClick={() => toggleStatus(task, "archived")}
             >
-              <ArchiveSVG className="h-4 w-4 mr-2 -ml-0.5 hover:fill-white" />
               {task.status === "archived" ? "Unarchive" : "Archive"}
-            </button>
+            </Button>
+
+            {/* delete button - only in archived table */}
             {task.status === "archived" && (
-              <button
-                type="button"
-                className="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+              <Button
+                variant="outlined"
+                icon={DeleteSVG}
                 onClick={handleOpenDeleteModal}
               >
-                <DeleteSVG className="h-4 w-4 mr-2 -ml-0.5" />
                 Delete
-              </button>
+              </Button>
             )}
           </div>
         </td>

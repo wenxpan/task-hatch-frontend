@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(function Input(
 ) {
   return (
     <div>
-      <label className="block mb-2 text-sm font-medium text-gray-900">
+      <label className="block mb-2 text-sm font-medium text-gray-900 capitalize">
         {labelText}
         <div className="mt-1 flex rounded-md shadow-sm">
           <input
