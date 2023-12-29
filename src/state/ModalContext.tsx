@@ -1,22 +1,28 @@
 import React, { createContext, useContext, useState } from "react"
 import Modal from "../components/Modal"
 import { useNavigate } from "react-router-dom"
+import ViewTask from "../components/ViewTask"
+import { Task } from "../types/task"
+import EditTask from "../components/EditTask"
+import DeleteTask from "../components/DeleteTask"
+import CreateTask from "../components/CreateTask"
+
+type ModalInfo = {
+  content: React.ReactNode
+  title: string
+  isExpandable: boolean
+  expandLink: string
+}
 
 type ModalContextType = {
-  showModal: (
-    content: React.ReactNode,
-    title: string,
-    isExpandable: boolean,
-    expandLink: string
-  ) => void
+  showModal: (info: ModalInfo) => void
   hideModal: () => void
+  showViewModal: (task: Task) => void
+  showEditModal: (task: Task) => void
+  showDeleteModal: (task: Task) => void
+  showCreateModal: () => void
   expandModal: (link: string) => void
-  modalInfo: {
-    title: string
-    content: React.ReactNode
-    isExpandable: boolean
-    expandLink: string
-  }
+  modalInfo: ModalInfo
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
@@ -27,34 +33,65 @@ interface ModalProviderProps {
 
 export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const nav = useNavigate()
 
-  const [modalInfo, setModalInfo] = useState({
+  const [modalInfo, setModalInfo] = useState<ModalInfo>({
     title: "",
-    content: null as React.ReactNode,
+    content: null,
     isExpandable: false,
     expandLink: ""
   })
-  const showModal = (
-    content: React.ReactNode,
-    title: string,
-    isExpandable = false,
-    expandLink: string
-  ) => {
-    setModalInfo({ title, content, isExpandable, expandLink })
+  const showModal = (info: ModalInfo) => {
+    setModalInfo(info)
     setIsModalOpen(true)
+  }
+
+  const showViewModal = (task: Task) => {
+    console.log("view modal clicked")
+    showModal({
+      title: "Task info",
+      content: <ViewTask task={task} />,
+      isExpandable: true,
+      expandLink: `/tasks/${task._id}`
+    })
+  }
+
+  const showEditModal = (task: Task) => {
+    showModal({
+      title: "Edit Task",
+      content: <EditTask task={task} onSave={hideModal} editContext="modal" />,
+      isExpandable: true,
+      expandLink: `/tasks/${task._id}/edit`
+    })
+  }
+
+  const showDeleteModal = (task: Task) => {
+    showModal({
+      title: "Delete Task",
+      content: <DeleteTask task={task} closeModal={hideModal} />,
+      isExpandable: false,
+      expandLink: ""
+    })
+  }
+
+  const showCreateModal = () => {
+    showModal({
+      title: "New task",
+      content: <CreateTask onComplete={hideModal} />,
+      isExpandable: true,
+      expandLink: "/new"
+    })
   }
 
   const hideModal = () => {
     setIsModalOpen(false)
     setModalInfo({
       title: "",
-      content: null as React.ReactNode,
+      content: null,
       isExpandable: false,
       expandLink: ""
     })
   }
-
-  const nav = useNavigate()
 
   const expandModal = () => {
     nav(modalInfo.expandLink)
@@ -65,6 +102,10 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
     <ModalContext.Provider
       value={{
         showModal,
+        showViewModal,
+        showEditModal,
+        showDeleteModal,
+        showCreateModal,
         hideModal,
         expandModal,
         modalInfo

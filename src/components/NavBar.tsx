@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"
 import MenuSVG from "./icons/MenuSVG"
 import NewSVG from "./icons/NewSVG"
 import { useModal } from "../state/ModalContext"
-import CreateTask from "./CreateTask"
+import Button from "./Button"
 
 // props types
 interface NavBarProps {
@@ -17,7 +17,7 @@ const NavBar: React.FC<NavBarProps> = ({
   logo,
   toggleOverlay
 }) => {
-  const { showModal, hideModal } = useModal()
+  const { showCreateModal } = useModal()
 
   return (
     <nav className="bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-50">
@@ -42,20 +42,9 @@ const NavBar: React.FC<NavBarProps> = ({
 
         {/* Right Section of navbar */}
         <div className="flex items-center">
-          <button
-            className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100"
-            onClick={() =>
-              showModal(
-                <CreateTask onComplete={hideModal} />,
-                "New task",
-                true,
-                "/new"
-              )
-            }
-          >
-            <NewSVG />
-            <span className="ml-3 hidden md:inline">New task</span>
-          </button>
+          <Button variant="solid" icon={NewSVG} onClick={showCreateModal}>
+            New Task
+          </Button>
         </div>
       </div>
     </nav>

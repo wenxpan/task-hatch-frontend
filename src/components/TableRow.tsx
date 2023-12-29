@@ -5,9 +5,6 @@ import { Task } from "../types/task"
 import ArchiveSVG from "./icons/ArchiveSVG"
 import DeleteSVG from "./icons/DeleteSVG"
 import { useModal } from "../state/ModalContext"
-import ViewTask from "./ViewTask"
-import EditTask from "./EditTask"
-import DeleteTask from "./DeleteTask"
 import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
 import StatusRowIcon from "./StatusRowIcon"
 import useTaskActions from "../hooks/useTaskActions"
@@ -20,29 +17,7 @@ interface TableRowProps {
 
 const TableRow: React.FC<TableRowProps> = ({ task }) => {
   const { toggleStatus } = useTaskActions()
-  const { showModal, hideModal } = useModal()
-
-  const handleOpenViewModal = () => {
-    showModal(<ViewTask task={task} />, "Task info", true, `/tasks/${task._id}`)
-  }
-
-  const handleOpenEditModal = () => {
-    showModal(
-      <EditTask task={task} onSave={hideModal} editContext="modal" />,
-      "Edit Task",
-      true,
-      `/tasks/${task._id}/edit`
-    )
-  }
-
-  const handleOpenDeleteModal = () => {
-    showModal(
-      <DeleteTask task={task} closeModal={hideModal} />,
-      "Delete Task",
-      false,
-      ""
-    )
-  }
+  const { showViewModal, showEditModal, showDeleteModal } = useModal()
 
   const snoozeDaysLeft = calculateSnoozeDaysLeft(task.snoozeUntil)
 
@@ -57,7 +32,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
         <th
           scope="row"
           className="px-4 py-3 font-medium text-gray-900 whitespace-normal  min-w-[15rem] cursor-pointer"
-          onClick={handleOpenViewModal}
+          onClick={() => showViewModal(task)}
         >
           <div
             className={`mr-3 ${task.status === "completed" && "line-through"}`}
@@ -78,7 +53,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
             <Button
               variant="solid"
               icon={EditSVG}
-              onClick={handleOpenEditModal}
+              onClick={() => showEditModal(task)}
             >
               Edit
             </Button>
@@ -97,7 +72,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
               <Button
                 variant="danger"
                 icon={DeleteSVG}
-                onClick={handleOpenDeleteModal}
+                onClick={() => showDeleteModal(task)}
               >
                 Delete
               </Button>
@@ -107,7 +82,7 @@ const TableRow: React.FC<TableRowProps> = ({ task }) => {
         {/* progress */}
         <td
           className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap  cursor-pointer"
-          onClick={handleOpenViewModal}
+          onClick={() => showViewModal(task)}
         >
           <ProgressIndicator number={task.progress.length} />
         </td>

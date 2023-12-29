@@ -6,7 +6,6 @@ import { Task } from "../types/task"
 // import { updateTaskAPI } from "../services/taskService"
 import { useModal } from "../state/ModalContext"
 import EditSVG from "./icons/EditSVG"
-import EditTask from "./EditTask"
 import TagGroup from "./TagGroup"
 import Button from "./Button"
 // import { handleError } from "../utils/handleError"
@@ -20,7 +19,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
 
   // const [status, setStatus] = useState(task.status)
 
-  const { hideModal, showModal } = useModal()
+  const { showEditModal } = useModal()
 
   // const handleChangeStatus = async (newStatus: TaskStatus) => {
   //   try {
@@ -35,15 +34,6 @@ const ViewTask: React.FC<Props> = ({ task }) => {
   //     handleError(e as Error)
   //   }
   // }
-
-  const handleEditTask = () => {
-    showModal(
-      <EditTask task={task} onSave={hideModal} editContext="modal" />,
-      "Edit Task",
-      true,
-      `/tasks/${task._id}/edit`
-    )
-  }
 
   return (
     <>
@@ -108,7 +98,7 @@ const ViewTask: React.FC<Props> = ({ task }) => {
             variant="solid"
             type="button"
             icon={EditSVG}
-            onClick={handleEditTask}
+            onClick={() => showEditModal(task)}
           >
             Edit
           </Button>
