@@ -1,13 +1,7 @@
 import * as React from "react"
 
 const AddSVG = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    fill="currentColor"
-    viewBox="0 0 20 20"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-    {...props}
-  >
+  <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" {...props}>
     <path
       clipRule="evenodd"
       fillRule="evenodd"

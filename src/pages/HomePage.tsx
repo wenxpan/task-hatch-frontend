@@ -57,24 +57,25 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
       {/* stats */}
       <div className="px-2 lg:px-12 max-w-4xl">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow">
             <h4>Ongoing Tasks</h4>
             <p className="mt-5 font-bold text-2xl">{stats.tasksToDo}</p>
           </div>
-          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow">
             <h4>Tasks Completed</h4>
             <p className="mt-5 font-bold text-2xl">{stats.tasksCompleted}</p>
           </div>
-          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow">
             <h4>Total Tasks</h4>
             <p className="mt-5 font-bold text-2xl">{stats.totalTasks}</p>
           </div>
-          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+          <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow">
             <h4>Top Tags</h4>
             <div className="flex items-center flex-wrap">
               {stats.topTags.map((t) => (
                 <Link
-                  className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 mr-2 my-1 rounded dark:bg-primary-900 dark:text-primary-300"
+                  className="bg-yellow-200 text-yellow-800 text-xs font-medium px-2 py-0.5 mx-1 rounded whitespace-nowrap mr-2 my-1"
+                  key={t.tag}
                   to={`/tasks?tag=${t.tag}`}
                 >
                   {t.tag} ({t.taskCount})
@@ -116,7 +117,7 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
             Random Task
           </h4>
           <button
-            className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100"
             onClick={drawRandomTask}
           >
             <ShuffleSVG />

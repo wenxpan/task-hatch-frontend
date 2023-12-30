@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ children }) => {
       >
         <div className="relative p-4 w-full max-w-2xl max-h-full">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+          <div className="relative p-4 bg-white rounded-lg shadow sm:p-5">
             <ModalHeader />
             {/* <!-- Modal body --> */}
             {children}

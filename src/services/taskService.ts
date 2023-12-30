@@ -9,31 +9,31 @@ API.interceptors.request.use((req) => {
 })
 
 // GET: Fetch tasks
-export const fetchTasks = async () => {
+export const fetchTasksAPI = async () => {
   const res = await API.get("/tasks")
   return res.data
 }
 
 // GET: Fetch unique tags
-export const fetchTags = async () => {
+export const fetchTagsAPI = async () => {
   const res: AxiosResponse<string[]> = await API.get("/tags")
   return res.data
 }
 
 // GET: Fetch stats
-export const fetchStats = async () => {
+export const fetchStatsAPI = async () => {
   const res: AxiosResponse<Stats> = await API.get("/users/stats")
   return res.data
 }
 
 // GET: Fetch one task
-export const fetchOneTask = async (id: string) => {
+export const fetchOneTaskAPI = async (id: string) => {
   const res: AxiosResponse<Task> = await API.get(`/tasks/${id}`)
   return res.data
 }
 
 // POST: Add a new task
-export const addTask = async (newTask: Partial<Task>) => {
+export const addTaskAPI = async (newTask: Partial<Task>) => {
   try {
     const res: AxiosResponse<Task> = await API.post("/tasks", newTask)
     return res.data
@@ -53,7 +53,7 @@ export const addTask = async (newTask: Partial<Task>) => {
 }
 
 // PUT: Update a task
-export const updateTask = async (updatedTask: Partial<Task>) => {
+export const updateTaskAPI = async (updatedTask: Partial<Task>) => {
   try {
     const res = await API.put(`/tasks/${updatedTask._id}`, updatedTask)
     return res.data
@@ -73,4 +73,4 @@ export const updateTask = async (updatedTask: Partial<Task>) => {
 }
 
 // DELETE: Delete a task
-export const deleteTask = (id: string) => API.delete(`/tasks/${id}`)
+export const deleteTaskAPI = (id: string) => API.delete(`/tasks/${id}`)

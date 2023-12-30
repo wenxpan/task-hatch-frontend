@@ -1,5 +1,5 @@
 export interface ProgressEntry {
-  date: Date
+  date: Date | string
   description: string
 }
 
@@ -10,31 +10,28 @@ export type TaskStatus =
   | "snoozed"
   | "archived"
 
-export interface Task {
-  _id: string
+// newly created task
+export type BaseTask = {
   title: string
-  dateAdded: Date
   status: TaskStatus
-  snoozeUntil: Date
+  tags: string[]
   doReason: string
   delayReason: string
   notes?: string
-  tags: string[]
-  progress: ProgressEntry[]
 }
 
-export type NewTask = Pick<
-  Task,
-  "title" | "tags" | "delayReason" | "doReason" | "notes"
->
+export type Task = BaseTask & {
+  _id: string
+  dateAdded: Date
+  snoozeUntil: Date
+  progress: ProgressEntry[]
+}
 
 export type TaskAction =
   | { type: "set_tasks"; tasks: Task[] }
   | { type: "add_task"; task: Task }
   | { type: "update_task"; task: Task }
   | { type: "delete_task"; task: Task }
-// | { type: "toggle_completed"; task: Task }
-// | { type: "toggle_archived"; task: Task };
 
 export interface Stats {
   totalTasks: number

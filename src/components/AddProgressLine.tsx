@@ -2,8 +2,9 @@ import React, { useContext, useState } from "react"
 import { ProgressEntry, Task } from "../types/task"
 import AddSVG from "./icons/AddSVG"
 import TaskContext from "../state/TaskContext"
-import { toast } from "react-toastify"
-import { updateTask } from "../services/taskService"
+import { updateTaskAPI } from "../services/taskService"
+import { handleError } from "../utils/handleError"
+import Button from "./Button"
 
 interface Props {
   task: Task
@@ -26,33 +27,21 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
         ...task,
         progress: [...task.progress, progressEntry]
       }
-      const taskData = await updateTask(editedTask)
+      const taskData = await updateTaskAPI(editedTask)
       tasksDispatch({ type: "update_task", task: taskData })
       setProgressEntry((prev) => ({ ...prev, description: "" }))
     } catch (e) {
-      console.error((e as Error).message)
-      toast.error((e as Error).message)
+      handleError(e as Error)
     }
   }
 
   return (
     <>
       <div className="flex flex-col gap-2 mt-3">
-        {/* <input
-          type="date"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2 dark:bg-gray-700 dark:border-gray-600  dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-          value={progressEntry.date.toISOString().substring(0, 10)}
-          onChange={(e) =>
-            setProgressEntry({
-              ...progressEntry,
-              date: new Date(e.target.value)
-            })
-          }
-        /> */}
         <div className="flex items-center gap-2">
           <input
             type="text"
-            className="flex-grow bg-gray-50 border placeholder-gray-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            className="flex-grow bg-gray-50 border placeholder-gray-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2"
             value={progressEntry.description}
             onChange={(e) =>
               setProgressEntry({
@@ -62,12 +51,7 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
             }
             placeholder="add progress here"
           />
-          <button
-            className="text-primary-700 rounded-lg hover:bg-gray-100 p-2"
-            onClick={handleAddProgress}
-          >
-            <AddSVG className="h-6 w-6" />
-          </button>
+          <Button variant="text" icon={AddSVG} onClick={handleAddProgress} />
         </div>
       </div>
     </>

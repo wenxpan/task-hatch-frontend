@@ -12,7 +12,7 @@ interface TableProps {
 const Table: React.FC<TableProps> = ({ tasks, children }) => {
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 relative lg:shadow-md sm:rounded-lg overflow-hidden">
+      <div className="bg-white  relative lg:shadow-md sm:rounded-lg overflow-hidden">
         <div className="mb-2 bg-gray-50 lg:bg-transparent rounded-lg shadow lg:shadow-none">
           {children}
         </div>
@@ -26,7 +26,7 @@ const Table: React.FC<TableProps> = ({ tasks, children }) => {
             )}
           </section>
           {/* lg screen - table layout */}
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 hidden lg:table">
+          <table className="w-full text-sm text-left text-gray-500 hidden lg:table">
             <TableHeader></TableHeader>
             <tbody>
               {tasks.length ? (
