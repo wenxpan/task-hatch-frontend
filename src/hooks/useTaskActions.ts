@@ -3,11 +3,13 @@ import TaskContext from "../state/TaskContext"
 import { BaseTask, Task } from "../types/task"
 import {
   addTaskAPI,
+  deleteTaskAPI,
   fetchTagsAPI,
   updateTaskAPI
 } from "../services/taskService"
 import { handleError } from "../utils/handleError"
 import cleanTags from "../utils/cleanTags"
+import { toast } from "react-toastify"
 
 const useTaskActions = () => {
   const { tasksDispatch, setTags } = useContext(TaskContext)
@@ -33,6 +35,16 @@ const useTaskActions = () => {
       return postedTask
     } catch (e) {
       handleError(e as Error, "Error creating task")
+    }
+  }
+
+  const deleteTask = async (task: Task) => {
+    try {
+      await deleteTaskAPI(task._id)
+      tasksDispatch({ type: "delete_task", task: task })
+      toast.success(`"${task.title}" deleted`)
+    } catch (e) {
+      console.error((e as Error).message)
     }
   }
 
@@ -71,7 +83,14 @@ const useTaskActions = () => {
     await updateStatus(task, { status: newStatus })
   }
 
-  return { createTask, updateTask, updateStatus, toggleStatus, refreshTags }
+  return {
+    createTask,
+    updateTask,
+    deleteTask,
+    updateStatus,
+    toggleStatus,
+    refreshTags
+  }
 }
 
 export default useTaskActions

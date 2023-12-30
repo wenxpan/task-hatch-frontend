@@ -21,7 +21,7 @@ interface Props {
 
 const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
   const { refreshTags, updateTask } = useTaskActions()
-  const { hideModal } = useModal()
+  const { hideModal, showDeleteModal } = useModal()
   const nav = useNavigate()
 
   const {
@@ -170,7 +170,11 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
           <Button variant="outlined" onClick={(e) => handleCancel(e)}>
             Cancel
           </Button>
-          <Button variant="danger" icon={DeleteSVG}>
+          <Button
+            variant="danger"
+            icon={DeleteSVG}
+            onClick={() => showDeleteModal(task)}
+          >
             Delete
           </Button>
         </div>

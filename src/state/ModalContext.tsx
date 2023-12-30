@@ -67,7 +67,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const showDeleteModal = (task: Task) => {
     showModal({
       title: "Delete Task",
-      content: <DeleteTask task={task} closeModal={hideModal} />,
+      content: <DeleteTask task={task} />,
       isExpandable: false,
       expandLink: ""
     })
