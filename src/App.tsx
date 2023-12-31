@@ -1,7 +1,7 @@
 import "react-toastify/dist/ReactToastify.css"
 // import { useState } from "react"
 // import MainContainer from "./components/MainContainer"
-import LogInPage from "./pages/LogInPage"
+import RegisterPage from "./pages/RegisterPage"
 // import { Routes, Route, Navigate } from "react-router-dom"
 // import { ModalProvider } from "./state/ModalContext"
 // import { TaskProvider } from "./state/TaskContext"
@@ -24,7 +24,7 @@ function App() {
   //   setIsOverlayOn((prev: boolean) => !prev)
   // }
   return (
-    <LogInPage />
+    <RegisterPage />
     // <TaskProvider>
     //   <ModalProvider>
     //     <div className="antialiased">

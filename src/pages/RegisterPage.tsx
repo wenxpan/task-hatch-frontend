@@ -7,11 +7,13 @@ import Button from "../components/Button"
 interface Props {}
 
 type UserInfo = {
+  username: string
   email: string
   password: string
+  confirmedPassword: string
 }
 
-const LogInPage: React.FC<Props> = () => {
+const RegisterPage: React.FC<Props> = () => {
   const {
     register,
     handleSubmit,
@@ -19,7 +21,12 @@ const LogInPage: React.FC<Props> = () => {
   } = useForm<UserInfo>()
 
   const onSubmit: SubmitHandler<UserInfo> = async (data) => {
-    console.log(data)
+    const userInfo = {
+      username: data.username,
+      email: data.email,
+      password: data.password
+    }
+    console.log(userInfo)
   }
 
   return (
@@ -41,7 +48,7 @@ const LogInPage: React.FC<Props> = () => {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Sign in
+                Sign Up
               </h1>
               <form
                 className="space-y-4 md:space-y-6"
@@ -63,25 +70,26 @@ const LogInPage: React.FC<Props> = () => {
                   })}
                   error={errors.password?.message}
                 />
-                {/* <div className="flex items-center justify-end">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div> */}
-
+                <Input
+                  type="password"
+                  labelText="Confirm Password"
+                  {...register("confirmedPassword", {
+                    required: "Please enter password",
+                    validate: (value, formValues) =>
+                      value === formValues.password || "Passwords do not match"
+                  })}
+                  error={errors.confirmedPassword?.message}
+                />
                 <Button variant="solid" className="w-full" type="submit">
-                  Sign in
+                  Create an account
                 </Button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don't have an account yet?{" "}
+                  Already have an account?{" "}
                   <Link
-                    to={"/register"}
+                    to={"/login"}
                     className="font-medium text-yellow-800 hover:underline"
                   >
-                    Sign up
+                    Log in
                   </Link>
                 </p>
               </form>
@@ -93,4 +101,4 @@ const LogInPage: React.FC<Props> = () => {
   )
 }
 
-export default LogInPage
+export default RegisterPage

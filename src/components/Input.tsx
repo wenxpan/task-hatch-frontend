@@ -23,7 +23,9 @@ const Input = React.forwardRef<HTMLInputElement, Props>(function Input(
           name={name}
           id={id}
           disabled={disabled}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5 invalid:border-pink-500 focus:invalid:border-pink-500 shadow-sm mt-1"
+          className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5 invalid:border-pink-500 focus:invalid:border-pink-500 shadow-sm mt-1 ${
+            error && "border-pink-500 focus:border-pink-500"
+          }`}
           {...rest}
         />
       </label>

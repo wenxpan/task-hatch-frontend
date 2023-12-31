@@ -76,7 +76,7 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
             type="text"
             labelText="title"
             {...register("title", {
-              required: { value: true, message: "Please enter title" },
+              required: "Please enter title",
               maxLength: { value: 50, message: "Title too long" }
             })}
             error={errors.title?.message}
@@ -136,7 +136,7 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
                 <input
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 shadow-sm mt-1"
                   {...register(`progress.${index}.description` as const, {
-                    required: { value: true, message: "Please enter progress" }
+                    required: "Please enter progress"
                   })}
                 />
                 <Button

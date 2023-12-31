@@ -43,7 +43,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
           type="text"
           labelText="title"
           {...register("title", {
-            required: { value: true, message: "Please enter title" },
+            required: "Please enter title",
             maxLength: { value: 50, message: "Title too long" }
           })}
           error={errors.title?.message}
