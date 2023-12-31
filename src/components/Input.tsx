@@ -6,7 +6,7 @@ interface Props {
   id?: string
   labelText: string
   name?: string
-  type?: "text" | "date"
+  type?: "text" | "date" | "email" | "password"
 }
 
 const Input = React.forwardRef<HTMLInputElement, Props>(function Input(

@@ -1,16 +1,19 @@
 import React from "react"
-// import EditSVG from "./icons/EditSVG"
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: "text" | "solid" | "outlined" | "dangerIcon" | "danger"
   icon?: React.ElementType
+  className?: string
   children?: React.ReactNode
+  type?: "button" | "submit" | "reset"
 }
 
 const Button: React.FC<Props> = ({
   variant = "solid",
   icon: Icon,
+  className,
   children,
+  type = "button",
   ...rest
 }) => {
   const buttonStyles = {
@@ -26,10 +29,10 @@ const Button: React.FC<Props> = ({
 
   return (
     <button
-      type="button"
-      className={`font-medium rounded-lg text-sm text-center inline-flex gap-1 items-center focus:outline-none focus:ring-4 ${
+      type={type}
+      className={`font-medium rounded-lg text-sm text-center inline-flex gap-1 items-center justify-center focus:outline-none focus:ring-4 ${
         !children && variant === "dangerIcon" ? "" : "px-4 py-2.5"
-      } ${buttonStyles[variant]}`}
+      } ${buttonStyles[variant]} ${className}`}
       {...rest}
     >
       {Icon && <Icon className={`w-6 h-5`} />}
