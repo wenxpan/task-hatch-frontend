@@ -3,10 +3,25 @@ import { Stats, Task } from "../types/task"
 
 const API = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
-API.interceptors.request.use((req) => {
-  req.headers["x-api-key"] = import.meta.env.VITE_API_KEY
-  return req
-})
+// add api key to header
+// API.interceptors.request.use((req) => {
+//   req.headers["x-api-key"] = import.meta.env.VITE_API_KEY
+//   return req
+// })
+
+// add jwt token to header
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 // GET: Fetch tasks
 export const fetchTasksAPI = async () => {
