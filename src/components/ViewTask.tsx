@@ -1,6 +1,6 @@
 import React from "react"
 import { Task } from "../types/task"
-import { useModal } from "../state/ModalContext"
+import { useModal } from "../hooks/useModal"
 import EditSVG from "./icons/EditSVG"
 import TagGroup from "./TagGroup"
 import Button from "./Button"

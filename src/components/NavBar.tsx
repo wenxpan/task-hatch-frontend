@@ -2,7 +2,7 @@ import React from "react"
 import { NavLink } from "react-router-dom"
 import MenuSVG from "./icons/MenuSVG"
 import NewSVG from "./icons/NewSVG"
-import { useModal } from "../state/ModalContext"
+import { useModal } from "../hooks/useModal"
 import Button from "./Button"
 
 // props types

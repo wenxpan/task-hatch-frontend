@@ -3,7 +3,7 @@ import DeleteSVG from "./icons/DeleteSVG"
 import { Task } from "../types/task"
 import Button from "./Button"
 import useTaskActions from "../hooks/useTaskActions"
-import { useModal } from "../state/ModalContext"
+import { useModal } from "../hooks/useModal"
 
 interface Props {
   task: Task

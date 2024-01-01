@@ -1,7 +1,7 @@
 import React from "react"
 import { Task } from "../types/task"
 import AddProgressLine from "./AddProgressLine"
-import { useModal } from "../state/ModalContext"
+import { useModal } from "../hooks/useModal"
 import FullscreenSVG from "./icons/FullscreenSVG"
 import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
 import TagGroup from "./TagGroup"
