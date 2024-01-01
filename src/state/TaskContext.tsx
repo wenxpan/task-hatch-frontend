@@ -10,7 +10,7 @@ interface TaskContextType {
   tags: string[]
   setTags: (tags: string[]) => void
   stats: Stats
-  isLoaded: boolean
+  isTasksLoaded: boolean
 }
 
 const TaskContext = createContext<TaskContextType>({
@@ -24,7 +24,7 @@ const TaskContext = createContext<TaskContextType>({
     tasksToDo: 0,
     topTags: []
   },
-  isLoaded: false
+  isTasksLoaded: false
 })
 
 export default TaskContext
@@ -40,7 +40,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     tasksToDo: 0,
     topTags: []
   })
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isTasksLoaded, setIsTasksLoaded] = useState(false)
 
   useEffect(() => {
     const fetchAllTasks = async () => {
@@ -57,8 +57,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
         const statsData = await taskService.fetchStatsAPI()
         setStats(statsData)
 
-        // set loading state to true
-        setIsLoaded(true)
+        // set task loading state to true
+        setIsTasksLoaded(true)
       } catch (error) {
         console.error("Error fetching tasks: ", error)
       }
@@ -68,7 +68,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <TaskContext.Provider
-      value={{ tasks, tasksDispatch, tags, setTags, stats, isLoaded }}
+      value={{ tasks, tasksDispatch, tags, setTags, stats, isTasksLoaded }}
     >
       {children}
     </TaskContext.Provider>

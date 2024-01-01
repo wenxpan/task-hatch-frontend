@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react"
-import { Outlet } from "react-router-dom"
+import { Navigate, Outlet } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 import TaskContext from "../state/TaskContext"
 import NavBar from "./NavBar"
 import SideBar from "./SideBar"
 import Overlay from "./Overlay"
+import { useAuth } from "../hooks/useAuth"
 
 interface MainContainerProps {}
 
@@ -15,7 +16,14 @@ const MainContainer: React.FC<MainContainerProps> = ({}) => {
     setIsOverlayOn((prev: boolean) => !prev)
   }
 
-  const { isLoaded } = useContext(TaskContext)
+  const { isTasksLoaded } = useContext(TaskContext)
+
+  const { accessToken } = useAuth()
+
+  if (!accessToken) {
+    return <Navigate to="/login" />
+  }
+
   return (
     <>
       <NavBar
@@ -25,7 +33,7 @@ const MainContainer: React.FC<MainContainerProps> = ({}) => {
       />
       <SideBar isOverlayOn={isOverlayOn} />
       <main className="p-4 md:ml-64 h-auto pt-20">
-        {isLoaded ? <Outlet /> : <div>Loading...</div>}
+        {isTasksLoaded ? <Outlet /> : <div>Loading...</div>}
       </main>
       <ToastContainer />
       <Overlay isOpen={isOverlayOn} toggleOverlay={toggleOverlay} zIndex={30} />
