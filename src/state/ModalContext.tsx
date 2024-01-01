@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useState } from "react"
 import Modal from "../components/Modal"
 import { useNavigate } from "react-router-dom"
 import ViewTask from "../components/ViewTask"
@@ -26,6 +26,8 @@ type ModalContextType = {
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
+
+export default ModalContext
 
 interface ModalProviderProps {
   children: React.ReactNode
@@ -114,13 +116,4 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
       {isModalOpen && <Modal>{modalInfo.content}</Modal>}
     </ModalContext.Provider>
   )
-}
-
-// custom hook for accessing the modal context
-export const useModal = () => {
-  const context = useContext(ModalContext)
-  if (!context) {
-    throw new Error("useModal must be used within a ModalProvider")
-  }
-  return context
 }
