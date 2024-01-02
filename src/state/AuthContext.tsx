@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         setTokenUser(newAccessToken, newUser)
       } catch (error) {
-        console.error("Error refreshing token:", error)
+        clearTokenUser()
       }
       setIsAuthLoaded(true)
     }
