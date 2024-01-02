@@ -11,8 +11,19 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider")
   }
 
-  const { isAuthLoaded, accessToken, user, setTokenUser, clearTokenUser } =
-    context
+  const { setTokenUser, clearTokenUser, setIsAuthLoaded } = context
+
+  const refreshAccessToken = async () => {
+    try {
+      const { accessToken: newAccessToken, user: newUser } =
+        await authService.refreshToken()
+
+      setTokenUser(newAccessToken, newUser)
+    } catch (error) {
+      clearTokenUser()
+    }
+    setIsAuthLoaded(true)
+  }
 
   const loginUser = async (credentials: {
     email: string
@@ -46,11 +57,8 @@ export const useAuth = () => {
   }
 
   return {
-    isAuthLoaded,
-    accessToken,
-    user,
-    setTokenUser,
-    clearTokenUser,
+    ...context,
+    refreshAccessToken,
     loginUser,
     logoutUser,
     registerUser

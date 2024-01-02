@@ -1,8 +1,9 @@
 import React from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import Input from "../components/Input"
 import Button from "../components/Button"
+import { useAuth } from "../hooks/useAuth"
 
 interface Props {}
 
@@ -12,14 +13,19 @@ type UserInfo = {
 }
 
 const LogInPage: React.FC<Props> = () => {
+  const { accessToken } = useAuth()
+  if (accessToken) return <Navigate to="/home" />
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<UserInfo>()
 
+  const { loginUser } = useAuth()
   const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     console.log(data)
+    loginUser(data)
   }
 
   return (

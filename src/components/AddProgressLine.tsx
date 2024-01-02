@@ -5,6 +5,7 @@ import taskService from "../services/taskService"
 import { handleError } from "../utils/handleError"
 import Button from "./Button"
 import useTasks from "../hooks/useTasks"
+import { useAuth } from "../hooks/useAuth"
 
 interface Props {
   task: Task
@@ -18,6 +19,8 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
 
   const { tasksDispatch } = useTasks()
 
+  const { accessToken } = useAuth()
+
   const handleAddProgress = async () => {
     try {
       if (!progressEntry.description) {
@@ -27,7 +30,7 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
         ...task,
         progress: [...task.progress, progressEntry]
       }
-      const taskData = await taskService.updateTask(editedTask)
+      const taskData = await taskService.updateTask(editedTask, accessToken)
       tasksDispatch({ type: "update_task", task: taskData })
       setProgressEntry((prev) => ({ ...prev, description: "" }))
     } catch (e) {

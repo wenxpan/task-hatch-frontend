@@ -20,8 +20,10 @@ function App() {
       <TaskProvider>
         <ModalProvider>
           <Routes>
+            {/* landing routes */}
             <Route path="/login" element={<LogInPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            {/* protected routes */}
             <Route path="" element={<MainContainer />}>
               <Route index element={<Navigate to="/home" />}></Route>
               <Route path="/home" element={<HomePage />} />

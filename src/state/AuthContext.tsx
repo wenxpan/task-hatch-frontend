@@ -1,16 +1,23 @@
-import React, { createContext, useEffect, useState } from "react"
+import React, { createContext, useState } from "react"
 import { User } from "../types/user"
-import { authService } from "../services/authService"
 
 interface AuthContext {
   isAuthLoaded: boolean
-  accessToken: string | null
+  setIsAuthLoaded: (isAuthLoaded: boolean) => void
+  accessToken: string
   user: User | null
   setTokenUser: (newAccessToken: string, user: User) => void
   clearTokenUser: () => void
 }
 
-const AuthContext = createContext<AuthContext | null>(null)
+const AuthContext = createContext<AuthContext>({
+  isAuthLoaded: false,
+  setIsAuthLoaded: () => {},
+  accessToken: "",
+  user: null,
+  setTokenUser: () => {},
+  clearTokenUser: () => {}
+})
 
 export default AuthContext
 
@@ -19,7 +26,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [accessToken, setAccessToken] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [isAuthLoaded, setIsAuthLoaded] = useState(false)
 
@@ -29,29 +36,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const clearTokenUser = () => {
-    setAccessToken(null)
+    setAccessToken("")
     setUser(null)
   }
 
-  useEffect(() => {
-    const refreshAccessToken = async () => {
-      try {
-        const { accessToken: newAccessToken, user: newUser } =
-          await authService.refreshToken()
-
-        setTokenUser(newAccessToken, newUser)
-      } catch (error) {
-        clearTokenUser()
-      }
-      setIsAuthLoaded(true)
-    }
-
-    refreshAccessToken()
-  }, [])
-
   return (
     <AuthContext.Provider
-      value={{ isAuthLoaded, accessToken, user, setTokenUser, clearTokenUser }}
+      value={{
+        isAuthLoaded,
+        setIsAuthLoaded,
+        accessToken,
+        user,
+        setTokenUser,
+        clearTokenUser
+      }}
     >
       {children}
     </AuthContext.Provider>
