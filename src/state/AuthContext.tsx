@@ -1,17 +1,13 @@
-import axios from "axios"
 import React, { createContext, useEffect, useState } from "react"
-
-interface User {
-  id: string
-  username: string
-}
+import { User } from "../types/user"
+import { authService } from "../services/authService"
 
 interface AuthContext {
   isAuthLoaded: boolean
   accessToken: string | null
   user: User | null
-  login: (newAccessToken: string, user: User) => void
-  logout: () => void
+  setTokenUser: (newAccessToken: string, user: User) => void
+  clearTokenUser: () => void
 }
 
 const AuthContext = createContext<AuthContext | null>(null)
@@ -27,24 +23,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isAuthLoaded, setIsAuthLoaded] = useState(false)
 
-  const login = (newAccessToken: string, user: User) => {
+  const setTokenUser = (newAccessToken: string, newUser: User) => {
     setAccessToken(newAccessToken)
-    setUser(user)
+    setUser(newUser)
   }
 
-  const logout = () => {
+  const clearTokenUser = () => {
     setAccessToken(null)
     setUser(null)
-    // TODO: logout logic such as invalidating tokens
   }
 
   useEffect(() => {
     const refreshAccessToken = async () => {
       try {
-        const response = await axios.post("/refresh_token")
-        const { accessToken, user } = response.data
+        const { accessToken: newAccessToken, user: newUser } =
+          await authService.refreshToken()
 
-        login(accessToken, user)
+        setTokenUser(newAccessToken, newUser)
       } catch (error) {
         console.error("Error refreshing token:", error)
       }
@@ -56,7 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthLoaded, accessToken, user, login, logout }}
+      value={{ isAuthLoaded, accessToken, user, setTokenUser, clearTokenUser }}
     >
       {children}
     </AuthContext.Provider>

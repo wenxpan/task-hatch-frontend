@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import { Stats, Task } from "../types/task"
+import { useAuth } from "../hooks/useAuth"
 
 const API = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
@@ -12,9 +13,9 @@ const API = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 // add jwt token to header
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token")
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`
+    const { accessToken } = useAuth()
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`
     }
     return config
   },
@@ -23,69 +24,47 @@ API.interceptors.request.use(
   }
 )
 
-// GET: Fetch tasks
-export const fetchTasksAPI = async () => {
-  const res = await API.get("/tasks")
-  return res.data
-}
-
-// GET: Fetch unique tags
-export const fetchTagsAPI = async () => {
-  const res: AxiosResponse<string[]> = await API.get("/tags")
-  return res.data
-}
-
-// GET: Fetch stats
-export const fetchStatsAPI = async () => {
-  const res: AxiosResponse<Stats> = await API.get("/users/stats")
-  return res.data
-}
-
-// GET: Fetch one task
-export const fetchOneTaskAPI = async (id: string) => {
-  const res: AxiosResponse<Task> = await API.get(`/tasks/${id}`)
-  return res.data
-}
-
-// POST: Add a new task
-export const addTaskAPI = async (newTask: Partial<Task>) => {
-  try {
+const taskService = {
+  fetchTasks: async (): Promise<Task[]> => {
+    const res: AxiosResponse<Task[]> = await API.get("/tasks")
+    return res.data
+  },
+  fetchOneTask: async (id: string): Promise<Task> => {
+    const res: AxiosResponse<Task> = await API.get(`/tasks/${id}`)
+    return res.data
+  },
+  addTask: async (newTask: Partial<Task>): Promise<Task> => {
     const res: AxiosResponse<Task> = await API.post("/tasks", newTask)
     return res.data
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      // Log the error and throw the specific error message from the API
-      console.error("Error updating task:", error.response.data)
-      throw new Error(
-        error.response.data.error || "There was a problem updating the task."
-      )
-    } else {
-      // Handle non-Axios errors
-      console.error("Error updating task:", error)
-      throw new Error("There was a problem updating the task.")
-    }
-  }
-}
-
-// PUT: Update a task
-export const updateTaskAPI = async (updatedTask: Partial<Task>) => {
-  try {
-    const res = await API.put(`/tasks/${updatedTask._id}`, updatedTask)
+  },
+  updateTask: async (updatedTask: Partial<Task>): Promise<Task> => {
+    const res: AxiosResponse<Task> = await API.put(
+      `/tasks/${updatedTask._id}`,
+      updatedTask
+    )
     return res.data
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      // Log the error and throw the specific error message from the API
-      console.error("Error updating task:", error.response.data)
-      throw new Error(
-        error.response.data.error || "There was a problem updating the task."
-      )
-    } else {
-      // Handle non-Axios errors
-      console.error("Error updating task:", error)
-      throw new Error("There was a problem updating the task.")
-    }
+  },
+  deleteTask: async (id: string): Promise<void> => {
+    await API.delete(`/tasks/${id}`)
+  },
+
+  // User-specific details
+  fetchUserDetails: async (): Promise<{
+    tasks: Task[]
+    stats: Stats
+    tags: string[]
+  }> => {
+    const res: AxiosResponse<{ tasks: Task[]; stats: Stats; tags: string[] }> =
+      await API.get("/users/me/details")
+    return res.data
+  },
+  fetchUserStats: async (): Promise<Stats> => {
+    const res: AxiosResponse<Stats> = await API.get("/users/me/stats")
+    return res.data
+  },
+  fetchUserTags: async (): Promise<string[]> => {
+    const res: AxiosResponse<string[]> = await API.get("/users/me/tags")
+    return res.data
   }
 }
-
-// DELETE: Delete a task
-export const deleteTaskAPI = (id: string) => API.delete(`/tasks/${id}`)
+export default taskService

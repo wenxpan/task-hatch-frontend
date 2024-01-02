@@ -2,7 +2,8 @@ import { createContext, Dispatch, useEffect, useReducer, useState } from "react"
 import { Stats, Task } from "../types/task"
 import { TaskAction } from "../types/task"
 import taskReducer from "./taskReducer"
-import * as taskService from "../services/taskService"
+import taskService from "../services/taskService"
+import { useAuth } from "../hooks/useAuth"
 
 interface TaskContextType {
   tasks: Task[]
@@ -41,21 +42,16 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     topTags: []
   })
   const [isTasksLoaded, setIsTasksLoaded] = useState(false)
+  const { isAuthLoaded } = useAuth()
 
   useEffect(() => {
     const fetchAllTasks = async () => {
       try {
-        // fetch tasks
-        const taskData: Task[] = await taskService.fetchTasksAPI()
-        tasksDispatch({ type: "set_tasks", tasks: taskData })
-
-        // fetch tags
-        const tagData = await taskService.fetchTagsAPI()
-        setTags(tagData)
-
-        // fetch stats
-        const statsData = await taskService.fetchStatsAPI()
-        setStats(statsData)
+        // fetch details
+        const { tasks, stats, tags } = await taskService.fetchUserDetails()
+        tasksDispatch({ type: "set_tasks", tasks: tasks })
+        setStats(stats)
+        setTags(tags)
 
         // set task loading state to true
         setIsTasksLoaded(true)
@@ -63,7 +59,10 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Error fetching tasks: ", error)
       }
     }
-    fetchAllTasks()
+    // TODO
+    if (isAuthLoaded) {
+      fetchAllTasks()
+    }
   }, [])
 
   return (
