@@ -6,6 +6,8 @@ import ArchiveSVG from "./icons/ArchiveSVG"
 import BookmarkLineSVG from "./icons/BookmarkLineSVG"
 import AccordianSVG from "./icons/AccordianSVG"
 import useTasks from "../hooks/useTasks"
+import ExitSVG from "./icons/ExitSVG"
+import { useAuth } from "../hooks/useAuth"
 
 interface SideBarProps {
   isOverlayOn: boolean
@@ -25,12 +27,12 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
       name: "Tasks",
       link: "/tasks",
       svg: <TasksSVG className={svgClass} />
+    },
+    {
+      name: "Archive",
+      link: "/archive",
+      svg: <ArchiveSVG className={svgClass} />
     }
-    // {
-    //   name: "Archive",
-    //   link: "/archive",
-    //   svg: <ArchiveSVG className={svgClass} />
-    // }
   ]
 
   const [sidebarTags, setSidebarTags] = useState(tags)
@@ -43,6 +45,8 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
   const toggleTagList = () => {
     setSidebarTags((prev) => (prev === tags ? [] : tags))
   }
+
+  const { logoutUser } = useAuth()
 
   return (
     <aside
@@ -96,22 +100,28 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
           ))}
         </ul>
         <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 ">
-          <li key={"archive"}>
+          {/* <li key={"archive"}>
             <NavLink
               to={"/archive"}
-              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg  hover:bg-gray-100   group"
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 group"
             >
               <ArchiveSVG className={svgClass} />
               <span className="ml-3">Archive</span>
             </NavLink>
+          </li> */}
+          <li>
+            <li key={"signout"}>
+              <button
+                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 group w-full"
+                onClick={logoutUser}
+              >
+                <ExitSVG className={svgClass} />
+                <span className="ml-3">Sign Out</span>
+              </button>
+            </li>
           </li>
         </ul>
       </div>
-
-      {/* Fixed bottom content */}
-      {/* <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white  z-20">
-        settings
-      </div> */}
     </aside>
   )
 }
