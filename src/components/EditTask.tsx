@@ -7,7 +7,7 @@ import { useModal } from "../hooks/useModal"
 import { useNavigate } from "react-router-dom"
 import { handleError } from "../utils/handleError"
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
-import useTaskActions from "../hooks/useTaskActions"
+import useTasks from "../hooks/useTasks"
 import dayjs from "dayjs"
 import Input from "./Input"
 import TagsInput from "./TagsInput"
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
-  const { refreshTags, updateTask } = useTaskActions()
+  const { refreshTags, updateTask } = useTasks()
   const { hideModal, showDeleteModal } = useModal()
   const nav = useNavigate()
 

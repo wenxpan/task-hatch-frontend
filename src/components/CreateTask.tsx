@@ -1,8 +1,7 @@
-import React, { useContext } from "react"
+import React from "react"
 import AddSVG from "./icons/AddSVG"
 import { BaseTask } from "../types/task"
-import TaskContext from "../state/TaskContext"
-import useTaskActions from "../hooks/useTaskActions"
+import useTasks from "../hooks/useTasks"
 import { SubmitHandler, useForm } from "react-hook-form"
 import TagsInput from "./TagsInput"
 import Input from "./Input"
@@ -13,8 +12,8 @@ type CreateTaskProps = {
 }
 
 const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
-  const { createTask } = useTaskActions()
-  const { tags, setTags } = useContext(TaskContext)
+  const { createTask, tags, setTags } = useTasks()
+
   const {
     register,
     control,

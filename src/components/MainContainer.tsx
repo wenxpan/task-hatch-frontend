@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react"
+import React, {  useState } from "react"
 import { Navigate, Outlet } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
-import TaskContext from "../state/TaskContext"
 import NavBar from "./NavBar"
 import SideBar from "./SideBar"
 import Overlay from "./Overlay"
 import { useAuth } from "../hooks/useAuth"
+import useTasks from "../hooks/useTasks"
 
 interface MainContainerProps {}
 
@@ -16,7 +16,7 @@ const MainContainer: React.FC<MainContainerProps> = ({}) => {
     setIsOverlayOn((prev: boolean) => !prev)
   }
 
-  const { isTasksLoaded } = useContext(TaskContext)
+  const { isTasksLoaded } = useTasks()
 
   const { accessToken } = useAuth()
 

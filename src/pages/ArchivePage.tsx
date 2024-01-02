@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react"
-import TaskContext from "../state/TaskContext"
+import React, { useState } from "react"
 import Table from "../components/Table"
 import PageTitle from "../components/PageTitle"
 import SearchLine from "../components/SearchLine"
 import { Task } from "../types/task"
+import useTasks from "../hooks/useTasks"
 
 interface ArchivePageProps {}
 
 const ArchivePage: React.FC<ArchivePageProps> = ({}) => {
-  const { tasks } = useContext(TaskContext)
+  const { tasks } = useTasks()
   const archivedTasks = tasks.filter((t) => t.status === "archived")
 
   const [search, setSearch] = useState("")

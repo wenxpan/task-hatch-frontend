@@ -1,13 +1,13 @@
-import React, { useContext } from "react"
+import React from "react"
 import ViewTask from "../components/ViewTask"
 import { useParams } from "react-router-dom"
-import TaskContext from "../state/TaskContext"
+import useTasks from "../hooks/useTasks"
 
 interface Props {}
 
 const ViewTaskPage: React.FC<Props> = () => {
   const { id } = useParams()
-  const { tasks } = useContext(TaskContext)
+  const { tasks } = useTasks()
   const task = tasks.find((t) => t._id === id)
   return <div className="max-w-2xl">{task && <ViewTask task={task} />}</div>
 }

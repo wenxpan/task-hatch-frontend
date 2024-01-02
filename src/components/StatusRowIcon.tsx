@@ -4,14 +4,14 @@ import PinLineSVG from "./icons/PinLineSVG"
 import SnoozeSVG from "./icons/SnoozeSVG"
 import TickSVG from "./icons/TickSVG"
 import { Task } from "../types/task"
-import useTaskActions from "../hooks/useTaskActions"
+import useTasks from "../hooks/useTasks"
 
 interface StatusButtonsProps {
   task: Task
 }
 
 const StatusRowIcon: React.FC<StatusButtonsProps> = ({ task }) => {
-  const { toggleStatus } = useTaskActions()
+  const { toggleStatus } = useTasks()
   return (
     <>
       <button onClick={() => toggleStatus(task, "prioritised")}>

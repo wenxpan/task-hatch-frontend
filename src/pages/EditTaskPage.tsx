@@ -1,13 +1,13 @@
-import React, { useContext } from "react"
+import React from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import TaskContext from "../state/TaskContext"
 import EditTask from "../components/EditTask"
+import useTasks from "../hooks/useTasks"
 
 interface Props {}
 
 const EditTaskPage: React.FC<Props> = () => {
   const { id } = useParams()
-  const { tasks } = useContext(TaskContext)
+  const { tasks } = useTasks()
   const task = tasks.find((t) => t._id === id)
 
   if (!task) return null

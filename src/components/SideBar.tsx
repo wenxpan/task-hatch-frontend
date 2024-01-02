@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 import HomeSVG from "./icons/HomeSVG"
 import TasksSVG from "./icons/TasksSVG"
 import ArchiveSVG from "./icons/ArchiveSVG"
 import BookmarkLineSVG from "./icons/BookmarkLineSVG"
 import AccordianSVG from "./icons/AccordianSVG"
-import TaskContext from "../state/TaskContext"
+import useTasks from "../hooks/useTasks"
 
 interface SideBarProps {
   isOverlayOn: boolean
 }
 
 const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
-  const { tags } = useContext(TaskContext)
+  const { tags } = useTasks()
   const svgClass =
     "flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
   const navItems = [

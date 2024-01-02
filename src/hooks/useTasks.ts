@@ -1,24 +1,20 @@
 import { useContext } from "react"
 import TaskContext from "../state/TaskContext"
+import taskService from "../services/taskService"
 import { BaseTask, Task } from "../types/task"
-import {
-  addTaskAPI,
-  deleteTaskAPI,
-  fetchTagsAPI,
-  updateTaskAPI
-} from "../services/taskService"
 import { handleError } from "../utils/handleError"
 import cleanTags from "../utils/cleanTags"
 import { toast } from "react-toastify"
 
-const useTaskActions = () => {
-  const { tasksDispatch, setTags } = useContext(TaskContext)
+const useTasks = () => {
+  const { tasks, tasksDispatch, tags, setTags, stats, isTasksLoaded } =
+    useContext(TaskContext)
 
   // create task and send POST task request
   const createTask = async (task: BaseTask) => {
     try {
       const newTask = { ...task, tags: cleanTags(task.tags) }
-      const postedTask = await addTaskAPI(newTask)
+      const postedTask = await taskService.addTask(newTask)
       tasksDispatch({ type: "add_task", task: postedTask })
       return newTask
     } catch (e) {
@@ -30,7 +26,7 @@ const useTaskActions = () => {
   const updateTask = async (task: BaseTask) => {
     try {
       const newTask = { ...task, tags: cleanTags(task.tags) }
-      const postedTask: Task = await updateTaskAPI(newTask)
+      const postedTask: Task = await taskService.updateTask(newTask)
       tasksDispatch({ type: "update_task", task: postedTask })
       return postedTask
     } catch (e) {
@@ -40,7 +36,7 @@ const useTaskActions = () => {
 
   const deleteTask = async (task: Task) => {
     try {
-      await deleteTaskAPI(task._id)
+      await taskService.deleteTask(task._id)
       tasksDispatch({ type: "delete_task", task: task })
       toast.success(`"${task.title}" deleted`)
     } catch (e) {
@@ -51,7 +47,7 @@ const useTaskActions = () => {
   // update task status
   const updateStatus = async (task: Task, status: {}) => {
     try {
-      const updatedTask = await updateTaskAPI({ ...task, ...status })
+      const updatedTask = await taskService.updateTask({ ...task, ...status })
       tasksDispatch({
         type: "update_task",
         task: updatedTask
@@ -69,7 +65,7 @@ const useTaskActions = () => {
         !newTask.tags.every((t) => oldTask.tags.includes(t)) ||
         !oldTask.tags.every((t) => newTask.tags.includes(t))
       if (tagsUpdated) {
-        const tagData = await fetchTagsAPI()
+        const tagData = await taskService.fetchUserTags()
         setTags(tagData)
       }
     } catch (e) {
@@ -84,6 +80,12 @@ const useTaskActions = () => {
   }
 
   return {
+    tasks,
+    tasksDispatch,
+    tags,
+    setTags,
+    stats,
+    isTasksLoaded,
     createTask,
     updateTask,
     deleteTask,
@@ -93,4 +95,4 @@ const useTaskActions = () => {
   }
 }
 
-export default useTaskActions
+export default useTasks

@@ -5,7 +5,7 @@ import EditSVG from "./icons/EditSVG"
 import TagGroup from "./TagGroup"
 import Button from "./Button"
 import { useForm } from "react-hook-form"
-import useTaskActions from "../hooks/useTaskActions"
+import useTasks from "../hooks/useTasks"
 import StatusRadioInput from "./StatusRadioInput"
 import { handleError } from "../utils/handleError"
 
@@ -16,7 +16,7 @@ interface Props {
 const ViewTask: React.FC<Props> = ({ task }) => {
   const { showEditModal } = useModal()
 
-  const { updateStatus } = useTaskActions()
+  const { updateStatus } = useTasks()
 
   const { register } = useForm({
     defaultValues: {
