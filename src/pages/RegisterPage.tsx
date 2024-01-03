@@ -3,6 +3,8 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
 import Input from "../components/Input"
 import Button from "../components/Button"
+import { useAuth } from "../hooks/useAuth"
+import { RegisterUserEntry } from "../types/user"
 
 interface Props {}
 
@@ -14,29 +16,20 @@ type UserInfo = {
 }
 
 const RegisterPage: React.FC<Props> = () => {
-  // const { accessToken } = useAuth()
-
-  // const nav = useNavigate()
-
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     nav("/home")
-  //   }
-  // }, [accessToken])
-
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<UserInfo>()
+  const { registerUser } = useAuth()
 
   const onSubmit: SubmitHandler<UserInfo> = async (data) => {
-    const userInfo = {
+    const userInfo: RegisterUserEntry = {
       username: data.username,
       email: data.email,
       password: data.password
     }
-    console.log(userInfo)
+    await registerUser(userInfo)
   }
 
   return (
@@ -64,6 +57,14 @@ const RegisterPage: React.FC<Props> = () => {
                 className="space-y-4 md:space-y-6"
                 onSubmit={handleSubmit(onSubmit)}
               >
+                <Input
+                  type="text"
+                  labelText="Username"
+                  {...register("username", {
+                    required: "Please enter username"
+                  })}
+                  error={errors.username?.message}
+                />
                 <Input
                   type="email"
                   labelText="Email"

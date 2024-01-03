@@ -11,6 +11,9 @@ interface CardProps {
 }
 
 const TaskCard: React.FC<CardProps> = ({ task }) => {
+  if (!task) {
+    return null
+  }
   const { showViewModal } = useModal()
 
   const recentProgress = [...task.progress].slice(-3)
