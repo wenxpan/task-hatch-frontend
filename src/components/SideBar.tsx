@@ -109,16 +109,14 @@ const SideBar: React.FC<SideBarProps> = ({ isOverlayOn }) => {
               <span className="ml-3">Archive</span>
             </NavLink>
           </li> */}
-          <li>
-            <li key={"signout"}>
-              <button
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 group w-full"
-                onClick={logoutUser}
-              >
-                <ExitSVG className={svgClass} />
-                <span className="ml-3">Sign Out</span>
-              </button>
-            </li>
+          <li key={"signout"}>
+            <button
+              className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 group w-full"
+              onClick={logoutUser}
+            >
+              <ExitSVG className={svgClass} />
+              <span className="ml-3">Sign Out</span>
+            </button>
           </li>
         </ul>
       </div>

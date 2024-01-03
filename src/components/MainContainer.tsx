@@ -22,8 +22,6 @@ const MainContainer: React.FC<MainContainerProps> = ({}) => {
 
   useDataLoader()
 
-  console.log({ isAuthLoaded, isTasksLoaded })
-
   if (!isAuthLoaded) {
     return null
   }

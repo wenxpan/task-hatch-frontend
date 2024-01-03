@@ -10,22 +10,28 @@ export const authService = {
   }): Promise<AuthResult> => {
     const res: AxiosResponse<AuthResult> = await API.post(
       "/auth/login",
-      credentials
+      credentials,
+      { withCredentials: true }
     )
     return res.data
   },
   registerUser: async (userData: RegisterUserEntry): Promise<AuthResult> => {
     const res: AxiosResponse<AuthResult> = await API.post(
       "/auth/register",
-      userData
+      userData,
+      { withCredentials: true }
     )
     return res.data
   },
   refreshToken: async (): Promise<AuthResult> => {
-    const res: AxiosResponse<AuthResult> = await API.post("/auth/refresh_token")
+    const res: AxiosResponse<AuthResult> = await API.post(
+      "/auth/refresh_token",
+      {},
+      { withCredentials: true }
+    )
     return res.data
   },
   logoutUser: async (): Promise<void> => {
-    await API.post("/auth/logout")
+    await API.post("/auth/logout", {}, { withCredentials: true })
   }
 }
