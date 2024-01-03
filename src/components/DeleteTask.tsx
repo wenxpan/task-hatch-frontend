@@ -2,15 +2,15 @@ import React from "react"
 import DeleteSVG from "./icons/DeleteSVG"
 import { Task } from "../types/task"
 import Button from "./Button"
-import useTaskActions from "../hooks/useTaskActions"
-import { useModal } from "../state/ModalContext"
+import useTasks from "../hooks/useTasks"
+import { useModal } from "../hooks/useModal"
 
 interface Props {
   task: Task
 }
 
 const DeleteTask: React.FC<Props> = ({ task }) => {
-  const { deleteTask } = useTaskActions()
+  const { deleteTask } = useTasks()
   const { hideModal } = useModal()
 
   return (

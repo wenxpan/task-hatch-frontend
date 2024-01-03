@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import Table from "../components/Table"
-import TaskContext from "../state/TaskContext"
 import PageTitle from "../components/PageTitle"
 import { useLocation } from "react-router-dom"
-// import TaskCard from "../components/TaskCard"
 import { Task } from "../types/task"
 import StatusFilter from "../components/StatusFilter"
 import SearchLine from "../components/SearchLine"
+import useTasks from "../hooks/useTasks"
 
 interface TasksPageProps {}
 
 const TasksPage: React.FC<TasksPageProps> = ({}) => {
-  const { tasks } = useContext(TaskContext)
+  const { tasks } = useTasks()
 
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)

@@ -1,8 +1,9 @@
 import "react-toastify/dist/ReactToastify.css"
-import { useState } from "react"
+import MainContainer from "./components/MainContainer"
 import { Routes, Route, Navigate } from "react-router-dom"
-import { ModalProvider } from "./state/ModalContext"
+import { AuthProvider } from "./state/AuthContext"
 import { TaskProvider } from "./state/TaskContext"
+import { ModalProvider } from "./state/ModalContext"
 import HomePage from "./pages/HomePage"
 import TasksPage from "./pages/TasksPage"
 import NewTaskPage from "./pages/NewTaskPage"
@@ -10,50 +11,41 @@ import ArchivePage from "./pages/ArchivePage"
 import NotFoundPage from "./pages/NotFoundPage"
 import ViewTaskPage from "./pages/ViewTaskPage"
 import EditTaskPage from "./pages/EditTaskPage"
-import MainContainer from "./components/MainContainer"
-import NavBar from "./components/NavBar"
-import SideBar from "./components/SideBar"
-import Overlay from "./components/Overlay"
+import LogInPage from "./pages/LogInPage"
+import RegisterPage from "./pages/RegisterPage"
+import LoadDataWrapper from "./components/LoadDataWrapper"
+import PublicRoute from "./components/PublicRoute"
 
 function App() {
-  const [isOverlayOn, setIsOverlayOn] = useState(false)
-
-  const toggleOverlay = (): void => {
-    setIsOverlayOn((prev: boolean) => !prev)
-  }
-
   return (
-    <TaskProvider>
-      <ModalProvider>
-        <div className="antialiased">
-          <NavBar
-            title="Task Hatch"
-            logo="/task-hatch-logo.png"
-            toggleOverlay={toggleOverlay}
-          />
-          <SideBar isOverlayOn={isOverlayOn} />
-          <Routes>
-            <Route path="" element={<MainContainer />}>
-              <Route index element={<Navigate to="/home" />}></Route>
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/tasks">
-                <Route index element={<TasksPage />} />
-                <Route path=":id" element={<ViewTaskPage />} />
-                <Route path=":id/edit" element={<EditTaskPage />} />
+    <AuthProvider>
+      <TaskProvider>
+        <ModalProvider>
+          <LoadDataWrapper>
+            <Routes>
+              {/* landing routes */}
+              <Route path="" element={<PublicRoute />}>
+                <Route path="/login" element={<LogInPage />} />
+                <Route path="/register" element={<RegisterPage />} />
               </Route>
-              <Route path="/new" element={<NewTaskPage />} />
-              <Route path="/archive" element={<ArchivePage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
-        </div>
-        <Overlay
-          isOpen={isOverlayOn}
-          toggleOverlay={toggleOverlay}
-          zIndex={30}
-        />
-      </ModalProvider>
-    </TaskProvider>
+              {/* protected routes */}
+              <Route path="" element={<MainContainer />}>
+                <Route index element={<Navigate to="/home" />}></Route>
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/tasks">
+                  <Route index element={<TasksPage />} />
+                  <Route path=":id" element={<ViewTaskPage />} />
+                  <Route path=":id/edit" element={<EditTaskPage />} />
+                </Route>
+                <Route path="/new" element={<NewTaskPage />} />
+                <Route path="/archive" element={<ArchivePage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Route>
+            </Routes>
+          </LoadDataWrapper>
+        </ModalProvider>
+      </TaskProvider>
+    </AuthProvider>
   )
 }
 

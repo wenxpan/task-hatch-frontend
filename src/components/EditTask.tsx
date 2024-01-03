@@ -3,11 +3,11 @@ import DeleteSVG from "./icons/DeleteSVG"
 import AddSVG from "./icons/AddSVG"
 import { Task } from "../types/task"
 import StatusRadioInput from "./StatusRadioInput"
-import { useModal } from "../state/ModalContext"
+import { useModal } from "../hooks/useModal"
 import { useNavigate } from "react-router-dom"
 import { handleError } from "../utils/handleError"
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
-import useTaskActions from "../hooks/useTaskActions"
+import useTasks from "../hooks/useTasks"
 import dayjs from "dayjs"
 import Input from "./Input"
 import TagsInput from "./TagsInput"
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
-  const { refreshTags, updateTask } = useTaskActions()
+  const { refreshTags, updateTask } = useTasks()
   const { hideModal, showDeleteModal } = useModal()
   const nav = useNavigate()
 
@@ -76,7 +76,7 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
             type="text"
             labelText="title"
             {...register("title", {
-              required: { value: true, message: "Please enter title" },
+              required: "Please enter title",
               maxLength: { value: 50, message: "Title too long" }
             })}
             error={errors.title?.message}
@@ -136,7 +136,7 @@ const EditTask: React.FC<Props> = ({ task, onSave, editContext }) => {
                 <input
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 shadow-sm mt-1"
                   {...register(`progress.${index}.description` as const, {
-                    required: { value: true, message: "Please enter progress" }
+                    required: "Please enter progress"
                   })}
                 />
                 <Button

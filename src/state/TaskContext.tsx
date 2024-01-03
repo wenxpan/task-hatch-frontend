@@ -1,30 +1,33 @@
-import { createContext, Dispatch, useEffect, useReducer, useState } from "react"
+import { createContext, Dispatch, useReducer, useState } from "react"
 import { Stats, Task } from "../types/task"
 import { TaskAction } from "../types/task"
 import taskReducer from "./taskReducer"
-import * as taskService from "../services/taskService"
+// import taskService from "../services/taskService"
+// import { useAuth } from "../hooks/useAuth"
 
 interface TaskContextType {
   tasks: Task[]
   tasksDispatch: Dispatch<TaskAction>
   tags: string[]
-  setTags: (tags: string[]) => void
   stats: Stats
-  isLoaded: boolean
+  isTasksLoaded: boolean
+  setIsTasksLoaded: (isTasksLoaded: boolean) => void
+  setDetails: (data: { tasks?: Task[]; stats?: Stats; tags?: string[] }) => void
 }
 
 const TaskContext = createContext<TaskContextType>({
   tasks: [],
   tasksDispatch: () => {},
   tags: [],
-  setTags: () => {},
   stats: {
     totalTasks: 0,
     tasksCompleted: 0,
     tasksToDo: 0,
     topTags: []
   },
-  isLoaded: false
+  isTasksLoaded: false,
+  setIsTasksLoaded: () => {},
+  setDetails: () => {}
 })
 
 export default TaskContext
@@ -40,35 +43,29 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     tasksToDo: 0,
     topTags: []
   })
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isTasksLoaded, setIsTasksLoaded] = useState(false)
 
-  useEffect(() => {
-    const fetchAllTasks = async () => {
-      try {
-        // fetch tasks
-        const taskData: Task[] = await taskService.fetchTasksAPI()
-        tasksDispatch({ type: "set_tasks", tasks: taskData })
-
-        // fetch tags
-        const tagData = await taskService.fetchTagsAPI()
-        setTags(tagData)
-
-        // fetch stats
-        const statsData = await taskService.fetchStatsAPI()
-        setStats(statsData)
-
-        // set loading state to true
-        setIsLoaded(true)
-      } catch (error) {
-        console.error("Error fetching tasks: ", error)
-      }
-    }
-    fetchAllTasks()
-  }, [])
+  const setDetails = async (data: {
+    tasks?: Task[]
+    stats?: Stats
+    tags?: string[]
+  }) => {
+    data.tasks && tasksDispatch({ type: "set_tasks", tasks: data.tasks })
+    data.stats && setStats(data.stats)
+    data.tags && setTags(data.tags)
+  }
 
   return (
     <TaskContext.Provider
-      value={{ tasks, tasksDispatch, tags, setTags, stats, isLoaded }}
+      value={{
+        tasks,
+        tasksDispatch,
+        tags,
+        stats,
+        isTasksLoaded,
+        setIsTasksLoaded,
+        setDetails
+      }}
     >
       {children}
     </TaskContext.Provider>

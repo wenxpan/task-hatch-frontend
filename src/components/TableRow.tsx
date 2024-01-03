@@ -4,10 +4,10 @@ import ProgressIndicator from "./ProgressIndicator"
 import { Task } from "../types/task"
 import ArchiveSVG from "./icons/ArchiveSVG"
 import DeleteSVG from "./icons/DeleteSVG"
-import { useModal } from "../state/ModalContext"
+import { useModal } from "../hooks/useModal"
 import { calculateSnoozeDaysLeft } from "../utils/calcSnoozeDaysLeft"
 import StatusRowIcon from "./StatusRowIcon"
-import useTaskActions from "../hooks/useTaskActions"
+import useTasks from "../hooks/useTasks"
 import Button from "./Button"
 import TagGroup from "./TagGroup"
 
@@ -16,7 +16,7 @@ interface TableRowProps {
 }
 
 const TableRow: React.FC<TableRowProps> = ({ task }) => {
-  const { toggleStatus } = useTaskActions()
+  const { toggleStatus } = useTasks()
   const { showViewModal, showEditModal, showDeleteModal } = useModal()
 
   const snoozeDaysLeft = calculateSnoozeDaysLeft(task.snoozeUntil)

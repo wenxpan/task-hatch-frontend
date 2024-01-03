@@ -1,22 +1,17 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from "react"
-import TaskContext from "../state/TaskContext"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import TaskCard from "../components/TaskCard"
 import PinFillSVG from "../components/icons/PinFillSVG"
 import PageTitle from "../components/PageTitle"
 import { Task } from "../types/task"
 import ShuffleSVG from "../components/icons/ShuffleSVG"
 import { Link } from "react-router-dom"
+import useTasks from "../hooks/useTasks"
+import { useAuth } from "../hooks/useAuth"
 
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = ({}) => {
-  const { tasks, stats } = useContext(TaskContext)
+  const { tasks, stats } = useTasks()
 
   const taskCount = useMemo(() => tasks.length, [tasks])
   const pinnedTasks = tasks.filter((t) => t.status === "prioritised")
@@ -51,9 +46,10 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
     }
   }, [inProgressTasks])
 
+  const { user } = useAuth()
   return (
     <>
-      <PageTitle title="Hi there!" />
+      <PageTitle title={`Welcome${", " + user?.username}`} />
       {/* stats */}
       <div className="px-2 lg:px-12 max-w-4xl">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
@@ -108,7 +104,11 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
         </div>
         {/* row 2 col 1 newly content */}
         <div className="row-start-2">
-          <TaskCard task={newlyAddedTask} />
+          {newlyAddedTask ? (
+            <TaskCard task={newlyAddedTask} />
+          ) : (
+            <p>No tasks yet. Add now!</p>
+          )}
         </div>
 
         {/* row 1 col 2 - random title */}

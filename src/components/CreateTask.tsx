@@ -1,8 +1,7 @@
-import React, { useContext } from "react"
+import React from "react"
 import AddSVG from "./icons/AddSVG"
 import { BaseTask } from "../types/task"
-import TaskContext from "../state/TaskContext"
-import useTaskActions from "../hooks/useTaskActions"
+import useTasks from "../hooks/useTasks"
 import { SubmitHandler, useForm } from "react-hook-form"
 import TagsInput from "./TagsInput"
 import Input from "./Input"
@@ -13,8 +12,8 @@ type CreateTaskProps = {
 }
 
 const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
-  const { createTask } = useTaskActions()
-  const { tags, setTags } = useContext(TaskContext)
+  const { createTask, tags, setDetails } = useTasks()
+
   const {
     register,
     control,
@@ -29,7 +28,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
         (tag: string) => !tags.includes(tag)
       )
       if (newTags.length > 0) {
-        setTags([...tags, ...newTags])
+        setDetails({ tags: [...tags, ...newTags] })
       }
       onComplete()
     }
@@ -43,7 +42,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
           type="text"
           labelText="title"
           {...register("title", {
-            required: { value: true, message: "Please enter title" },
+            required: "Please enter title",
             maxLength: { value: 50, message: "Title too long" }
           })}
           error={errors.title?.message}
