@@ -1,11 +1,9 @@
 import React, { useState } from "react"
 import { ProgressEntry, Task } from "../types/task"
 import AddSVG from "./icons/AddSVG"
-import taskService from "../services/taskService"
 import { handleError } from "../utils/handleError"
 import Button from "./Button"
 import useTasks from "../hooks/useTasks"
-import { useAuth } from "../hooks/useAuth"
 
 interface Props {
   task: Task
@@ -17,9 +15,7 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
     description: ""
   })
 
-  const { tasksDispatch } = useTasks()
-
-  const { accessToken } = useAuth()
+  const { updateTask } = useTasks()
 
   const handleAddProgress = async () => {
     try {
@@ -30,8 +26,7 @@ const AddProgressLine: React.FC<Props> = ({ task }) => {
         ...task,
         progress: [...task.progress, progressEntry]
       }
-      const taskData = await taskService.updateTask(editedTask, accessToken)
-      tasksDispatch({ type: "update_task", task: taskData })
+      await updateTask(editedTask)
       setProgressEntry((prev) => ({ ...prev, description: "" }))
     } catch (e) {
       handleError(e as Error)
