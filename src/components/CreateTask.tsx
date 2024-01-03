@@ -12,7 +12,7 @@ type CreateTaskProps = {
 }
 
 const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
-  const { createTask, tags, setTags } = useTasks()
+  const { createTask, tags, setDetails } = useTasks()
 
   const {
     register,
@@ -28,7 +28,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ onComplete }) => {
         (tag: string) => !tags.includes(tag)
       )
       if (newTags.length > 0) {
-        setTags([...tags, ...newTags])
+        setDetails({ tags: [...tags, ...newTags] })
       }
       onComplete()
     }
