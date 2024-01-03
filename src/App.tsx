@@ -13,30 +13,36 @@ import ViewTaskPage from "./pages/ViewTaskPage"
 import EditTaskPage from "./pages/EditTaskPage"
 import LogInPage from "./pages/LogInPage"
 import RegisterPage from "./pages/RegisterPage"
+import LoadDataWrapper from "./components/LoadDataWrapper"
+import PublicRoute from "./components/PublicRoute"
 
 function App() {
   return (
     <AuthProvider>
       <TaskProvider>
         <ModalProvider>
-          <Routes>
-            {/* landing routes */}
-            <Route path="/login" element={<LogInPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            {/* protected routes */}
-            <Route path="" element={<MainContainer />}>
-              <Route index element={<Navigate to="/home" />}></Route>
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/tasks">
-                <Route index element={<TasksPage />} />
-                <Route path=":id" element={<ViewTaskPage />} />
-                <Route path=":id/edit" element={<EditTaskPage />} />
+          <LoadDataWrapper>
+            <Routes>
+              {/* landing routes */}
+              <Route path="" element={<PublicRoute />}>
+                <Route path="/login" element={<LogInPage />} />
+                <Route path="/register" element={<RegisterPage />} />
               </Route>
-              <Route path="/new" element={<NewTaskPage />} />
-              <Route path="/archive" element={<ArchivePage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
+              {/* protected routes */}
+              <Route path="" element={<MainContainer />}>
+                <Route index element={<Navigate to="/home" />}></Route>
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/tasks">
+                  <Route index element={<TasksPage />} />
+                  <Route path=":id" element={<ViewTaskPage />} />
+                  <Route path=":id/edit" element={<EditTaskPage />} />
+                </Route>
+                <Route path="/new" element={<NewTaskPage />} />
+                <Route path="/archive" element={<ArchivePage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Route>
+            </Routes>
+          </LoadDataWrapper>
         </ModalProvider>
       </TaskProvider>
     </AuthProvider>

@@ -1,9 +1,8 @@
 import React from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { Link, Navigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import Input from "../components/Input"
 import Button from "../components/Button"
-import { useAuth } from "../hooks/useAuth"
 
 interface Props {}
 
@@ -15,8 +14,15 @@ type UserInfo = {
 }
 
 const RegisterPage: React.FC<Props> = () => {
-  const { accessToken } = useAuth()
-  if (accessToken) return <Navigate to="/home" />
+  // const { accessToken } = useAuth()
+
+  // const nav = useNavigate()
+
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     nav("/home")
+  //   }
+  // }, [accessToken])
 
   const {
     register,

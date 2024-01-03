@@ -1,6 +1,6 @@
 import React from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { Link, Navigate, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import { useAuth } from "../hooks/useAuth"
@@ -13,9 +13,15 @@ type UserInfo = {
 }
 
 const LogInPage: React.FC<Props> = () => {
-  const { accessToken } = useAuth()
+  // const { accessToken } = useAuth()
 
-  if (accessToken) return <Navigate to="/home" />
+  // const nav = useNavigate()
+
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     nav("/home")
+  //   }
+  // }, [accessToken])
 
   const {
     register,
@@ -24,11 +30,9 @@ const LogInPage: React.FC<Props> = () => {
   } = useForm<UserInfo>()
 
   const { loginUser } = useAuth()
-  const nav = useNavigate()
 
   const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     loginUser(data)
-    nav("/home")
   }
 
   return (

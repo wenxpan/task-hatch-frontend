@@ -1,5 +1,5 @@
-import React from "react"
-import { Navigate, Outlet } from "react-router-dom"
+import React, { useEffect } from "react"
+import { Outlet, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
 interface Props {}
@@ -7,8 +7,15 @@ interface Props {}
 const PublicRoute: React.FC<Props> = ({}) => {
   const { isAuthLoaded, accessToken } = useAuth()
 
+  const nav = useNavigate()
+
+  useEffect(() => {
+    if (accessToken) {
+      nav("/home")
+    }
+  }, [accessToken])
+
   if (!isAuthLoaded) return null
-  if (accessToken) return <Navigate to="/home" />
 
   return <Outlet />
 }

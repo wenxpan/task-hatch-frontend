@@ -6,7 +6,6 @@ import SideBar from "./SideBar"
 import Overlay from "./Overlay"
 import { useAuth } from "../hooks/useAuth"
 import useTasks from "../hooks/useTasks"
-import useDataLoader from "../hooks/useDataLoader"
 
 interface MainContainerProps {}
 
@@ -19,8 +18,6 @@ const MainContainer: React.FC<MainContainerProps> = ({}) => {
 
   const { isAuthLoaded, accessToken } = useAuth()
   const { isTasksLoaded } = useTasks()
-
-  useDataLoader()
 
   if (!isAuthLoaded) {
     return null
