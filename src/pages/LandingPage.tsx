@@ -29,7 +29,7 @@ const LandingPage: React.FC<Props> = () => {
             <h1 className="mb-4 text-xl font-semibold tracking-tight leading-none text-gray-900">
               Rediscover Task Management
             </h1>
-            <p className="mb-8 text-md text-gray-500 sm:px-16 dark:text-gray-400">
+            <p className="mb-8 text-md text-gray-500">
               Emphasizing personal development over deadlines, this app offers a
               dynamic dashboard for daily inspiration and customizable task
               organization with tagging and snooze features, fostering focused

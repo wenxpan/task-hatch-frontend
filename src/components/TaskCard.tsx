@@ -28,7 +28,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
           showViewModal(task)
         }}
       >
-        <h5 className="text-2xl font-semibold text-start text-gray-900  justify-start">
+        <h5 className="text-2xl font-semibold text-start text-gray-900 justify-start">
           {task.status === "snoozed" && `(Snoozed for ${snoozeDaysLeft} days) `}
           {task.title}
           <span>
@@ -37,8 +37,8 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
         </h5>
       </button>
       <TagGroup tags={task.tags} />
-      <p className="font-normal text-gray-700 mb-3">{task.doReason}</p>
-      <p>Recent progress:</p>
+      <p className="font-normal text-gray-700 my-3">{task.doReason}</p>
+      <p className="mb-1">Recent progress:</p>
       {recentProgress.map((progress, index) => (
         <div key={index} className="text-gray-600 text-sm">
           {new Date(progress.date).toLocaleDateString()} -{" "}

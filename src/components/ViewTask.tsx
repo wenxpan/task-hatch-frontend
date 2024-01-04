@@ -38,9 +38,6 @@ const ViewTask: React.FC<Props> = ({ task }) => {
       <h1 className="text-2xl font-semibold mb-4">{task.title}</h1>
       <dl className="grid grid-cols-2 gap-4 my-4">
         <div className="col-span-2 place-self-start">
-          <h2 className="mb-2 font-semibold leading-none text-gray-900 ">
-            Status
-          </h2>
           <StatusRadioInput
             {...register("status")}
             onChange={(e) => onStatusChange(e)}
