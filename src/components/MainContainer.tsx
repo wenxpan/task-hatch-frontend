@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { Navigate, Outlet } from "react-router-dom"
-import { ToastContainer } from "react-toastify"
 import NavBar from "./NavBar"
 import SideBar from "./SideBar"
 import Overlay from "./Overlay"
@@ -38,7 +37,6 @@ const MainContainer: React.FC<MainContainerProps> = ({}) => {
       <main className="p-4 md:ml-64 h-auto pt-20">
         {isTasksLoaded ? <Outlet /> : <div>Loading...</div>}
       </main>
-      <ToastContainer />
       <Overlay isOpen={isOverlayOn} toggleOverlay={toggleOverlay} zIndex={30} />
     </>
   )

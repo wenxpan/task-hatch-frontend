@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import useTasks from "../hooks/useTasks"
 import { useAuth } from "../hooks/useAuth"
+import { ToastContainer } from "react-toastify"
 
 interface Props {
   children: React.ReactNode
@@ -22,7 +23,12 @@ const LoadDataWrapper: React.FC<Props> = ({ children }) => {
     loadData()
   }, [isAuthLoaded, accessToken])
 
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      <ToastContainer />
+    </>
+  )
 }
 
 export default LoadDataWrapper
