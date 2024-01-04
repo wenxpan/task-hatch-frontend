@@ -39,8 +39,8 @@ function App() {
                 </Route>
                 <Route path="/new" element={<NewTaskPage />} />
                 <Route path="/archive" element={<ArchivePage />} />
-                <Route path="*" element={<NotFoundPage />} />
               </Route>
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </LoadDataWrapper>
         </ModalProvider>
