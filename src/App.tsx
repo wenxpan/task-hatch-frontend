@@ -1,6 +1,6 @@
 import "react-toastify/dist/ReactToastify.css"
 import MainContainer from "./components/MainContainer"
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import { AuthProvider } from "./state/AuthContext"
 import { TaskProvider } from "./state/TaskContext"
 import { ModalProvider } from "./state/ModalContext"
@@ -15,6 +15,7 @@ import LogInPage from "./pages/LogInPage"
 import RegisterPage from "./pages/RegisterPage"
 import LoadDataWrapper from "./components/LoadDataWrapper"
 import PublicRoute from "./components/PublicRoute"
+import LandingPage from "./pages/LandingPage"
 
 function App() {
   return (
@@ -25,12 +26,12 @@ function App() {
             <Routes>
               {/* landing routes */}
               <Route path="" element={<PublicRoute />}>
+                <Route index element={<LandingPage />} />
                 <Route path="/login" element={<LogInPage />} />
                 <Route path="/register" element={<RegisterPage />} />
               </Route>
               {/* protected routes */}
               <Route path="" element={<MainContainer />}>
-                <Route index element={<Navigate to="/home" />}></Route>
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/tasks">
                   <Route index element={<TasksPage />} />
@@ -39,8 +40,8 @@ function App() {
                 </Route>
                 <Route path="/new" element={<NewTaskPage />} />
                 <Route path="/archive" element={<ArchivePage />} />
-                <Route path="*" element={<NotFoundPage />} />
               </Route>
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </LoadDataWrapper>
         </ModalProvider>

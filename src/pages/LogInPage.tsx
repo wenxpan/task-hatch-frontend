@@ -13,16 +13,6 @@ type UserInfo = {
 }
 
 const LogInPage: React.FC<Props> = () => {
-  // const { accessToken } = useAuth()
-
-  // const nav = useNavigate()
-
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     nav("/home")
-  //   }
-  // }, [accessToken])
-
   const {
     register,
     handleSubmit,
@@ -37,10 +27,10 @@ const LogInPage: React.FC<Props> = () => {
 
   return (
     <>
-      <section className="bg-gray-50 dark:bg-gray-900">
+      <section className="bg-gray-50">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <Link
-            to="/home"
+            to="/"
             className="flex items-center mb-6 text-2xl font-semibold text-gray-900"
           >
             <img
@@ -76,15 +66,6 @@ const LogInPage: React.FC<Props> = () => {
                   })}
                   error={errors.password?.message}
                 />
-                {/* <div className="flex items-center justify-end">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div> */}
-
                 <Button variant="solid" className="w-full" type="submit">
                   Sign in
                 </Button>
