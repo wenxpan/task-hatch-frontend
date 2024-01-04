@@ -48,7 +48,6 @@ export const useAuth = () => {
 
   const registerUser = async (credentials: RegisterUserEntry) => {
     try {
-      console.log(credentials)
       const { accessToken, user } = await authService.registerUser(credentials)
       setTokenUser(accessToken, user)
       toast.success("account created!")
